@@ -2,7 +2,6 @@
 package org.firstinspires.ftc.teamcode;
 // https://first-tech-challenge.github.io/SkyStone/  This is the link to ALL metered of FTC
 
-import com.qualcomm.hardware.ams.AMSColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -62,7 +61,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         telemetry.addData("Object", "After SetArmHome");
         telemetry.update();
         Pivot_Arm.SetArmHome(false);
-        while (Pivot_Arm.GetArmHome() == false) {
+        while (!Pivot_Arm.GetArmHome()) {
             Pivot_Arm.HomeArm(); //Runs the homing sequence for the arm to reset it
         }
 
@@ -100,7 +99,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
             //drivetrain.Strafing(-100, total_speed); //Goes to the storage hub
 
 
-        if (A == false && WT == false && GateFlag == true) { //This code will check if the robot is on the BLUE side and on the Turntable side
+        if (!A && !WT && GateFlag) { //This code will check if the robot is on the BLUE side and on the Turntable side
             //Need Camera Code //Sees where the duck is
 
                 //if camera == 1: //if the duck is on the first barcode
@@ -122,7 +121,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
             drivetrain.Strafing(-105, total_speed); //Goes to the storage hub
 
 
-        } else if (A == false && WT == true && GateFlag == true) { //This is a different instance where if we are starting on the BLUE side and on the warehouse side
+        } else if (!A && WT && GateFlag == true) { //This is a different instance where if we are starting on the BLUE side and on the warehouse side
             //Need Camera Code //Sees where the duck is
 
             //if camera == 1: //if the duck is on the first barcode

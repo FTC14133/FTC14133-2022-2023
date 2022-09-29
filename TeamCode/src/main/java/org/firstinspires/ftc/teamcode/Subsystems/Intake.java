@@ -2,15 +2,12 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Intake
 
-import com.qualcomm.robotcore.hardware.CRServo;
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class  Intake {
@@ -68,7 +65,7 @@ public class  Intake {
         telemetry.addData("Posession",Possession);
     }
     public void Team_Shipping_Element(Gamepad gamepad2){ //Code to be run in Op Mode void Loop at top level
-        if(gamepad2.y==true){ //if the x button is pressed
+        if(gamepad2.y){ //if the x button is pressed
             Hook.setPosition(1); //Hook extended
 
         }
