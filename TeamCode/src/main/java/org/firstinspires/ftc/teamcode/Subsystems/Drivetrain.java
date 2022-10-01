@@ -18,6 +18,7 @@ public class Drivetrain  {
     private DcMotorEx rb; //Back right motor of drivetrain
     private DcMotorEx lf; //Front left motor of drivetrain
     private DcMotorEx rf; //Front right motor of drivetrain
+    private DcMotorEx m; //Middle motor of drivetrain
     int tolerance = 4; // Encoder tolerance
     final double countsperrev = 28; // Counts per rev of the motor
     final double wheelD =96/25.4; // Diameter of the wheel (in inches)
@@ -30,12 +31,14 @@ public class Drivetrain  {
         rf = hardwareMap.get(DcMotorEx.class, "rf");      // "DeviceName" must match the Config EXACTLY
         lb = hardwareMap.get(DcMotorEx.class, "lb");
         rb = hardwareMap.get(DcMotorEx.class, "rb");
+        m = hardwareMap.get(DcMotorEx.class, "m");
 
         // Set motor direction based on which side of the robot the motors are on
         lf.setDirection(DcMotorEx.Direction.FORWARD);
-        rf.setDirection(DcMotorEx.Direction.REVERSE);
+        rf.setDirection(DcMotorEx.Direction.FORWARD);
         lb.setDirection(DcMotorEx.Direction.FORWARD);
-        rb.setDirection(DcMotorEx.Direction.REVERSE);
+        rb.setDirection(DcMotorEx.Direction.FORWARD);
+        m.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
     public void ForwardorBackwards(double distance, double speed) {
@@ -141,22 +144,26 @@ public class Drivetrain  {
         double rightbackpower = leftPowerY + leftPowerX - rightPowerX;     //Power level for rightback
         double leftbackpower = leftPowerY - leftPowerX + rightPowerX;      //Power level for leftback
         double rightfrontpower = leftPowerY - leftPowerX - rightPowerX;    //Power level for rightfront
+        double middlepower = rightPowerX;
 
         if (gamepad1.right_bumper) {
-            leftfrontpower *= 0.35;
-            rightfrontpower *= 0.35;
-            leftbackpower *= 0.35;
-            rightbackpower *= 0.35;
+            double slowspeed = 0.35;
+            leftfrontpower *= slowspeed;
+            rightfrontpower *= slowspeed;
+            leftbackpower *= slowspeed;
+            rightbackpower *= slowspeed;
+            middlepower *= slowspeed;
         }
 
         //Get the max of the the absolute values of the power of the wheels.
-        double NormScaling = Math.max(Math.max(Math.abs(leftfrontpower), Math.abs(rightfrontpower)), Math.max(Math.abs(leftbackpower), Math.abs(rightbackpower)));
+        double NormScaling = Math.max(Math.max(Math.max(Math.abs(leftfrontpower), Math.abs(rightfrontpower)), Math.abs(middlepower)), Math.max(Math.abs(leftbackpower), Math.abs(rightbackpower)));
 
         if (NormScaling > 1) {      //If the max of the the absolute values of the power of the wheels is greater than 1
             leftfrontpower /= NormScaling;       //Scales (divides) all of the powers of the wheels by the max of the the absolute values of the power of the wheels
             rightfrontpower /= NormScaling;
             leftbackpower /= NormScaling;
             rightbackpower /= NormScaling;
+            middlepower /= NormScaling;
         } // Else just use the raw values
 
         //Set the power of the wheels
@@ -164,11 +171,13 @@ public class Drivetrain  {
         lb.setPower(leftbackpower);
         rf.setPower(rightfrontpower);
         rb.setPower(rightbackpower);
+        m.setPower(middlepower);
 
         telemetry.addData("LF Power", leftfrontpower);
         telemetry.addData("LB Power", leftbackpower);
         telemetry.addData("RF Power", rightfrontpower);
         telemetry.addData("RB Power", rightbackpower);
+        telemetry.addData("M Power", middlepower);
 
     }
 
