@@ -104,31 +104,16 @@ public class Drivetrain  {
     }
 
     public void Strafing(double Strafe, double speed) {
-        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lf.setTargetPositionTolerance(tolerance);
-        rf.setTargetPositionTolerance(tolerance);
-        rb.setTargetPositionTolerance(tolerance);
-        lb.setTargetPositionTolerance(tolerance);
+        m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m.setTargetPositionTolerance(tolerance);
         //Driving left/right
         //Positive is Strafing left negative is Strafing right
         double encodercounts = Strafe * countsperin * Math.sqrt(2);
         int encodercountsint = (int) encodercounts;
-        lf.setTargetPosition(-encodercountsint);
+        m.setTargetPosition(-encodercountsint);
         lf.setPower(speed);        //
-        rf.setTargetPosition(encodercountsint);
-        rf.setPower(speed);        //Sets the power for the Long arm
-        lb.setTargetPosition(encodercountsint);
-        lb.setPower(speed);        //Sets the power for the Long arm
-        rb.setTargetPosition(-encodercountsint);
-        rb.setPower(speed);        //Sets the power for the Long arm
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (lf.isBusy() || rf.isBusy()) {
+        m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (m.isBusy() || m.isBusy()) {
             //run until motors arrive at position within tolerance
         }
 
