@@ -14,11 +14,10 @@ import java.lang.Math;
 
 public class Drivetrain  {
     // Instantiate the drivetrain motor variables
-    private DcMotorEx lb; //Back left motor of drivetrain
-    private DcMotorEx rb; //Back right motor of drivetrain
-    private DcMotorEx lf; //Front left motor of drivetrain
-    private DcMotorEx rf; //Front right motor of drivetrain
-    private DcMotorEx m; //Middle motor of drivetrain
+    private DcMotorEx fm; //Back left motor of drivetrain
+    private DcMotorEx bm; //Back right motor of drivetrain
+    private DcMotorEx lm; //Front left motor of drivetrain
+    private DcMotorEx rm; //Front right motor of drivetrain
     int tolerance = 4; // Encoder tolerance
     final double countsperrev = 28; // Counts per rev of the motor
     final double wheelD =96/25.4; // Diameter of the wheel (in inches)
@@ -27,93 +26,86 @@ public class Drivetrain  {
 
 
     public Drivetrain(HardwareMap hardwareMap){                 // Motor Mapping
-        lf = hardwareMap.get(DcMotorEx.class, "lf");      //Sets the names of the hardware on the hardware map
-        rf = hardwareMap.get(DcMotorEx.class, "rf");      // "DeviceName" must match the Config EXACTLY
-        lb = hardwareMap.get(DcMotorEx.class, "lb");
-        rb = hardwareMap.get(DcMotorEx.class, "rb");
-        m = hardwareMap.get(DcMotorEx.class, "m");
+        lm = hardwareMap.get(DcMotorEx.class, "lm");      //Sets the names of the hardware on the hardware map
+        rm = hardwareMap.get(DcMotorEx.class, "rm");      // "DeviceName" must match the Config EXACTLY
+        fm = hardwareMap.get(DcMotorEx.class, "fm");
+        bm = hardwareMap.get(DcMotorEx.class, "bm");
 
         // Set motor direction based on which side of the robot the motors are on
-        lf.setDirection(DcMotorEx.Direction.FORWARD);
-        rf.setDirection(DcMotorEx.Direction.FORWARD);
-        lb.setDirection(DcMotorEx.Direction.FORWARD);
-        rb.setDirection(DcMotorEx.Direction.FORWARD);
-        m.setDirection(DcMotorEx.Direction.FORWARD);
+        lm.setDirection(DcMotorEx.Direction.FORWARD);
+        rm.setDirection(DcMotorEx.Direction.FORWARD);
+        fm.setDirection(DcMotorEx.Direction.FORWARD);
+        bm.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
     public void ForwardorBackwards(double distance, double speed) {
-        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lf.setTargetPositionTolerance(tolerance);
-        rf.setTargetPositionTolerance(tolerance);
-        rb.setTargetPositionTolerance(tolerance);
-        lb.setTargetPositionTolerance(tolerance);
+        lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lm.setTargetPositionTolerance(tolerance);
+        rm.setTargetPositionTolerance(tolerance);
         //Driving forward/backwards
         double encodercounts = distance * countsperin;
         int encodercountsint = (int) encodercounts;
-        lf.setTargetPosition(encodercountsint);
-        lf.setPower(speed);        //Sets the power for the left front wheel
-        rf.setTargetPosition(encodercountsint);
-        rf.setPower(speed);        //Sets the power for the right front wheel
-        lb.setTargetPosition(encodercountsint);
-        lb.setPower(speed);        //Sets the power for the left back wheel
-        rb.setTargetPosition(encodercountsint);
-        rb.setPower(speed);        //Sets the power for the right back wheel
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lm.setTargetPosition(encodercountsint);
+        lm.setPower(speed);        //Sets the power for the left front wheel
+        rm.setTargetPosition(encodercountsint);
+        rm.setPower(speed);        //Sets the power for the right front wheel
+        rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (lf.isBusy() || rf.isBusy()) {
+        while (lm.isBusy() || rm.isBusy()) {
             //run until motors arrive at position within tolerance
         }
     }
-
+    //h
     public void Rotate(double turn, double speed) {
-        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lf.setTargetPositionTolerance(tolerance);
-        rf.setTargetPositionTolerance(tolerance);
-        rb.setTargetPositionTolerance(tolerance);
-        lb.setTargetPositionTolerance(tolerance);
+        lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lm.setTargetPositionTolerance(tolerance);
+        rm.setTargetPositionTolerance(tolerance);
+        bm.setTargetPositionTolerance(tolerance);
+        fm.setTargetPositionTolerance(tolerance);
         //Driving left/right
         //NOT DONE
         double encodercounts = turn * 7.123; // test iteratively //ToDo: This math needs to be redone as well
         int encodercountsint = (int) encodercounts;
-        lf.setTargetPosition(-encodercountsint);
-        lf.setPower(speed);        //
-        rf.setTargetPosition(encodercountsint);
-        rf.setPower(speed);        //Sets the power for the Long arm
-        lb.setTargetPosition(-encodercountsint);
-        lb.setPower(speed);        //Sets the power for the Long arm
-        rb.setTargetPosition(encodercountsint);
-        rb.setPower(speed);        //Sets the power for the Long arm
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lm.setTargetPosition(encodercountsint);
+        lm.setPower(speed);        //
+        rm.setTargetPosition(encodercountsint);
+        rm.setPower(speed);        //Sets the power for the Long arm
+        fm.setTargetPosition(encodercountsint);
+        fm.setPower(speed);        //Sets the power for the Long arm
+        bm.setTargetPosition(encodercountsint);
+        bm.setPower(speed);        //Sets the power for the Long arm
+        fm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //noinspection StatementWithEmptyBody
-        while (lf.isBusy() || rf.isBusy()) {
+        while (lm.isBusy() || rm.isBusy()) {
             //run until motors arrive at position within tolerance
         }
     }
 
     public void Strafing(double Strafe, double speed) {
-        m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m.setTargetPositionTolerance(tolerance);
+        fm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bm.setTargetPositionTolerance(tolerance);
+        fm.setTargetPositionTolerance(tolerance);
         //Driving left/right
         //Positive is Strafing left negative is Strafing right
         double encodercounts = Strafe * countsperin * Math.sqrt(2);
         int encodercountsint = (int) encodercounts;
-        m.setTargetPosition(-encodercountsint);
-        lf.setPower(speed);        //
-        m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (m.isBusy() || m.isBusy()) {
+        fm.setTargetPosition(encodercountsint);
+        fm.setPower(speed);        //Sets the power for the Long arm
+        bm.setTargetPosition(-encodercountsint);
+        bm.setPower(speed);        //Sets the power for the Long arm
+        fm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (lm.isBusy() || rm.isBusy()) {
             //run until motors arrive at position within tolerance
         }
 
@@ -123,46 +115,24 @@ public class Drivetrain  {
     public void Teleop(Gamepad gamepad1, Telemetry telemetry){ //Code to be run in Teleop Mode void Loop at top level
         double leftPowerY = -gamepad1.left_stick_y;      //find the value of y axis on the left joystick;
         double leftPowerX = gamepad1.left_stick_x;      //find the value of x axis on the left joystick;
-        double rightPowerX = gamepad1.right_stick_x*0.75;     //find the value of x axis on the right joystick;
-        //Power of Mecanum wheels;
-        double leftfrontpower = leftPowerY + leftPowerX + rightPowerX;     //Power level for leftfront
-        double rightbackpower = leftPowerY + leftPowerX - rightPowerX;     //Power level for rightback
-        double leftbackpower = leftPowerY - leftPowerX + rightPowerX;      //Power level for leftback
-        double rightfrontpower = leftPowerY - leftPowerX - rightPowerX;    //Power level for rightfront
-        double middlepower = rightPowerX;
+        double rightPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
 
-        if (gamepad1.right_bumper) {
-            double slowspeed = 0.35;
-            leftfrontpower *= slowspeed;
-            rightfrontpower *= slowspeed;
-            leftbackpower *= slowspeed;
-            rightbackpower *= slowspeed;
-            middlepower *= slowspeed;
+        if (Math.abs(rightPowerX) > 0.1){
+            lm.setPower(rightPowerX);
+            rm.setPower(rightPowerX);
+            fm.setPower(rightPowerX);
+            bm.setPower(rightPowerX);
+        }else{
+            lm.setPower(leftPowerX);
+            rm.setPower(leftPowerX);
+            fm.setPower(leftPowerY);
+            bm.setPower(leftPowerY);
         }
 
-        //Get the max of the the absolute values of the power of the wheels.
-        double NormScaling = Math.max(Math.max(Math.max(Math.abs(leftfrontpower), Math.abs(rightfrontpower)), Math.abs(middlepower)), Math.max(Math.abs(leftbackpower), Math.abs(rightbackpower)));
-
-        if (NormScaling > 1) {      //If the max of the the absolute values of the power of the wheels is greater than 1
-            leftfrontpower /= NormScaling;       //Scales (divides) all of the powers of the wheels by the max of the the absolute values of the power of the wheels
-            rightfrontpower /= NormScaling;
-            leftbackpower /= NormScaling;
-            rightbackpower /= NormScaling;
-            middlepower /= NormScaling;
-        } // Else just use the raw values
-
-        //Set the power of the wheels
-        lf.setPower(leftfrontpower);
-        lb.setPower(leftbackpower);
-        rf.setPower(rightfrontpower);
-        rb.setPower(rightbackpower);
-        m.setPower(middlepower);
-
-        telemetry.addData("LF Power", leftfrontpower);
-        telemetry.addData("LB Power", leftbackpower);
-        telemetry.addData("RF Power", rightfrontpower);
-        telemetry.addData("RB Power", rightbackpower);
-        telemetry.addData("M Power", middlepower);
+        //telemetry.addData("LF Power", leftfrontpower);
+        //telemetry.addData("LB Power", leftbackpower);
+        //telemetry.addData("RF Power", rightfrontpower);
+        //telemetry.addData("RB Power", rightbackpower);
 
     }
 
