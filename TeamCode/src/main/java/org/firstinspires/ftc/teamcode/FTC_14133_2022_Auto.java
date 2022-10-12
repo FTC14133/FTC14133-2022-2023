@@ -74,15 +74,12 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         Intake.Home_TSE();
 
         drivetrain.Rotate(-45, total_speed);
-        Turn_Table.Auto(A, 8000);
-        drivetrain.Rotate(-87, total_speed);
-        Pivot_Arm.GotoPosition(1, 0); //Sets the arm to the position of top goal
-        drivetrain.ForwardorBackwards(43, total_speed);
-        Intake.Update_outtake(0.5, Pivot_Arm.position, gamepad2);
-        drivetrain.Strafing(34, total_speed);
-        drivetrain.Rotate(33, total_speed);
-        drivetrain.ForwardorBackwards(60, total_speed);
-        Pivot_Arm.GotoPosition(3, 0);
+        drivetrain.Rotate(45, total_speed);
+        drivetrain.ForwardorBackwards(3, total_speed);
+        drivetrain.ForwardorBackwards(-3, total_speed);
+        drivetrain.Strafing(3, total_speed);
+        drivetrain.Strafing(-3, total_speed);
+
 
 
 

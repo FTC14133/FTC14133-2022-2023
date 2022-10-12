@@ -1,4 +1,4 @@
-/*package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 
 import android.util.Log;
 
@@ -19,7 +19,7 @@ public class Controller_test extends OpMode  {
     private DcMotor test_motor = null;
 
     public void init() {
-        test_motor = hardwareMap.get(DcMotorEx.class, "test");
+        //test_motor = hardwareMap.get(DcMotorEx.class, "turn_table");
 
     }
 
@@ -32,17 +32,15 @@ public class Controller_test extends OpMode  {
     }
 
     public void loop() {
-        Log.i("Hi", "HI");
-        if (gamepad1.left_stick_y < -0.25) {
-            Log.i("Hiiiiiiiiiiiii", "HIiiiiiiiiiiiiiiiiiiiiii");
-            test_motor.setPower(1);
-        }
+        //Log.i("Hi", "HI");
+        telemetry.addData("right_stick_y", String.valueOf(gamepad2.right_stick_y));
+        telemetry.addData("right_stick_y", String.valueOf(gamepad2.right_stick_x));
+        telemetry.addData("right_stick_y", String.valueOf(gamepad2.left_stick_y));
+        telemetry.update();
 
-        else {
-                test_motor.setPower(0);
-        }
+        //test_motor.setPower(1);
+
     }
 
 }
 
- */
