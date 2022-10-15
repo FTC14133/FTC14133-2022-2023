@@ -38,20 +38,30 @@ public class Drivetrain  {
         rf.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
-    public void ForwardorBackwards(double distance, double speed) { //Todo : NEEDS TO BE FIXED!
+    public void ForwardorBackwards(double distance, double speed) {
+        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setTargetPositionTolerance(tolerance);
+        lf.setTargetPositionTolerance(tolerance);
+        rf.setTargetPositionTolerance(tolerance);
         rb.setTargetPositionTolerance(tolerance);
+        lb.setTargetPositionTolerance(tolerance);
         //Driving forward/backwards
         double encodercounts = distance * countsperin;
         int encodercountsint = (int) encodercounts;
+        lf.setTargetPosition(encodercountsint);
+        lf.setPower(speed);        //Sets the power for the left front wheel
+        rf.setTargetPosition(-encodercountsint);
+        rf.setPower(speed);        //Sets the power for the right front wheel
         lb.setTargetPosition(encodercountsint);
-        lb.setPower(speed);        //Sets the power for the left front wheel
-        rb.setTargetPosition(encodercountsint);
-        rb.setPower(speed);        //Sets the power for the right front wheel
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setPower(speed);        //Sets the power for the left back wheel
+        rb.setTargetPosition(-encodercountsint);
+        rb.setPower(speed);        //Sets the power for the right back wheel
         lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (lb.isBusy() || rb.isBusy()) {
             //run until motors arrive at position within tolerance
@@ -90,19 +100,28 @@ public class Drivetrain  {
         }
     }
 
-    public void Strafing(double Strafe, double speed) { //Todo : NEEDS TO BE FIXED!
+    public void Strafing(double Strafe, double speed) {
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lf.setTargetPositionTolerance(tolerance);
         rf.setTargetPositionTolerance(tolerance);
         rb.setTargetPositionTolerance(tolerance);
-        //Driving left/right
-        //Positive is Strafing left negative is Strafing right
-        double encodercounts = Strafe * countsperin * Math.sqrt(2);
+        lb.setTargetPositionTolerance(tolerance);
+        //Driving forward/backwards
+        double encodercounts = Strafe * countsperin;
         int encodercountsint = (int) encodercounts;
         lf.setTargetPosition(encodercountsint);
-        lf.setPower(speed);        //Sets the power for the Long arm
+        lf.setPower(speed);        //Sets the power for the left front wheel
+        rf.setTargetPosition(encodercountsint);
+        rf.setPower(speed);        //Sets the power for the right front wheel
+        lb.setTargetPosition(-encodercountsint);
+        lb.setPower(speed);        //Sets the power for the left back wheel
         rb.setTargetPosition(-encodercountsint);
-        rb.setPower(speed);        //Sets the power for the Long arm
+        rb.setPower(speed);        //Sets the power for the right back wheel
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while (lf.isBusy() || rb.isBusy()) {
