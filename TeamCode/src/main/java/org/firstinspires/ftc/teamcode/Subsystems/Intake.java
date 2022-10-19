@@ -15,11 +15,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class  Intake {
     // Instantiate the motor variables
-    private DcMotorEx intake;
+    private DcMotorEx intake; //Todo: This year the intake will likely use servos instead of motors due to weight up high. Needs to mo midified as such
     boolean toggle = true;
     boolean Possession = true; //Variable telling whether we have possession of a game piece or not
     DigitalChannel beambreak_Up; //The "beambreak" sensor is a type of IR sensor that detects if it vision is broken
-    DigitalChannel beambreak_Down;
+    DigitalChannel beambreak_Down; //Todo: If we do use a beam break to sense a cone, we will only be using one.
     Servo Hook;
 
     public Intake(HardwareMap hardwareMap){                 // Motor Mapping
@@ -33,7 +33,7 @@ public class  Intake {
     }
 
     public void Update_intake(double speed, int position){ //Standard intake function
-        if(position<0){ //if the arm is towards the back
+        if(position<0){ //if the arm is towards the back Todo: We don't need this directionality code. Intake/outtake will work the same regardless of arm position
             speed = -speed; //flip the direction of the intake
         }
         if(!beambreak_Down.getState() || !beambreak_Up.getState()) {

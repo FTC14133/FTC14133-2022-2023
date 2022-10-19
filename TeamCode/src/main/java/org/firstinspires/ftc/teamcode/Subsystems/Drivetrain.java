@@ -48,7 +48,7 @@ public class Drivetrain  {
         rb.setTargetPositionTolerance(tolerance);
         lb.setTargetPositionTolerance(tolerance);
         //Driving forward/backwards
-        double encodercounts = distance * countsperin;
+        double encodercounts = distance * countsperin; //Todo: Use the correct math. For every 1" of wheel travel, the robot will only go 1/sqrt(2) in. Let's talk about the math.
         int encodercountsint = (int) encodercounts;
         lf.setTargetPosition(encodercountsint);
         lf.setPower(speed);        //Sets the power for the left front wheel
@@ -100,7 +100,10 @@ public class Drivetrain  {
         }
     }
 
-    public void Strafing(double Strafe, double speed) {
+    public void Strafing(double Strafe, double speed) { //Todo: We could set all moves as a function of the angular direction we wish to go, i.e. 0 deg is forward, 90 deg is left, 180 is backwards, etc. That way it could be just one function with an extra input that is used over and over. Would be more math, but not that difficult.
+        //Todo: We could then do really cool stuff, like curved corners with while loops (while(angle<90) angle=angle+1 Move(distance,angle))
+        //Todo: If we want to get REALLY crazy, we can modify this code to command a velocity instead of distances which will enable more smooth movement
+        //Todo: The above is functionally what "Roadrunner" does, but it uses the gyro on the controller or "dead" wheels contacting the ground with encoders.
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -111,7 +114,7 @@ public class Drivetrain  {
         lb.setTargetPositionTolerance(tolerance);
         //Driving left/right
         //Positive is Strafing left negative is Strafing right
-        double encodercounts = Strafe * countsperin * Math.sqrt(2);
+        double encodercounts = Strafe * countsperin * Math.sqrt(2); //Todo: this should be correct
         int encodercountsint = (int) encodercounts;
         lf.setTargetPosition(-encodercountsint);
         lf.setPower(speed);        //

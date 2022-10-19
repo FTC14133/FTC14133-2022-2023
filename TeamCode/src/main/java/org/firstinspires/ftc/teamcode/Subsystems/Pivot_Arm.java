@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 //import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
+//Todo: We need roughly the same code for the elevator. They can both be controlled here, but all hardware and logic needs to be written.
 public class Pivot_Arm {
     // Instantiate the lift motor variables
     private DcMotorEx lift;
@@ -23,7 +23,7 @@ public class Pivot_Arm {
 
     public int position = 0; // Integer position of the arm
     int tolerance = 0; // Encoder tolerance
-    final double countsperrev = 28; // Counts per rev of the motor
+    final double countsperrev = 28; // Counts per rev of the motor //Todo: All this math and below needs to be refactored relative to the pivot arm or elevator.
     final double gearratio=3*4*5*4; //Ratio of the entire Pivot Arm from the motor to the arm
     final double countsperdegree=countsperrev*gearratio/360; //Converts counts per motor rev to counts per degree of arm rotation
     final int countsperdegreeint= 4; //(int)countsperdegree; //Converts to an integer value
