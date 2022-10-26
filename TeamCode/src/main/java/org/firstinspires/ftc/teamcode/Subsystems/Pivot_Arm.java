@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
+import java.lang.Math.*;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 //import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -23,10 +23,19 @@ public class Pivot_Arm {
 
     public int position = 0; // Integer position of the arm
     int tolerance = 0; // Encoder tolerance
+<<<<<<< Updated upstream
     final double countsperrev = 28; // Counts per rev of the motor //Todo: All this math and below needs to be refactored relative to the pivot arm or elevator.
     final double gearratio=3*4*5*4; //Ratio of the entire Pivot Arm from the motor to the arm
     final double countsperdegree=countsperrev*gearratio/360; //Converts counts per motor rev to counts per degree of arm rotation
     final int countsperdegreeint= 4; //(int)countsperdegree; //Converts to an integer value
+=======
+    final double countsperrev = 28; //Counts per revolution of the motor
+    final double gearratio = 5*5*4; //Gear ratio of the motors
+    final double wheeldiameter = 96 / 25.4; //The diameter of the wheels (We are converting mm to inch)
+    final double dtr = Math.PI*wheeldiameter/gearratio; //Distance travelled in one rotation
+    final double countsperinch =countsperrev/dtr; //Counts Per Inch
+    final int countsperinchint = (int)countsperinch; //Converts Counts Per Inch to an integer value
+>>>>>>> Stashed changes
     final double liftpower=0.75;
     float joystick_double;
     int joystick_int;
@@ -87,28 +96,28 @@ public class Pivot_Arm {
         lift.setPower(liftpower);        //Sets the power for the lift
         switch (position) {
             case 3: // Intake Front
-                lift.setTargetPosition(0*countsperdegreeint+joystick);
+                lift.setTargetPosition(0* countsperinchint +joystick);
                 break;
             case 2: // Mid Level Front
-                lift.setTargetPosition(-60*countsperdegreeint+joystick);
+                lift.setTargetPosition(-60* countsperinchint +joystick);
                 break;
 
             case 1: //Upper Level Front
-                lift.setTargetPosition(-100*countsperdegreeint+joystick);
+                lift.setTargetPosition(-100* countsperinchint +joystick);
                 break;
 
             case 0: //Straight Up
-                lift.setTargetPosition(-140*countsperdegreeint+joystick);
+                lift.setTargetPosition(-140* countsperinchint +joystick);
                 break;
 
             case -1: //Upper Level Back
-                lift.setTargetPosition(-185*countsperdegreeint+joystick);
+                lift.setTargetPosition(-185* countsperinchint +joystick);
                 break;
             case -2: //Mid Level Back
-                lift.setTargetPosition(-220*countsperdegreeint+joystick);
+                lift.setTargetPosition(-220* countsperinchint +joystick);
                 break;
             case -3: // Intake Back
-                lift.setTargetPosition(-290*countsperdegreeint+joystick);
+                lift.setTargetPosition(-290* countsperinchint +joystick);
                 break;
             default:
                 throw new IllegalStateException("Unexpected position value: " + position);
