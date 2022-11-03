@@ -5,10 +5,11 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-//import org.opencv.core.Mat;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 
 import java.lang.Math;
 
@@ -23,6 +24,7 @@ public class Drivetrain  {
     final double wheelD =96/25.4; // Diameter of the wheel (in inches)
     final double gearratio=2*2.89*2.89; //Ratio of the entire drivetrain from the motor to the wheel
     final double countsperin=countsperrev*gearratio*(1/(Math.PI*wheelD));
+    final double rotationK = 1; //Scaling factor for rotation (Teleop)
 
 
     public Drivetrain(HardwareMap hardwareMap){                 // Motor Mapping
@@ -32,9 +34,9 @@ public class Drivetrain  {
         rb = hardwareMap.get(DcMotorEx.class, "rb");
 
         // Set motor direction based on which side of the robot the motors are on
-        lb.setDirection(DcMotorEx.Direction.FORWARD);
+        lb.setDirection(DcMotorEx.Direction.REVERSE);
         rb.setDirection(DcMotorEx.Direction.FORWARD);
-        lf.setDirection(DcMotorEx.Direction.FORWARD);
+        lf.setDirection(DcMotorEx.Direction.REVERSE);
         rf.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
@@ -132,20 +134,36 @@ public class Drivetrain  {
     }
 
     public void Teleop(Gamepad gamepad1, Telemetry telemetry){ //Code to be run in Teleop Mode void Loop at top level
-        double rightPowerY = -gamepad1.left_stick_y;      //find the value of y axis on the left joystick;
-        double rightPowerX = gamepad1.left_stick_x;      //find the value of x axis on the left joystick;
-        double leftPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
+        double leftPowerY = -gamepad1.left_stick_y;      //find the value of y axis on the left joystick;
+        double leftPowerX = gamepad1.left_stick_x;      //find the value of x axis on the left joystick;
+        double rightPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
 
-        double leftfrontpower = rightPowerY + rightPowerX + leftPowerX;     //Power level for leftfront
-        double leftbackpower = rightPowerY - rightPowerX + leftPowerX;     //Power level for rightback
-        double rightfrontpower = -rightPowerY + rightPowerX + leftPowerX;      //Power level for leftback
-        double rightbackpower = -rightPowerY - rightPowerX + leftPowerX;    //Power level for rightfront
+        double angleD = Math.toDegrees(Math.atan2(leftPowerY, leftPowerX)); //Calculating angle of which the joystick is commanded to in degrees
+        double angleR = Math.atan2(leftPowerY, leftPowerX); //Calculating angle of which the joystick is commanded to in radiant
+        double speed = Math.sqrt((leftPowerY * leftPowerY) + (leftPowerX * leftPowerX)); //Calculating the magnitude of the joystick
+
+
+        telemetry.addData("Angle: ", angleD);
+        telemetry.addData("Speed: ", speed);
+
+        double leftfrontpower = (Math.sin(angleR + (Math.PI / 4)) * speed) - (rightPowerX * rotationK);     //Power level for leftfront
+        double rightfrontpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for rightfront
+        double rightbackpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);      //Power level for rightback
+        double leftbackpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) - (rightPowerX * rotationK);    //Power level for leftback
+
+        double max = Math.max(Math.max(Math.abs(leftfrontpower), Math.abs(rightfrontpower)), Math.max(Math.abs(rightbackpower), Math.abs(leftbackpower))); //Finds the greatest power of the moters
+
+        if ((Math.abs(leftfrontpower) > 1) || (Math.abs(rightfrontpower) > 1) || (Math.abs(rightbackpower) > 1) || (Math.abs(leftbackpower) > 1)){ //Normalize so no motor speed can be set above 1
+            leftfrontpower /= max;
+            rightfrontpower /= max;
+            rightbackpower /= max;
+            leftbackpower /= max;
+        }
 
         lb.setPower(leftbackpower);
         rb.setPower(rightbackpower);
         lf.setPower(leftfrontpower);
         rf.setPower(rightfrontpower);
-
 
         telemetry.addData("LF Power", leftfrontpower);
         telemetry.addData("LB Power", leftbackpower);
