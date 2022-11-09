@@ -24,7 +24,7 @@ public class Drivetrain  {
     final double wheelD =96/25.4; // Diameter of the wheel (in inches)
     final double gearratio=2*2.89*2.89; //Ratio of the entire drivetrain from the motor to the wheel
     final double countsperin=countsperrev*gearratio*(1/(Math.PI*wheelD));
-    final double rotationK = 1; //Scaling factor for rotation (Teleop)
+    final double rotationK = 1; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
 
 
     public Drivetrain(HardwareMap hardwareMap){                 // Motor Mapping
@@ -102,7 +102,7 @@ public class Drivetrain  {
         }
     }
 
-    public void Strafing(double Strafe, double speed) {
+    public void Strafing(double Strafe, double speed) { //Todo: combine forwardbackward and strafing into a single method that has 3 inputs, speed, angle, distance, and call that program whenever moving.
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
