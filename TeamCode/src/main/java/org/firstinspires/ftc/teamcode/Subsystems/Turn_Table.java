@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 
-public class Turn_Table {
+public class Turn_Table { //Todo: Get rid of this section. Probably best in reference.
     // Instantiate the  motor variables
     private DcMotorEx turn_table;
     boolean Rotation=false;
