@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Pivot_Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
-import org.firstinspires.ftc.teamcode.Subsystems.Turn_Table;
 import org.firstinspires.ftc.teamcode.Subsystems.Lights;
 
 @TeleOp(name="FTC_14133_2022", group="Iterative Opmode") // Labels program in Driver station Selection

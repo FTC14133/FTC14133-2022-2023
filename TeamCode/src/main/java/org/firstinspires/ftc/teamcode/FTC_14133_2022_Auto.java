@@ -2,7 +2,6 @@
 package org.firstinspires.ftc.teamcode;
 // https://first-tech-challenge.github.io/SkyStone/  This is the link to ALL metered of FTC
 
-import com.qualcomm.hardware.ams.AMSColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -10,7 +9,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Pivot_Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
-import org.firstinspires.ftc.teamcode.Subsystems.Turn_Table;
 
 @Autonomous(name="FTC_14133_2022_Auto", group="Auto")
 
