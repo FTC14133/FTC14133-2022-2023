@@ -62,10 +62,9 @@ public class  FTC_14133_2022 extends OpMode {
      telemetry.addData("Alliance", Alliance);
      telemetry.addData("Status", "Looping");
 
-     Pivot_Arm.Teleop(gamepad2, telemetry); //Run the regular arm function
-
      drivetrain.Teleop(gamepad1,telemetry);
 
+<<<<<<< Updated upstream
      Lights.Update_Lights(Intake.getPossession(),Turn_Table.getRotation(), Alliance);
 
      Intake.Teleop(gamepad2,Pivot_Arm.GetArmPosition(), telemetry); //Passes position of the arm so intake direction can change.
@@ -74,6 +73,8 @@ public class  FTC_14133_2022 extends OpMode {
      Intake.beambreak_print(telemetry);
      telemetry.update();
      Intake.Possession_Check();
+=======
+>>>>>>> Stashed changes
 
  }
 }
