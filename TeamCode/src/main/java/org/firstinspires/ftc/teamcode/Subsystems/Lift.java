@@ -32,15 +32,17 @@ public class Lift {
 //=======
     final double ElevatorCountsPerRev = 28; //Counts per revolution of the motor
     final double ElevatorGearRatio = (84/29)*(68/13); //Gear ratio of the motors
-    final double ElevatorSpoolDiameter = 96 / 25.4; //The diameter of the wheels (We are converting mm to inch)
+    final double ElevatorSpoolDiameter = 1; //The diameter of the wheels (We are converting mm to inch)
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
-    final double liftpower=0.75;
+    final double liftPower =0.75;
+    final double armPower=0.75;
     int joystick_int_left;
     int joystick_int_right;
 
-    boolean toggle = true;
+    boolean toggleLift = true;
+    boolean toggleFlip = true;
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map Todo: Need another hardware for the arm.
@@ -66,10 +68,15 @@ public class Lift {
         else if (gamepad2.back){ //If the arm is homed, but the back button is pressed
             SetArmHome(false); //Set home variable to false (not-homed)
         }
-        else { //When arm is homed and back button not pressed
-
-            if (toggle && (gamepad2.dpad_up || gamepad2.dpad_down)) {  // Only execute once per Button push
-                toggle = false;  // Prevents this section of code from being called again until the Button is released and re-pressed
+        else if (toggleFlip && gamepad2.x){
+            toggleFlip = false;
+            position *= -1;
+        }
+        else if (!gamepad2.x){
+            toggleFlip = true;
+        }
+        else if (toggleLift && (gamepad2.dpad_up || gamepad2.dpad_down)) {  // Only execute once per Button push
+                toggleLift = false;  // Prevents this section of code from being called again until the Button is released and re-pressed
                 if (gamepad2.dpad_down) {  // If the d-pad up button is pressed
                     position = position + 1; //Increase Arm position
                     if (position > 3) { //If arm position is above 3
@@ -81,77 +88,64 @@ public class Lift {
                         position = -3; //cap it at -3
                     }
                 }
+            telemetry.addData("Home", homeElevator); //Todo: Add telemetry data for both portions of the lift
+            telemetry.addData("Arm Position", position);
+            telemetry.addData("Target Position", elevator.getTargetPosition());
+            telemetry.addData("Encoder Position", elevator.getCurrentPosition());
             }
             else if (!gamepad2.dpad_up && !gamepad2.dpad_down) { //if neither button is being pressed
-                toggle = true; // Button has been released, so this allows a re-press to activate the code above.
+                toggleLift = true; // Button has been released, so this allows a re-press to activate the code above.
             }
 
-            GotoPositionArm(position, joystick_int_right);
-            GotoPositionElevator(position, joystick_int_left); //Todo: Decide how we want to control the arm. I'm thinking one set of elevations (1, 2, and 3) and a side (Front Back) for a total of 6 positions Possibly positive and negative so you can have a multiplier to flip the side quickly..
-        }
-        telemetry.addData("Home", homeElevator); //Todo: Add telemetry data for both portions of the lift
-        telemetry.addData("Arm Position", position);
-        telemetry.addData("Target Position", elevator.getTargetPosition());
-        telemetry.addData("Encoder Position", elevator.getCurrentPosition());
-    }
 
-    public void GotoPositionArm(int positionArm, int joystick){
-        elevator.setPower(liftpower);        //Sets the power for the lift
-        switch (positionArm) {
+
+            GotoPosition(position, joystick_int_left, joystick_int_right);
+            //Todo: Decide how we want to control the arm. I'm thinking one set of elevations (1, 2, and 3) and a side (Front Back) for a total of 6 positions Possibly positive and negative so you can have a multiplier to flip the side quickly..
+        }
+
+
+
+    public void GotoPosition(int position, int Ljoystick, int Rjoystick){
+        elevator.setPower(liftPower);
+        arm.setPower(armPower);//Sets the power for the lift
+        switch (position) {
+            case 4: // Intake Front
+                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
+                break;
             case 3: // Intake Front
-                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +joystick)); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(-60* ElevatorCountsPerInch +joystick));
+                arm.setTargetPosition((int)(-60* ElevatorCountsPerInch +Ljoystick));
+                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 1: //Upper Level Front
-                arm.setTargetPosition((int)(-100* ElevatorCountsPerInch +joystick));
+                arm.setTargetPosition((int)(-100* ElevatorCountsPerInch +Ljoystick));
+                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(-140* ElevatorCountsPerInch +joystick));
+                arm.setTargetPosition((int)(-140* ElevatorCountsPerInch +Ljoystick));
+                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -1: //Upper Level Back
-                arm.setTargetPosition((int)(-185* ElevatorCountsPerInch +joystick));
+                arm.setTargetPosition((int)(-185* ElevatorCountsPerInch +Ljoystick));
+                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(-220* ElevatorCountsPerInch +joystick));
+                arm.setTargetPosition((int)(-220* ElevatorCountsPerInch +Ljoystick));
+                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -3: // Intake Back
-                arm.setTargetPosition((int)(-290* ElevatorCountsPerInch +joystick));
+                arm.setTargetPosition((int)(-290* ElevatorCountsPerInch +Ljoystick));
+                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
-            default:
-                throw new IllegalStateException("Unexpected position value: " + position);
-        }
-
-    }
-    public void GotoPositionElevator(int positionElevator, int joystick){
-        elevator.setPower(liftpower);        //Sets the power for the lift
-        switch (positionElevator) {
-            case 3: // Intake Front
-                elevator.setTargetPosition(0* ElevatorCountsPerInchInt +joystick); //Todo: Determine all positions for the arm/lift
-                break;
-            case 2: // Mid Level Front
-                elevator.setTargetPosition(-60* ElevatorCountsPerInchInt +joystick);
-                break;
-
-            case 1: //Upper Level Front
-                elevator.setTargetPosition(-100* ElevatorCountsPerInchInt +joystick);
-                break;
-
-            case 0: //Straight Up
-                elevator.setTargetPosition(-140* ElevatorCountsPerInchInt +joystick);
-                break;
-
-            case -1: //Upper Level Back
-                elevator.setTargetPosition(-185* ElevatorCountsPerInchInt +joystick);
-                break;
-            case -2: //Mid Level Back
-                elevator.setTargetPosition(-220* ElevatorCountsPerInchInt +joystick);
-                break;
-            case -3: // Intake Back
-                elevator.setTargetPosition(-290* ElevatorCountsPerInchInt +joystick);
+            case -4: // Intake Front
+                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             default:
                 throw new IllegalStateException("Unexpected position value: " + position);
