@@ -5,7 +5,6 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,10 +21,12 @@ public class Drivetrain  {
     int tolerance = 4; // Encoder tolerance
     final double countsperrev = 28; // Counts per rev of the motor
     final double wheelD =96/25.4; // Diameter of the wheel (in inches)
-    final double gearratio=2*2.89*2.89; //Ratio of the entire drivetrain from the motor to the wheel
+    final double gearratio=(76/21)*(68/13); //Ratio of the entire drivetrain from the motor to the wheel
     final double countsperin=countsperrev*gearratio*(1/(Math.PI*wheelD));
+    final double wheelBaseR = 15.5/2; //Wheel base diameter in inches
     final double rotationK = 1; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
-
+    final double maxSpeed = 6000 * countsperrev * (1/60); //Counts per S Todo: Determine the real max speed, likely through test
+    final double inchesperdegrotation = 2 * Math.PI * wheelBaseR * (1/360);
 
     public Drivetrain(HardwareMap hardwareMap){                 // Motor Mapping
         lf = hardwareMap.get(DcMotorEx.class, "lf");      //Sets the names of the hardware on the hardware map
@@ -40,7 +41,13 @@ public class Drivetrain  {
         rf.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
-    public void ForwardorBackwards(double distance, double speed) {
+
+
+    public void DrivetrainAutoMove(double distance, double speed, double direction, double rotation) {
+        /**
+         * Comands the robot to move a certain direction for a certain distance
+         * Distance in inches, Speed in in/s, Direction in degrees, Rotation in degrees
+         */
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -49,88 +56,51 @@ public class Drivetrain  {
         rf.setTargetPositionTolerance(tolerance);
         rb.setTargetPositionTolerance(tolerance);
         lb.setTargetPositionTolerance(tolerance);
-        //Driving forward/backwards
-        double encodercounts = distance * countsperin;
-        int encodercountsint = (int) encodercounts;
-        lf.setTargetPosition(encodercountsint);
-        lf.setPower(speed);        //Sets the power for the left front wheel
-        rf.setTargetPosition(-encodercountsint);
-        rf.setPower(speed);        //Sets the power for the right front wheel
-        lb.setTargetPosition(encodercountsint);
-        lb.setPower(speed);        //Sets the power for the left back wheel
-        rb.setTargetPosition(-encodercountsint);
-        rb.setPower(speed);        //Sets the power for the right back wheel
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        double angleR = Math.toRadians(direction); //Calculating angle of which the joystick is commanded to in radiant
 
-        while (lb.isBusy() || rb.isBusy()) {
+        double lfspeed = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) - (rotation * rotationK);     //Speed for leftfront
+        double rfspeed = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rotation * rotationK);     //Speed for rightfront
+        double rbspeed = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rotation * rotationK);      //Speed for rightback
+        double lbspeed = (Math.sin(angleR + (9 * Math.PI / 4)) * speed) - (rotation * rotationK);    //Speed for leftback
+
+        double maxNormalize = Math.max(Math.max(Math.abs(lfspeed), Math.abs(rfspeed)), Math.max(Math.abs(rbspeed), Math.abs(lbspeed))); //Finds the greatest power of the moters
+
+        if ((Math.abs(lfspeed) > maxSpeed) || (Math.abs(rfspeed) > maxSpeed) || (Math.abs(rbspeed) > maxSpeed) || (Math.abs(lbspeed) > maxSpeed)){ //Normalize so no motor speed can be set above 1
+            lfspeed = (lfspeed/maxNormalize) * maxSpeed;
+            rfspeed = (rfspeed/maxNormalize) * maxSpeed;
+            rbspeed = (rbspeed/maxNormalize) * maxSpeed;
+            lbspeed = (lbspeed/maxNormalize) * maxSpeed;
+        }
+
+        double lfD = (Math.sin(angleR + (3 * Math.PI / 4)) * direction) - (rotation * inchesperdegrotation);     //direction for leftfront
+        double rfD = (Math.sin(angleR + (5 * Math.PI / 4)) * direction) + (rotation * inchesperdegrotation);     //direction for rightfront
+        double rbD = (Math.sin(angleR + (7 * Math.PI / 4)) * direction) + (rotation * inchesperdegrotation);      //direction for rightback
+        double lbD = (Math.sin(angleR + (9 * Math.PI / 4)) * direction) - (rotation * inchesperdegrotation);    //direction for leftback
+
+        int lfencodercounts = (int)(lfD * countsperin);
+        int rfencodercounts = (int)(rfD * countsperin);
+        int rbencodercounts = (int)(rbD * countsperin);
+        int lbencodercounts = (int)(lbD * countsperin);
+
+        lf.setVelocity(lfspeed);
+        rf.setVelocity(rfspeed);
+        lb.setVelocity(lbspeed);
+        rb.setVelocity(rbspeed);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        while ((Math.abs(lf.getCurrentPosition()) < (Math.abs(lfencodercounts))) || (Math.abs(rf.getCurrentPosition()) < (Math.abs(rfencodercounts))) || (Math.abs(lb.getCurrentPosition()) < (Math.abs(lbencodercounts))) || (Math.abs(rb.getCurrentPosition()) < (Math.abs(rbencodercounts)))) {
             //run until motors arrive at position within tolerance
         }
     }
-    //h
-    public void Rotate(double turn, double speed) {
-        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setTargetPositionTolerance(tolerance);
-        rb.setTargetPositionTolerance(tolerance);
-        rf.setTargetPositionTolerance(tolerance);
-        lf.setTargetPositionTolerance(tolerance);
-        //Driving left/right
-        //NOT DONE
-        double encodercounts = turn * 7.123; // test iteratively //ToDo: This math needs to be redone as well
-        int encodercountsint = (int) encodercounts;
-        lb.setTargetPosition(encodercountsint);
-        lb.setPower(speed);        //
-        rb.setTargetPosition(encodercountsint);
-        rb.setPower(speed);        //Sets the power for the Long arm
-        lf.setTargetPosition(encodercountsint);
-        lf.setPower(speed);        //Sets the power for the Long arm
-        rf.setTargetPosition(encodercountsint);
-        rf.setPower(speed);        //Sets the power for the Long arm
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //noinspection StatementWithEmptyBody
-        while (lb.isBusy() || rb.isBusy()) {
-            //run until motors arrive at position within tolerance
-        }
+    public void DrivetrainAutoMove(double distance, double speed, double direction){
+        DrivetrainAutoMove(distance, speed, direction, 0);
     }
 
-    public void Strafing(double Strafe, double speed) { //Todo: combine forwardbackward and strafing into a single method that has 3 inputs, speed, angle, distance, and call that program whenever moving.
-        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lf.setTargetPositionTolerance(tolerance);
-        rf.setTargetPositionTolerance(tolerance);
-        rb.setTargetPositionTolerance(tolerance);
-        lb.setTargetPositionTolerance(tolerance);
-        //Driving forward/backwards
-        double encodercounts = Strafe * countsperin;
-        int encodercountsint = (int) encodercounts;
-        lf.setTargetPosition(encodercountsint);
-        lf.setPower(speed);        //Sets the power for the left front wheel
-        rf.setTargetPosition(encodercountsint);
-        rf.setPower(speed);        //Sets the power for the right front wheel
-        lb.setTargetPosition(-encodercountsint);
-        lb.setPower(speed);        //Sets the power for the left back wheel
-        rb.setTargetPosition(-encodercountsint);
-        rb.setPower(speed);        //Sets the power for the right back wheel
-        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (lf.isBusy() || rb.isBusy()) {
-            //run until motors arrive at position within tolerance
-        }
-
-
+    public void DrivetrainAutoMove(double speed, double rotation){
+        DrivetrainAutoMove(0, speed, 0, rotation);
     }
 
     public void Teleop(Gamepad gamepad1, Telemetry telemetry){ //Code to be run in Teleop Mode void Loop at top level
@@ -146,34 +116,41 @@ public class Drivetrain  {
         telemetry.addData("Angle: ", angleD);
         telemetry.addData("Speed: ", speed);
 
-        double leftfrontpower = (Math.sin(angleR + (Math.PI / 4)) * speed) - (rightPowerX * rotationK);     //Power level for leftfront
-        double rightfrontpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for rightfront
-        double rightbackpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);      //Power level for rightback
-        double leftbackpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) - (rightPowerX * rotationK);    //Power level for leftback
+        double lfpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) - (rightPowerX * rotationK);     //Power level for leftfront
+        double rfpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for rightfront
+        double rbpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);      //Power level for rightback
+        double lbpower = (Math.sin(angleR + (9 * Math.PI / 4)) * speed) - (rightPowerX * rotationK);    //Power level for leftback
 
-        double max = Math.max(Math.max(Math.abs(leftfrontpower), Math.abs(rightfrontpower)), Math.max(Math.abs(rightbackpower), Math.abs(leftbackpower))); //Finds the greatest power of the moters
+        double max = Math.max(Math.max(Math.abs(lfpower), Math.abs(rfpower)), Math.max(Math.abs(rbpower), Math.abs(lbpower))); //Finds the greatest power of the moters
 
-        if ((Math.abs(leftfrontpower) > 1) || (Math.abs(rightfrontpower) > 1) || (Math.abs(rightbackpower) > 1) || (Math.abs(leftbackpower) > 1)){ //Normalize so no motor speed can be set above 1
-            leftfrontpower /= max;
-            rightfrontpower /= max;
-            rightbackpower /= max;
-            leftbackpower /= max;
+        if ((Math.abs(lfpower) > 1) || (Math.abs(rfpower) > 1) || (Math.abs(rbpower) > 1) || (Math.abs(lbpower) > 1)){ //Normalize so no motor speed can be set above 1
+            lfpower /= max;
+            rfpower /= max;
+            rbpower /= max;
+            lbpower /= max;
         }
 
-        lb.setPower(leftbackpower);
-        rb.setPower(rightbackpower);
-        lf.setPower(leftfrontpower);
-        rf.setPower(rightfrontpower);
+        lb.setPower(lbpower);
+        rb.setPower(rbpower);
+        lf.setPower(lfpower);
+        rf.setPower(rfpower);
 
-        telemetry.addData("LF Power", leftfrontpower);
-        telemetry.addData("LB Power", leftbackpower);
-        telemetry.addData("RF Power", rightfrontpower);
-        telemetry.addData("RB Power", rightbackpower);
+        telemetry.addData("LF Power", lfpower);
+        telemetry.addData("LB Power", lbpower);
+        telemetry.addData("RF Power", rfpower);
+        telemetry.addData("RB Power", rbpower);
 
     }
 
     public double getWheelD() {
         return wheelD;
+    }
+
+    public void AutoStop(){
+        lf.setVelocity(0);
+        rf.setVelocity(0);
+        rb.setVelocity(0);
+        lb.setVelocity(0);
     }
 
 

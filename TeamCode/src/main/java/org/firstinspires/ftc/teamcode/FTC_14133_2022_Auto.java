@@ -73,8 +73,8 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
 
         drivetrain.Rotate(-45, total_speed);
         drivetrain.Rotate(45, total_speed);
-        drivetrain.ForwardorBackwards(3, total_speed);
-        drivetrain.ForwardorBackwards(-3, total_speed);
+        drivetrain.DrivetrainAutoMove(3, total_speed);
+        drivetrain.DrivetrainAutoMove(-3, total_speed);
         drivetrain.Strafing(3, total_speed);
         drivetrain.Strafing(-3, total_speed);
 
@@ -107,9 +107,9 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
 
 
             drivetrain.Strafing(-12, total_speed); //Line up towards shipping hub
-            drivetrain.ForwardorBackwards(35, total_speed); //Goes towards the shipping hub
+            drivetrain.DrivetrainAutoMove(35, total_speed); //Goes towards the shipping hub
             Intake.Update_outtake(1, Pivot_Arm.position, gamepad2); //Places the freight on the correct level
-            drivetrain.ForwardorBackwards(-3, total_speed); //Moves backwards a bit
+            drivetrain.DrivetrainAutoMove(-3, total_speed); //Moves backwards a bit
             drivetrain.Rotate(45, total_speed); //rotate to be in line of the turn table
             drivetrain.Strafing(56, total_speed); //Goes to the turn table
             Turn_Table.Auto(A, 1000); //Runs the turn table
@@ -129,9 +129,9 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
             //    Pivot_Arm.Auto(3); //it will set the arm position to place the freight on the bottom of the shipping hub
 
             drivetrain.Strafing(12, total_speed); //We will go to the right to the team shipping hub
-            drivetrain.ForwardorBackwards(35, total_speed); //goes forward to the team shipping hub
+            drivetrain.DrivetrainAutoMove(35, total_speed); //goes forward to the team shipping hub
             Intake.Update_outtake(1, Pivot_Arm.position, gamepad2); //puts the freight on the shipping hub
-            drivetrain.ForwardorBackwards(-35, total_speed); //goes away from the shipping hub
+            drivetrain.DrivetrainAutoMove(-35, total_speed); //goes away from the shipping hub
             drivetrain.Strafing(-62, total_speed); //goes up to the warehouse
         } else if (A == true && WT == false  && GateFlag == true) { //red and turntable side
             //Need Camera Code //Sees where the duck is
@@ -144,14 +144,14 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
             //    Pivot_Arm.Auto(3); //it will set the arm position to place the freight on the bottom of the shipping hub
 
             drivetrain.Strafing(12, total_speed); //Goes in line wit the shipping hub
-            drivetrain.ForwardorBackwards(35, total_speed); //Goes to shipping hub
+            drivetrain.DrivetrainAutoMove(35, total_speed); //Goes to shipping hub
             Intake.Update_outtake(total_speed, Pivot_Arm.position, gamepad2); //Places freight
-            drivetrain.ForwardorBackwards(-3, total_speed); //Goes backwards a bit
+            drivetrain.DrivetrainAutoMove(-3, total_speed); //Goes backwards a bit
             drivetrain.Rotate(-45, total_speed); //Rotates to be in line with the turn table
             drivetrain.Strafing(56, total_speed); //Goes to the turntable
             Turn_Table.Auto(A, 1000); //Spins the turntable
             drivetrain.Rotate(45, total_speed); //Goes in line with the storage hub
-            drivetrain.ForwardorBackwards(-105, total_speed); //Parks in the storage hub
+            drivetrain.DrivetrainAutoMove(-105, total_speed); //Parks in the storage hub
         } else if (A == true && WT == true && GateFlag == true) { // red and warehouse side
             //Need Camera Code //Sees where the duck is
 
@@ -163,9 +163,9 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
             //    Pivot_Arm.Auto(3); //it will set the arm position to place the freight on the bottom of the shipping hub
 
             drivetrain.Strafing(-12, total_speed); // Lines up with shipping hub
-            drivetrain.ForwardorBackwards(35, total_speed); //Goes towards the shipping hub
+            drivetrain.DrivetrainAutoMove(35, total_speed); //Goes towards the shipping hub
             Intake.Update_outtake(1, Pivot_Arm.position, gamepad2); //Runs the intake to release the fright
-            drivetrain.ForwardorBackwards(-35, total_speed);//backs away from shipping hub
+            drivetrain.DrivetrainAutoMove(-35, total_speed);//backs away from shipping hub
             drivetrain.Strafing(62, total_speed); //Parks in the storage hub
         }
     }
