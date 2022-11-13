@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Pivot_Arm;
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
 
 @Autonomous(name="FTC_14133_2022_Auto", group="Auto")
@@ -21,7 +21,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
     private Drivetrain drivetrain=null; // This activate the sub systems
     private Intake Intake=null;
     private Turn_Table Turn_Table=null;
-    private Pivot_Arm Pivot_Arm =null;
+    private Lift Pivot_Arm =null;
     private Sensors Sensors=null;
     boolean GateFlag = false;
     boolean[] switches;
@@ -40,7 +40,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         Intake = new Intake(hardwareMap);
         Turn_Table = new Turn_Table(hardwareMap);
-        Pivot_Arm = new Pivot_Arm(hardwareMap);
+        Pivot_Arm = new Lift(hardwareMap);
         Sensors = new Sensors(hardwareMap);
         telemetry.addData("Object Creation", "Done");
         telemetry.update();

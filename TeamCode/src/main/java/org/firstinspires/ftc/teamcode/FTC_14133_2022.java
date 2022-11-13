@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Pivot_Arm;
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
 import org.firstinspires.ftc.teamcode.Subsystems.Lights;
 
@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lights;
 public class  FTC_14133_2022 extends OpMode {
  private Drivetrain drivetrain=null;
  private Intake Intake=null;
- private Pivot_Arm Pivot_Arm=null;
+ private Lift Pivot_Arm=null;
  private Sensors Sensors=null;
  private Lights Lights=null;
  boolean [] switches;
@@ -34,7 +34,7 @@ public class  FTC_14133_2022 extends OpMode {
  public void init() {
      drivetrain = new Drivetrain(hardwareMap);
      Intake = new Intake(hardwareMap);
-     Pivot_Arm = new Pivot_Arm(hardwareMap);
+     Pivot_Arm = new Lift(hardwareMap);
      Sensors = new Sensors(hardwareMap);
      Lights = new Lights(hardwareMap);
  }

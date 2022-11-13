@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 //Todo: We need roughly the same code for the elevator. They can both be controlled here, but all hardware and logic needs to be written.
-public class Pivot_Arm {
+public class Lift {
     // Instantiate the lift motor variables
     private DcMotorEx elevator;
     private DcMotorEx arm;
@@ -26,17 +26,15 @@ public class Pivot_Arm {
     public int position = 0; // Integer position of the arm
     int tolerance = 0; // Encoder tolerance
 //<<<<<<< Updated upstream
-    final double countsperrev = 28; // Counts per rev of the motor //Todo: All this math and below needs to be refactored relative to the pivot arm or elevator.
-    final double gearratio=3*4*5*4; //Ratio of the entire Pivot Arm from the motor to the arm
-    final double countsperdegree=countsperrev*gearratio/360; //Converts counts per motor rev to counts per degree of arm rotation
-    final int countsperdegreeint= 4; //(int)countsperdegree; //Converts to an integer value
+    final double ArmCountsPerRev = 28; // Counts per rev of the motor //Todo: All this math and below needs to be refactored relative to the pivot arm or elevator.
+    final double ArmGearRatio = (32/10) * (68/13) * (68/13); //Ratio of the entire Pivot Arm from the motor to the arm
+    final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360; //Converts counts per motor rev to counts per degree of arm rotation
 //=======
-    final double Linear_countsperrev = 28; //Counts per revolution of the motor
-    final double Linear_gearratio = 5*5*4; //Gear ratio of the motors
-    final double Linear_wheeldiameter = 96 / 25.4; //The diameter of the wheels (We are converting mm to inch)
-    final double Linear_dtr = Math.PI*Linear_wheeldiameter/Linear_gearratio; //Distance traveled in one rotation
-    final double countsperinch =Linear_countsperrev/Linear_dtr; //Counts Per Inch
-    final int countsperinchint = (int)countsperinch; //Converts Counts Per Inch to an integer value
+    final double ElevatorCountsPerRev = 28; //Counts per revolution of the motor
+    final double ElevatorGearRatio = (84/29)*(68/13); //Gear ratio of the motors
+    final double ElevatorSpoolDiameter = 96 / 25.4; //The diameter of the wheels (We are converting mm to inch)
+    final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
+    final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
     final double liftpower=0.75;
     int joystick_int_left;
@@ -44,7 +42,7 @@ public class Pivot_Arm {
 
     boolean toggle = true;
 
-    public Pivot_Arm(HardwareMap hardwareMap){                 // Motor Mapping
+    public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map Todo: Need another hardware for the arm.
         HomeSwitchElevator = hardwareMap.get(RevTouchSensor.class, "HS_Elevator"); //Todo: Need homing switches for both.
         arm = hardwareMap.get(DcMotorEx.class, "arm");//Sets the names of the hardware on the hardware map Todo: Need another hardware for the arm.
@@ -101,28 +99,27 @@ public class Pivot_Arm {
         elevator.setPower(liftpower);        //Sets the power for the lift
         switch (positionArm) {
             case 3: // Intake Front
-                arm.setTargetPosition(0* countsperinchint +joystick); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +joystick)); //Todo: Determine all positions for the arm/lift
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition(-60* countsperinchint +joystick);
+                arm.setTargetPosition((int)(-60* ElevatorCountsPerInch +joystick));
                 break;
 
             case 1: //Upper Level Front
-                arm.setTargetPosition(-100* countsperinchint +joystick);
+                arm.setTargetPosition((int)(-100* ElevatorCountsPerInch +joystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition(-140* countsperinchint +joystick);
+                arm.setTargetPosition((int)(-140* ElevatorCountsPerInch +joystick));
                 break;
-
             case -1: //Upper Level Back
-                arm.setTargetPosition(-185* countsperinchint +joystick);
+                arm.setTargetPosition((int)(-185* ElevatorCountsPerInch +joystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition(-220* countsperinchint +joystick);
+                arm.setTargetPosition((int)(-220* ElevatorCountsPerInch +joystick));
                 break;
             case -3: // Intake Back
-                arm.setTargetPosition(-290* countsperinchint +joystick);
+                arm.setTargetPosition((int)(-290* ElevatorCountsPerInch +joystick));
                 break;
             default:
                 throw new IllegalStateException("Unexpected position value: " + position);
@@ -133,28 +130,28 @@ public class Pivot_Arm {
         elevator.setPower(liftpower);        //Sets the power for the lift
         switch (positionElevator) {
             case 3: // Intake Front
-                elevator.setTargetPosition(0* countsperinchint +joystick); //Todo: Determine all positions for the arm/lift
+                elevator.setTargetPosition(0* ElevatorCountsPerInchInt +joystick); //Todo: Determine all positions for the arm/lift
                 break;
             case 2: // Mid Level Front
-                elevator.setTargetPosition(-60* countsperinchint +joystick);
+                elevator.setTargetPosition(-60* ElevatorCountsPerInchInt +joystick);
                 break;
 
             case 1: //Upper Level Front
-                elevator.setTargetPosition(-100* countsperinchint +joystick);
+                elevator.setTargetPosition(-100* ElevatorCountsPerInchInt +joystick);
                 break;
 
             case 0: //Straight Up
-                elevator.setTargetPosition(-140* countsperinchint +joystick);
+                elevator.setTargetPosition(-140* ElevatorCountsPerInchInt +joystick);
                 break;
 
             case -1: //Upper Level Back
-                elevator.setTargetPosition(-185* countsperinchint +joystick);
+                elevator.setTargetPosition(-185* ElevatorCountsPerInchInt +joystick);
                 break;
             case -2: //Mid Level Back
-                elevator.setTargetPosition(-220* countsperinchint +joystick);
+                elevator.setTargetPosition(-220* ElevatorCountsPerInchInt +joystick);
                 break;
             case -3: // Intake Back
-                elevator.setTargetPosition(-290* countsperinchint +joystick);
+                elevator.setTargetPosition(-290* ElevatorCountsPerInchInt +joystick);
                 break;
             default:
                 throw new IllegalStateException("Unexpected position value: " + position);
