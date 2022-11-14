@@ -13,20 +13,19 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 //import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-//Todo: We need roughly the same code for the elevator. They can both be controlled here, but all hardware and logic needs to be written.
 public class Lift {
     // Instantiate the lift motor variables
     private DcMotorEx elevator;
     private DcMotorEx arm;
-    boolean homeElevator = false; //Todo: Need homing for both elevator and arm separately. We may call them at the same time, but should be different functions.
+    boolean homeElevator = false;
     boolean homeArm = false;
-    RevTouchSensor HomeSwitchElevator; //Mapped to port n+1 (odd number ports) Todo: need one for the elevator and one for the arm
+    RevTouchSensor HomeSwitchElevator; //Mapped to port n+1 (odd number ports)
     RevTouchSensor HomeSwitchArm;
 
     public int position = 0; // Integer position of the arm
     int tolerance = 0; // Encoder tolerance
 //<<<<<<< Updated upstream
-    final double ArmCountsPerRev = 28; // Counts per rev of the motor //Todo: All this math and below needs to be refactored relative to the pivot arm or elevator.
+    final double ArmCountsPerRev = 28; // Counts per rev of the motor
     final double ArmGearRatio = (32/10) * (68/13) * (68/13); //Ratio of the entire Pivot Arm from the motor to the arm
     final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360; //Converts counts per motor rev to counts per degree of arm rotation
 //=======
@@ -45,10 +44,10 @@ public class Lift {
     boolean toggleFlip = true;
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
-        elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map Todo: Need another hardware for the arm.
-        HomeSwitchElevator = hardwareMap.get(RevTouchSensor.class, "HS_Elevator"); //Todo: Need homing switches for both.
-        arm = hardwareMap.get(DcMotorEx.class, "arm");//Sets the names of the hardware on the hardware map Todo: Need another hardware for the arm.
-        HomeSwitchArm = hardwareMap.get(RevTouchSensor.class, "HS_Arm"); //Todo: Need homing switches for both.
+        elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map
+        HomeSwitchElevator = hardwareMap.get(RevTouchSensor.class, "HS_Elevator");
+        arm = hardwareMap.get(DcMotorEx.class, "arm");//Sets the names of the hardware on the hardware map
+        HomeSwitchArm = hardwareMap.get(RevTouchSensor.class, "HS_Arm");
     // "DeviceName" must match the Config EXACTLY
 
         // Set motor direction based on which side of the robot the motors are on
@@ -100,7 +99,7 @@ public class Lift {
 
 
             GotoPosition(position, joystick_int_left, joystick_int_right);
-            //Todo: Decide how we want to control the arm. I'm thinking one set of elevations (1, 2, and 3) and a side (Front Back) for a total of 6 positions Possibly positive and negative so you can have a multiplier to flip the side quickly..
+
         }
 
 
@@ -114,7 +113,7 @@ public class Lift {
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             case 3: // Intake Front
-                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick));
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             case 2: // Mid Level Front
@@ -144,7 +143,7 @@ public class Lift {
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -4: // Intake Front
-                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick));
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             default:
@@ -153,9 +152,9 @@ public class Lift {
 
     }
 
-    public int GetArmPosition(){ // Returns the current position value of the arm
+    public int GetPosition(){ // Returns the current position value of the arm
         return position;
-    } //Todo: Make for both portions (Get Elevator Position)
+    }
 
     public void SetArmHome(boolean home){ //Sets whether the arm is homed or not, used for homing during a match
         homeElevator = home;

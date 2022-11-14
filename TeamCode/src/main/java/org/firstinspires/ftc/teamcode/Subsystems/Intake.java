@@ -25,11 +25,11 @@ public class  Intake {
         // Set motor direction based on which side of the robot the motors are on
     }
 
-    private void runIntake(double rotationSpeed, int positionArm){
+    private void runIntake(double rotationSpeed, int positionArm){ //Todo: positionArm no longer needs to be an input to this function
         if (positionArm > 0) {
-            rotationSpeed *= -1;
+            rotationSpeed *= -1; //Todo: We do not need to switch the direction of the intake based on arm direction like we did last year.
         }
-        intake_f.setPower(rotationSpeed);
+        intake_f.setPower(rotationSpeed); //Todo: one of these may need to be backwards
         intake_b.setPower(rotationSpeed);
     }
 
@@ -48,7 +48,7 @@ public class  Intake {
 
     }
 
-    public void Update_outtake(double speed, int positionArm, Gamepad gamepad2){ //Standard outtake function
+    public void Update_outtake(double speed, int positionArm, Gamepad gamepad2){ //Standard outtake function Todo: does not need positionArm as an input
         if (gamepad2.left_bumper) {
             speed *= .5;
         }
@@ -57,33 +57,33 @@ public class  Intake {
 
     public void Teleop(Gamepad gamepad2, int positionArm, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
         if(gamepad2.right_trigger>0){ //if the left trigger is pulled
-            Update_intake(gamepad2.right_trigger, positionArm, gamepad2); //Run the intake program
+            Update_intake(gamepad2.right_trigger, positionArm, gamepad2); //Run the intake program Todo: no longer needs positionArm as an input.
         }
         else {
             Update_outtake(gamepad2.left_trigger, positionArm, gamepad2); //Otherwise run the outtake program
 
         }
-        telemetry.addData("Posession",Possession);
+        telemetry.addData("Possession",Possession);
     }
 
 
-        public void beambreak_print(Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
-            telemetry.addData("possession", Possession);
-            telemetry.addData("beambreak", beambreak.getState());
+    public void beambreak_print(Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
+        telemetry.addData("possession", Possession);
+        telemetry.addData("beambreak", beambreak.getState());
 
-        }
-        public boolean getPossession(){
-            return Possession; //returns the variable from thr beambreak that identifies if we have fright or not
-        }
+    }
+    public boolean getPossession(){
+        return Possession; //returns the variable from thr beambreak that identifies if we have fright or not
+    }
 
-        public void Possession_Check(){
-            if(!beambreak.getState()){
-                Possession = true;
-            }
-            else{
-                Possession = false;
-            }
+    public void Possession_Check(){
+        if(!beambreak.getState()){
+            Possession = true;
         }
+        else{
+            Possession = false;
+        }
+    }
 
 
     }

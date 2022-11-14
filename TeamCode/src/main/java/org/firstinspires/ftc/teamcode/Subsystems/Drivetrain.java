@@ -72,10 +72,10 @@ public class Drivetrain  {
             lbspeed = (lbspeed/maxNormalize) * maxSpeed;
         }
 
-        double lfD = (Math.sin(angleR + (3 * Math.PI / 4)) * direction) - (rotation * inchesperdegrotation);     //direction for leftfront
-        double rfD = (Math.sin(angleR + (5 * Math.PI / 4)) * direction) + (rotation * inchesperdegrotation);     //direction for rightfront
-        double rbD = (Math.sin(angleR + (7 * Math.PI / 4)) * direction) + (rotation * inchesperdegrotation);      //direction for rightback
-        double lbD = (Math.sin(angleR + (9 * Math.PI / 4)) * direction) - (rotation * inchesperdegrotation);    //direction for leftback
+        double lfD = ((Math.sin(angleR + (3 * Math.PI / 4)) * direction) * distance) - (rotation * inchesperdegrotation);     //direction for leftfront
+        double rfD = ((Math.sin(angleR + (5 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);     //direction for rightfront
+        double rbD = ((Math.sin(angleR + (7 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);      //direction for rightback
+        double lbD = ((Math.sin(angleR + (9 * Math.PI / 4)) * direction) * distance) - (rotation * inchesperdegrotation);    //direction for leftback
 
         int lfencodercounts = (int)(lfD * countsperin);
         int rfencodercounts = (int)(rfD * countsperin);
