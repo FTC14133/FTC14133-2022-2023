@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Subsystems.AllianceSingleton;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
@@ -37,6 +38,7 @@ public class  FTC_14133_2022 extends OpMode {
      Pivot_Arm = new Lift(hardwareMap);
      Sensors = new Sensors(hardwareMap);
      Lights = new Lights(hardwareMap);
+     Alliance = AllianceSingleton.AllianceInstance().GetAlliance();
  }
 
  public void init_loop() {

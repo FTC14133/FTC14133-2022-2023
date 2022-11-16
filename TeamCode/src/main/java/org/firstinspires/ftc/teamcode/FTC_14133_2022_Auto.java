@@ -4,7 +4,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Subsystems.AllianceSingleton;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
@@ -20,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
 public class  FTC_14133_2022_Auto extends LinearOpMode {
     private Drivetrain drivetrain=null; // This activate the sub systems
     private Intake Intake=null;
-    private Turn_Table Turn_Table=null;
+    private Turn_Table Turn_Table=null; //Todo: Remove all turntable stuff
     private Lift Pivot_Arm =null;
     private Sensors Sensors=null;
     boolean GateFlag = false;
@@ -30,13 +33,14 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
     double total_speed = 0.5; //This is the speed of most of the motors.
 
 
-    public void waitForStart() {
+    public void waitForStart(Gamepad gamepad2) {
+
         telemetry.addData("Object Creation", "Start");
         telemetry.update();
         //switches = Sensors.Update_Switches(); // Here we will see from the switches on the robot. Below is what they represent
         //WT = switches[0]; //This will decide if we are closer to the warehouse or turn table based on the switch on the robot
         //A = switches[1]; //This will tell us that we are either on the red or blue alliance side
-        A = false;
+        A = false; //Todo: Decide which alliance is true which is false
         drivetrain = new Drivetrain(hardwareMap);
         Intake = new Intake(hardwareMap);
         Turn_Table = new Turn_Table(hardwareMap);
@@ -44,7 +48,8 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         Sensors = new Sensors(hardwareMap);
         telemetry.addData("Object Creation", "Done");
         telemetry.update();
-
+        AllianceSingleton.AllianceInstance().SetAlliance(gamepad2.a);
+        A = AllianceSingleton.AllianceInstance().GetAlliance();
     }
 
     public void runOpMode() {

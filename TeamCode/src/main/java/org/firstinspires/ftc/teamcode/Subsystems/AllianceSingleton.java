@@ -1,19 +1,22 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 public class AllianceSingleton {
-    public static AllianceSingleton AllianceSelector = null;
-    private Boolean AllianceS;
-    public AllianceSingleton() {
-        AllianceSingleton AllianceSingle = null;
+    private static AllianceSingleton AllianceSelector = null;
+    public Boolean Alliance;
+    private AllianceSingleton() {
+        Alliance = null;
     };
-    public static AllianceSingleton getInstance() {
+    public static AllianceSingleton AllianceInstance() {
         if (AllianceSelector == null) {
             AllianceSelector = new AllianceSingleton();
         }
         return AllianceSelector;
     }
     public void SetAlliance(Boolean AllianceInput){
-        AllianceS = AllianceInput;
+        Alliance = AllianceInput;
 
+    }
+    public Boolean GetAlliance(){
+       return Alliance;
     }
 }
