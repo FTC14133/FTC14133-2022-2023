@@ -19,22 +19,22 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
-@TeleOp
-public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
+@Disabled
+public class AprilTagDetection extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -58,11 +58,9 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
     int MIDDLE = 2;
     int RIGHT = 3;
 
-    AprilTagDetection tagOfInterest = null;
+    org.openftc.apriltag.AprilTagDetection tagOfInterest = null;
 
-    @Override
-    public void runOpMode()
-    {
+    public AprilTagDetection(HardwareMap hardwareMap){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -82,8 +80,13 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
 
             }
         });
-
         telemetry.setMsTransmissionInterval(50);
+    }
+
+    public void runOpMode()
+    {
+
+
 
         /*
          * The INIT-loop:
@@ -91,13 +94,13 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
          */
         while (!isStarted() && !isStopRequested())
         {
-            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if(currentDetections.size() != 0)
             {
                 boolean tagFound = false;
 
-                for(AprilTagDetection tag : currentDetections)
+                for(org.openftc.apriltag.AprilTagDetection tag : currentDetections)
                 {
                     if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
                     {
@@ -200,7 +203,7 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
         while (opModeIsActive()) {sleep(20);}
     }
 
-    void tagToTelemetry(AprilTagDetection detection)
+    void tagToTelemetry(org.openftc.apriltag.AprilTagDetection detection)
     {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
         telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
