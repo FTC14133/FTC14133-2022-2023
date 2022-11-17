@@ -40,7 +40,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         //switches = Sensors.Update_Switches(); // Here we will see from the switches on the robot. Below is what they represent
         //WT = switches[0]; //This will decide if we are closer to the warehouse or turn table based on the switch on the robot
         //A = switches[1]; //This will tell us that we are either on the red or blue alliance side
-        A = false; //Todo: Decide which alliance is true which is false
+        A = false; //Todo: Decide which alliance is true which is false (X button is blue and B button is red)
         drivetrain = new Drivetrain(hardwareMap);
         Intake = new Intake(hardwareMap);
         Turn_Table = new Turn_Table(hardwareMap);
@@ -48,7 +48,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         Sensors = new Sensors(hardwareMap);
         telemetry.addData("Object Creation", "Done");
         telemetry.update();
-        AllianceSingleton.AllianceInstance().SetAlliance(gamepad2.a);
+        AllianceSingleton.AllianceInstance().SetAlliance(gamepad2.x);
         A = AllianceSingleton.AllianceInstance().GetAlliance();
     }
 
