@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Intake
 
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -15,13 +16,13 @@ public class  Intake {
     CRServo intake_b;
     boolean toggle = true;
     boolean Possession = true; //Variable telling whether we have possession of a game piece or not
-    DigitalChannel beambreak; //The "beambreak" sensor is a type of IR sensor that detects if it vision is broken
+    RevTouchSensor IntakeTouch; //The "beambreak" sensor is a type of IR sensor that detects if it vision is broken
 
     public Intake(HardwareMap hardwareMap){                 // Motor Mapping
         intake_f = hardwareMap.crservo.get("intake_f");      //Sets the names of the hardware on the hardware map
         intake_b = hardwareMap.crservo.get("intake_b");
         // "DeviceName" must match the Config EXACTLY
-        beambreak = hardwareMap.get(DigitalChannel.class, "beambreak");
+        IntakeTouch = hardwareMap.get(RevTouchSensor.class, "IntakeTouch");
         // Set motor direction based on which side of the robot the motors are on
     }
 
@@ -37,7 +38,7 @@ public class  Intake {
         if (gamepad2.left_bumper) {
             speed *= .5;
         }
-        if(!beambreak.getState()) {
+        if(!IntakeTouch.isPressed()) {
             runIntake(0, positionArm);//Stop intake
         }
         else{ // if beam break not broken
@@ -69,7 +70,7 @@ public class  Intake {
 
     public void beambreak_print(Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
         telemetry.addData("possession", Possession);
-        telemetry.addData("beambreak", beambreak.getState());
+        telemetry.addData("IntakeTouch", IntakeTouch.isPressed());
 
     }
     public boolean getPossession(){
@@ -77,7 +78,7 @@ public class  Intake {
     }
 
     public void Possession_Check(){
-        if(!beambreak.getState()){
+        if(IntakeTouch.isPressed()){
             Possession = true;
         }
         else{

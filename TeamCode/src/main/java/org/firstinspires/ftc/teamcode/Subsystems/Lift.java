@@ -19,7 +19,8 @@ public class Lift {
     private DcMotorEx arm;
     boolean homeElevator = false;
     boolean homeArm = false;
-    RevTouchSensor HomeSwitchElevator; //Mapped to port n+1 (odd number ports)
+    RevTouchSensor HomeSwitchElevatorUp;
+    RevTouchSensor HomeSwitchElevatorDown;
     RevTouchSensor HomeSwitchArm;
 
     public int position = 0; // Integer position of the arm
@@ -45,7 +46,8 @@ public class Lift {
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map
-        HomeSwitchElevator = hardwareMap.get(RevTouchSensor.class, "HS_Elevator");
+        HomeSwitchElevatorUp = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Up");
+        HomeSwitchElevatorDown = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Down");
         arm = hardwareMap.get(DcMotorEx.class, "arm");//Sets the names of the hardware on the hardware map
         HomeSwitchArm = hardwareMap.get(RevTouchSensor.class, "HS_Arm");
     // "DeviceName" must match the Config EXACTLY
@@ -109,41 +111,41 @@ public class Lift {
         arm.setPower(armPower);//Sets the power for the lift
         switch (position) {
             case 4: // Intake Front
-                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             case 3: // Intake Front
-                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(-60* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(-60* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 1: //Upper Level Front
-                arm.setTargetPosition((int)(-100* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(-100* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(-140* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(-140* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -1: //Upper Level Back
-                arm.setTargetPosition((int)(-185* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(-185* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(-220* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(-220* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -3: // Intake Back
-                arm.setTargetPosition((int)(-290* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(-290* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -4: // Intake Front
-                arm.setTargetPosition((int)(0* ElevatorCountsPerInch +Ljoystick));
+                arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             default:
@@ -164,9 +166,21 @@ public class Lift {
     } //Gets whether the arm is homed or not
 
     public void HomeArm(){ //Method to home arm Todo: Make for both portions (Home elevator?)
-        if (HomeSwitchElevator.isPressed()==false){ //If the home switch is not pressed
+        if (HomeSwitchElevatorUp.isPressed()==false){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setPower(.5); //run the motor towards the switch
+        }
+        else { //when the switch is pressed
+            elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
+            elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
+            elevator.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
+            homeElevator =true; //Change value of Home to true
+        }
+    }
+    public void HomeElevator(){ //Method to home arm Todo: Make for both portions (Home elevator?)
+        if (HomeSwitchElevatorDown.isPressed()==false){ //If the home switch is not pressed
+            elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elevator.setPower(-.5); //run the motor towards the switch
         }
         else { //when the switch is pressed
             elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0

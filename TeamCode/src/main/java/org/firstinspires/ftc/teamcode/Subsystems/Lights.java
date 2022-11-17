@@ -17,17 +17,14 @@ public class Lights { //Todo: This needs to be reconsidered. Need some way to de
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
     }
 
-    public void Update_Lights(boolean possession,boolean Rotation,boolean A){
-        if (possession==true){ //The possession is if we have freight in our robot
+    public void Update_Lights(boolean possession, boolean A, boolean dance){
+        if (possession){ //The possession is if we have freight in our robot
             blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
         }
-        else if (Rotation==true){ //The Rotation is if the turn table motor is on
-            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_FAST);
-            }
-        else if (A == true){
+        else if (A){
             blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
         }
-        else if (A == false){
+        else if (!A){
             blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
         }
     }
