@@ -19,7 +19,7 @@ public class Lift {
     private DcMotorEx arm;
     boolean homeElevator = false;
     boolean homeArm = false;
-    RevTouchSensor HomeSwitchElevatorUp;
+    RevTouchSensor HomeSwitchElevatorUp; //Todo: These are likely to be limit switches (digital devices) not RevTouchSensor types
     RevTouchSensor HomeSwitchElevatorDown;
     RevTouchSensor HomeSwitchArm;
 
@@ -46,8 +46,8 @@ public class Lift {
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map
-        HomeSwitchElevatorUp = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Up");
-        HomeSwitchElevatorDown = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Down");
+        HomeSwitchElevatorUp = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Up"); //Todo: A better name for the upper switch is "limit"
+        HomeSwitchElevatorDown = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Down"); //Todo:  Also, generally try to name variables with the thing is is used on first: ArmHomeSwitch, ElevatorTopLimit, etc
         arm = hardwareMap.get(DcMotorEx.class, "arm");//Sets the names of the hardware on the hardware map
         HomeSwitchArm = hardwareMap.get(RevTouchSensor.class, "HS_Arm");
     // "DeviceName" must match the Config EXACTLY
@@ -89,10 +89,12 @@ public class Lift {
                         position = -3; //cap it at -3
                     }
                 }
-            telemetry.addData("Home", homeElevator); //Todo: Add telemetry data for both portions of the lift
+            telemetry.addData("Home", homeElevator);
             telemetry.addData("Arm Position", position);
-            telemetry.addData("Target Position", elevator.getTargetPosition());
-            telemetry.addData("Encoder Position", elevator.getCurrentPosition());
+            telemetry.addData("Elev Target Position", elevator.getTargetPosition());
+            telemetry.addData("Elev Encoder Position", elevator.getCurrentPosition());
+            telemetry.addData("Arm Target Position", arm.getTargetPosition());
+            telemetry.addData("Arm Encoder Position", arm.getCurrentPosition());
             }
             else if (!gamepad2.dpad_up && !gamepad2.dpad_down) { //if neither button is being pressed
                 toggleLift = true; // Button has been released, so this allows a re-press to activate the code above.
@@ -159,25 +161,32 @@ public class Lift {
     }
 
     public void SetArmHome(boolean home){ //Sets whether the arm is homed or not, used for homing during a match
-        homeElevator = home;
-    } //Todo: Make for both portions (Set Elevator Home)
+        homeArm = home;
+    }
     public boolean GetArmHome(){
-        return homeElevator;
+        return homeArm;
     } //Gets whether the arm is homed or not
 
-    public void HomeArm(){ //Method to home arm Todo: Make for both portions (Home elevator?)
+    public void SetElevatorHome(boolean home){ //Sets whether the elevator is homed or not, used for homing during a match
+        homeElevator = home;
+    }
+    public boolean GetElevatorHome(){
+        return homeElevator;
+    } //Gets whether the elevator is homed or not
+
+    public void HomeArm(){ //Method to home arm
         if (HomeSwitchElevatorUp.isPressed()==false){ //If the home switch is not pressed
-            elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            elevator.setPower(.5); //run the motor towards the switch
+            arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            arm.setPower(.5); //run the motor towards the switch
         }
         else { //when the switch is pressed
-            elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
-            elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
-            elevator.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
-            homeElevator =true; //Change value of Home to true
+            arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
+            arm.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
+            homeArm =true; //Change value of Home to true
         }
     }
-    public void HomeElevator(){ //Method to home arm Todo: Make for both portions (Home elevator?)
+    public void HomeElevator(){ //Method to home arm
         if (HomeSwitchElevatorDown.isPressed()==false){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setPower(-.5); //run the motor towards the switch
@@ -188,6 +197,8 @@ public class Lift {
             elevator.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
             homeElevator =true; //Change value of Home to true
         }
+
+        //Todo: Create a function called, "Home" that does the elevator homing first, then after the arm is homed homes the arm.
     }
 
 }

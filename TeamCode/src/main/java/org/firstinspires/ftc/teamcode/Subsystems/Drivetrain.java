@@ -23,7 +23,7 @@ public class Drivetrain  {
     final double wheelD =96/25.4; // Diameter of the wheel (in inches)
     final double gearratio=(76/21)*(68/13); //Ratio of the entire drivetrain from the motor to the wheel
     final double countsperin=countsperrev*gearratio*(1/(Math.PI*wheelD));
-    final double wheelBaseR = 15.5/2; //Wheel base diameter in inches
+    final double wheelBaseR = 15.5/2; //Wheel base radius in inches
     final double rotationK = 1; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
     final double maxSpeed = 6000 * countsperrev * (1/60); //Counts per S Todo: Determine the real max speed, likely through test
     final double inchesperdegrotation = 2 * Math.PI * wheelBaseR * (1/360);
@@ -45,8 +45,8 @@ public class Drivetrain  {
 
     public void DrivetrainAutoMove(double distance, double speed, double direction, double rotation) {
         /**
-         * Comands the robot to move a certain direction for a certain distance
-         * Distance in inches, Speed in in/s, Direction in degrees, Rotation in degrees
+         * Commands the robot to move a certain direction for a certain distance
+         * Distance in inches, Speed in in/s, Direction in degrees (Front of robot is 0 deg, CCW is positive), Rotation in degrees (CCW is pos)
          */
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -63,7 +63,7 @@ public class Drivetrain  {
         double rbspeed = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rotation * rotationK);      //Speed for rightback
         double lbspeed = (Math.sin(angleR + (9 * Math.PI / 4)) * speed) - (rotation * rotationK);    //Speed for leftback
 
-        double maxNormalize = Math.max(Math.max(Math.abs(lfspeed), Math.abs(rfspeed)), Math.max(Math.abs(rbspeed), Math.abs(lbspeed))); //Finds the greatest power of the moters
+        double maxNormalize = Math.max(Math.max(Math.abs(lfspeed), Math.abs(rfspeed)), Math.max(Math.abs(rbspeed), Math.abs(lbspeed))); //Finds the greatest power of the motors
 
         if ((Math.abs(lfspeed) > maxSpeed) || (Math.abs(rfspeed) > maxSpeed) || (Math.abs(rbspeed) > maxSpeed) || (Math.abs(lbspeed) > maxSpeed)){ //Normalize so no motor speed can be set above 1
             lfspeed = (lfspeed/maxNormalize) * maxSpeed;
