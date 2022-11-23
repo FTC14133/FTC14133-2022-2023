@@ -44,7 +44,7 @@ public class Drivetrain  {
 
 
     public void DrivetrainAutoMove(double distance, double speed, double direction, double rotation) {
-        /**
+        /*
          * Commands the robot to move a certain direction for a certain distance
          * Distance in inches, Speed in in/s, Direction in degrees (Front of robot is 0 deg, CCW is positive), Rotation in degrees (CCW is pos)
          */
