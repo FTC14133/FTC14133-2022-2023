@@ -51,7 +51,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         while (!AllianceSelected){
             if (A){
                 AllianceString = "Blue";
-            }else if (!A){
+            }else {
                 AllianceString = "Red";
             }
             telemetry.addData("Alliance: ", AllianceString);
@@ -104,8 +104,18 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
 
 
 
-        if (A && (!routine = 0)) { //This code will check if the robot is on the BLUE side and on the Turntable side
-        }else if (!A && (!routine = 0)) { //This is a different instance where if we are starting on the BLUE side and on the warehouse side
+        if (routine == 0) { //This code will run if auto routine 0 is selected
+
+        }else if (routine == 1){ //
+
+        }
+        else if (routine == 2){
+
+        }
+        else if (routine == 3){
+
+        }
+        else if (routine == 4){ //This code will run if auto routine 4 is selected
 
         }
     }
