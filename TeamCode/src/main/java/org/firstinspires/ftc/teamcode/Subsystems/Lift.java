@@ -17,11 +17,12 @@ public class Lift {
     // Instantiate the lift motor variables
     private DcMotorEx elevator;
     private DcMotorEx arm;
-    boolean homeElevator = false;
-    boolean homeArm = false;
-    RevTouchSensor HomeSwitchElevatorUp; //Todo: These are likely to be limit switches (digital devices) not RevTouchSensor types
+    boolean ElevatorHome = false;
+    boolean ArmHome = false;
+    RevTouchSensor HomeSwitchElevatorUp;
     RevTouchSensor HomeSwitchElevatorDown;
-    RevTouchSensor HomeSwitchArm;
+    RevTouchSensor HomeSwitchArmFront;
+    RevTouchSensor HomeSwitchArmBack;
 
     public int position = 0; // Integer position of the arm
     int tolerance = 0; // Encoder tolerance
@@ -36,8 +37,8 @@ public class Lift {
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
-    final double liftPower =0.75;
-    final double armPower=0.75;
+    double liftPower =0.75;
+    double armPower=0.75;
     int joystick_int_left;
     int joystick_int_right;
 
@@ -45,11 +46,12 @@ public class Lift {
     boolean toggleFlip = true;
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
-        elevator = hardwareMap.get(DcMotorEx.class, "elevator");//Sets the names of the hardware on the hardware map
-        HomeSwitchElevatorUp = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Up"); //Todo: A better name for the upper switch is "limit"
-        HomeSwitchElevatorDown = hardwareMap.get(RevTouchSensor.class, "HS_Elevator_Down"); //Todo:  Also, generally try to name variables with the thing is is used on first: ArmHomeSwitch, ElevatorTopLimit, etc
+        elevator = hardwareMap.get(DcMotorEx.class, "Elevator");//Sets the names of the hardware on the hardware map
+        HomeSwitchElevatorUp = hardwareMap.get(RevTouchSensor.class, "HSElevatorUp");
+        HomeSwitchElevatorDown = hardwareMap.get(RevTouchSensor.class, "HSElevatorDown");
         arm = hardwareMap.get(DcMotorEx.class, "arm");//Sets the names of the hardware on the hardware map
-        HomeSwitchArm = hardwareMap.get(RevTouchSensor.class, "HS_Arm");
+        HomeSwitchArmFront = hardwareMap.get(RevTouchSensor.class, "HSArmFront");
+        HomeSwitchArmBack = hardwareMap.get(RevTouchSensor.class, "HSArmBack");
     // "DeviceName" must match the Config EXACTLY
 
         // Set motor direction based on which side of the robot the motors are on
@@ -63,7 +65,7 @@ public class Lift {
         joystick_int_right = (int)(gamepad2.right_stick_y*60);
         joystick_int_left = (int)(gamepad2.right_stick_y*60);
 
-        if (!homeElevator){ //If arm is not homed
+        if (!ElevatorHome){ //If arm is not homed
             HomeArm(); //Runs the homing sequence for the arm to reset it
         }
         else if (gamepad2.back){ //If the arm is homed, but the back button is pressed
@@ -89,7 +91,7 @@ public class Lift {
                         position = -3; //cap it at -3
                     }
                 }
-            telemetry.addData("Home", homeElevator);
+            telemetry.addData("Home", ElevatorHome);
             telemetry.addData("Arm Position", position);
             telemetry.addData("Elev Target Position", elevator.getTargetPosition());
             telemetry.addData("Elev Encoder Position", elevator.getCurrentPosition());
@@ -106,11 +108,24 @@ public class Lift {
 
         }
 
+    public void Limits(){
+        if (HomeSwitchArmFront.isPressed()){
+            armPower = Math.min(armPower, 0);
+        }else if (HomeSwitchArmBack.isPressed()){
+            armPower = Math.max(armPower, 0);
+        }
+        if (HomeSwitchElevatorDown.isPressed()){
+            liftPower = Math.min(liftPower, 0);
+        }else if (HomeSwitchElevatorUp.isPressed()){
+            liftPower = Math.max(liftPower, 0);
+        }
 
-
-    public void GotoPosition(int position, int Ljoystick, int Rjoystick){
         elevator.setPower(liftPower);
         arm.setPower(armPower);//Sets the power for the lift
+    }
+
+    public void GotoPosition(int position, int Ljoystick, int Rjoystick){
+        Limits();
         switch (position) {
             case 4: // Intake Front
                 arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
@@ -161,21 +176,31 @@ public class Lift {
     }
 
     public void SetArmHome(boolean home){ //Sets whether the arm is homed or not, used for homing during a match
-        homeArm = home;
+        ArmHome = home;
     }
     public boolean GetArmHome(){
-        return homeArm;
+        return ArmHome;
     } //Gets whether the arm is homed or not
 
     public void SetElevatorHome(boolean home){ //Sets whether the elevator is homed or not, used for homing during a match
-        homeElevator = home;
+        ElevatorHome = home;
     }
     public boolean GetElevatorHome(){
-        return homeElevator;
+        return ElevatorHome;
     } //Gets whether the elevator is homed or not
 
+    public void Home(){
+        while (!ElevatorHome){
+            HomeElevator();
+        }
+        while (!ArmHome){
+            HomeArm();
+        }
+
+    }
+
     public void HomeArm(){ //Method to home arm
-        if (HomeSwitchElevatorUp.isPressed()==false){ //If the home switch is not pressed
+        if (!HomeSwitchElevatorUp.isPressed()){ //If the home switch is not pressed
             arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             arm.setPower(.5); //run the motor towards the switch
         }
@@ -183,11 +208,12 @@ public class Lift {
             arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
             arm.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
-            homeArm =true; //Change value of Home to true
+            ArmHome =true; //Change value of Home to true
         }
     }
+
     public void HomeElevator(){ //Method to home arm
-        if (HomeSwitchElevatorDown.isPressed()==false){ //If the home switch is not pressed
+        if (!HomeSwitchElevatorDown.isPressed()){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setPower(-.5); //run the motor towards the switch
         }
@@ -195,10 +221,7 @@ public class Lift {
             elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
             elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
             elevator.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
-            homeElevator =true; //Change value of Home to true
+            ElevatorHome =true; //Change value of Home to true
         }
-
-        //Todo: Create a function called, "Home" that does the elevator homing first, then after the arm is homed homes the arm.
     }
-
 }

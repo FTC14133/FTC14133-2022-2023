@@ -26,12 +26,9 @@ public class  Intake {
         // Set motor direction based on which side of the robot the motors are on
     }
 
-    private void runIntake(double rotationSpeed, int positionArm){ //Todo: positionArm no longer needs to be an input to this function
-        if (positionArm > 0) {
-            rotationSpeed *= -1; //Todo: We do not need to switch the direction of the intake based on arm direction like we did last year.
-        }
-        intake_f.setPower(rotationSpeed); //Todo: one of these may need to be backwards
-        intake_b.setPower(rotationSpeed);
+    private void runIntake(double rotationSpeed, int position){
+        intake_f.setPower(rotationSpeed);
+        intake_b.setPower(-rotationSpeed);
     }
 
     public void Update_intake(double speed, int positionArm, Gamepad gamepad2){ //Standard intake function
@@ -49,19 +46,19 @@ public class  Intake {
 
     }
 
-    public void Update_outtake(double speed, int positionArm, Gamepad gamepad2){ //Standard outtake function Todo: does not need positionArm as an input
+    public void Update_outtake(double speed, int position, Gamepad gamepad2){ //Standard outtake function
         if (gamepad2.left_bumper) {
             speed *= .5;
         }
-        runIntake(-speed, positionArm);//Runs the intake
+        runIntake(-speed, position);//Runs the intake
     }
 
-    public void Teleop(Gamepad gamepad2, int positionArm, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
+    public void Teleop(Gamepad gamepad2, int position, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
         if(gamepad2.right_trigger>0){ //if the left trigger is pulled
-            Update_intake(gamepad2.right_trigger, positionArm, gamepad2); //Run the intake program Todo: no longer needs positionArm as an input.
+            Update_intake(gamepad2.right_trigger, position, gamepad2); //Run the intake program
         }
         else {
-            Update_outtake(gamepad2.left_trigger, positionArm, gamepad2); //Otherwise run the outtake program
+            Update_outtake(gamepad2.left_trigger, position, gamepad2); //Otherwise run the outtake program
 
         }
         telemetry.addData("Possession",Possession);
