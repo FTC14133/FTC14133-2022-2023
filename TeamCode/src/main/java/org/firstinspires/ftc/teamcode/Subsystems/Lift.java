@@ -65,7 +65,7 @@ public class Lift {
         joystick_int_right = (int)(gamepad2.right_stick_y*60);
         joystick_int_left = (int)(gamepad2.right_stick_y*60);
 
-        if (!ElevatorHome){ //If arm is not homed
+        if (!ElevatorHome){ //If arm is not homed Todo: Needs to use the generic home function
             HomeArm(); //Runs the homing sequence for the arm to reset it
         }
         else if (gamepad2.back){ //If the arm is homed, but the back button is pressed
@@ -106,7 +106,7 @@ public class Lift {
 
             GotoPosition(position, joystick_int_left, joystick_int_right);
 
-        }
+    }
 
     public void Limits(){
         if (HomeSwitchArmFront.isPressed()){
@@ -131,38 +131,38 @@ public class Lift {
                 arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
-            case 3: // Intake Front
-                arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick));
+            case 3: // Short Level Front
+                arm.setTargetPosition((int)(90* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(-60* ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(90* ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(4* ElevatorCountsPerInch +Rjoystick));
                 break;
 
-            case 1: //Upper Level Front
-                arm.setTargetPosition((int)(-100* ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
+            case 1: //Tall Level Front
+                arm.setTargetPosition((int)(90* ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(10.5* ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(-140* ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(140* ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
-            case -1: //Upper Level Back
-                arm.setTargetPosition((int)(-185* ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
+            case -1: //Tall Level Back
+                arm.setTargetPosition((int)(180* ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(10.5* ElevatorCountsPerInch +Rjoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(-220* ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(180* ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(4* ElevatorCountsPerInch +Rjoystick));
                 break;
-            case -3: // Intake Back
-                arm.setTargetPosition((int)(-290* ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(-60* ElevatorCountsPerInch +Rjoystick));
+            case -3: //Short Level Back
+                arm.setTargetPosition((int)(180* ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
-            case -4: // Intake Front
-                arm.setTargetPosition((int)(0* ArmCountsPerDegree +Ljoystick));
+            case -4: // Intake Back
+                arm.setTargetPosition((int)(280* ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(0* ElevatorCountsPerInch +Rjoystick));
                 break;
             default:
