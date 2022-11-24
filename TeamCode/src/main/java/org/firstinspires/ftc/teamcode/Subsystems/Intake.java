@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class  Intake {
+public class Intake {
     // Instantiate the motor variables
     CRServo intake;
     //CRServo intake_b;

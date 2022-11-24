@@ -5,13 +5,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Subsystems.AllianceSingleton;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
+import org.firstinspires.ftc.teamcode.Subsystems.Detection;
 
 @Autonomous(name="FTC_14133_2022_Auto", group="Auto")
 
@@ -25,6 +25,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
     private Intake Intake=null;
     private Lift Lift =null;
     private Sensors Sensors=null;
+    private Detection Detection=null;
     boolean[] switches;
     boolean A ; //This will tell us that we are either on the red or blue alliance side
     double total_speed = 0.5; //This is the speed of most of the motors.
@@ -32,6 +33,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
     boolean AutoSelected = false;
     String AllianceString = "Not Selected";
     int routine = 0;
+    int detected = -1;
 
 
     public void waitForStart(Gamepad gamepad2) {
@@ -45,6 +47,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         Intake = new Intake(hardwareMap);
         Lift = new Lift(hardwareMap);
         Sensors = new Sensors(hardwareMap);
+        Detection = new Detection(hardwareMap);
         telemetry.addData("Object Creation", "Done");
         telemetry.addLine("Input Alliance (X = blue, B = red)");
         telemetry.update();
@@ -101,6 +104,8 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
 
         telemetry.addData("Object", "After Home");
         telemetry.update();
+
+        detected = Detection.Detection(telemetry);
 
 
 
