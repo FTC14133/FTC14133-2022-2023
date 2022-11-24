@@ -105,7 +105,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         telemetry.addData("Object", "After Home");
         telemetry.update();
 
-        detected = Detection.Detection(telemetry);
+        detected = Detection.AprilTagDetection(telemetry);
 
 
 

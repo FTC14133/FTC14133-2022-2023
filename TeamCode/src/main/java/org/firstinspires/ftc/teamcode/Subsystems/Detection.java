@@ -82,7 +82,7 @@ public class Detection {
         });
     }
 
-    public int Detection(Telemetry telemetry) {
+    public int AprilTagDetection(Telemetry telemetry) {
 
         while (framesRead <= 20) {
 
