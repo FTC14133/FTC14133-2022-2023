@@ -11,35 +11,36 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class  Intake {
     // Instantiate the motor variables
-    CRServo intake_f;
+    CRServo intake;
     //CRServo intake_b;
     boolean toggle = true;
     boolean Possession = true; //Variable telling whether we have possession of a game piece or not
     DigitalChannel IntakeTouch; //The "beambreak" sensor is a type of IR sensor that detects if it vision is broken
 
     public Intake(HardwareMap hardwareMap){                 // Motor Mapping
-        intake_f = hardwareMap.crservo.get("intake_f");      //Sets the names of the hardware on the hardware map
+        intake = hardwareMap.crservo.get("intake");      //Sets the names of the hardware on the hardware map
         //intake_b = hardwareMap.crservo.get("intake_b");
         // "DeviceName" must match the Config EXACTLY
         IntakeTouch = hardwareMap.get(DigitalChannel.class, "IntakeTouch");
         // Set motor direction based on which side of the robot the motors are on
     }
-
+/*
     private void runIntake(double rotationSpeed){
-        intake_f.setPower(rotationSpeed);
+        intake.setPower(rotationSpeed);
         //intake_b.setPower(-rotationSpeed);
     }
 
+ */
     public void Update_intake(double speed, boolean intakeSlow){ //Standard intake function
         if (intakeSlow) {
             speed *= .5;
         }
         if(!IntakeTouch.getState()) {
-            runIntake(0);//Stop intake
+            intake.setPower(0);//Stop intake
         }
         else{ // if beam break not broken
             Possession = false; //we do not have possession
-            runIntake(speed); // Run intake
+            intake.setPower(speed); // Run intake
         }
     }
 
@@ -47,7 +48,7 @@ public class  Intake {
         if (outakeSlow) {
             speed *= .5;
         }
-        runIntake(-speed);//Runs the intake
+        intake.setPower(-speed);//Runs the intake
     }
 
     public void Teleop(Gamepad gamepad2, int position, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level

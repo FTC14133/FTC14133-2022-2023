@@ -65,11 +65,12 @@ public class Lift {
         joystick_int_right = (int)(gamepad2.right_stick_y*60);
         joystick_int_left = (int)(gamepad2.right_stick_y*60);
 
-        if (!ElevatorHome){ //If arm is not homed Todo: Needs to use the generic home function
-            HomeArm(); //Runs the homing sequence for the arm to reset it
+        if ((!ElevatorHome) || (!ArmHome)){ //If arm is not homed
+            Home(); //Runs the homing sequence for the arm to reset it
         }
         else if (gamepad2.back){ //If the arm is homed, but the back button is pressed
             SetArmHome(false); //Set home variable to false (not-homed)
+            SetElevatorHome(false); //Set home variable to false (not-homed)
         }
         else if (toggleFlip && gamepad2.x){
             toggleFlip = false;

@@ -103,7 +103,7 @@ public class Drivetrain  {
         DrivetrainAutoMove(0, speed, 0, rotation);
     }
 
-    public void Teleop(Gamepad gamepad1, Telemetry telemetry){ //Code to be run in Teleop Mode void Loop at top level
+    public void Teleop(Gamepad gamepad1, Telemetry telemetry, int position){ //Code to be run in Teleop Mode void Loop at top level
         double leftPowerY = -gamepad1.left_stick_y;      //find the value of y axis on the left joystick;
         double leftPowerX = gamepad1.left_stick_x;      //find the value of x axis on the left joystick;
         double rightPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
@@ -128,6 +128,13 @@ public class Drivetrain  {
             rfpower /= max;
             rbpower /= max;
             lbpower /= max;
+        }
+
+        if (position > 0){
+            lbpower *= 0.5;
+            rbpower *= 0.5;
+            lfpower *= 0.5;
+            rfpower *= 0.5;
         }
 
         lb.setPower(lbpower);

@@ -10,7 +10,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Lights { //Todo: This needs to be reconsidered. Need some way to decide which alliance we are on without switches. Also, do we sense possession?
+public class Lights {
     RevBlinkinLedDriver blinkinLedDriver;
 
     public Lights(HardwareMap hardwareMap){ //Run this in Int to map the class items
