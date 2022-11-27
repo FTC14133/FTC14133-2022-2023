@@ -130,7 +130,7 @@ public class Drivetrain  {
             lbpower /= max;
         }
 
-        if (position > 0){
+        if (position > 0){ //Todo: This is not going to work... Position 0 is the center, positive is forward, negative is backwards. Should be a multiplier to the calculated height of the arm.
             lbpower *= 0.5;
             rbpower *= 0.5;
             lfpower *= 0.5;
