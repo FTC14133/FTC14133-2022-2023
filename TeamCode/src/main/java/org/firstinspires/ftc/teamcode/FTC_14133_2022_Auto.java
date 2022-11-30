@@ -112,16 +112,16 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         if (routine == 0) { //This code will run if auto routine 0 is selected
 
         }else if (routine == 1){ //
-
+            drivetrain.DrivetrainAutoMove(5, 0.75, 0);
         }
         else if (routine == 2){
-
+            drivetrain.DrivetrainAutoMove(5, 0.75, 90);
         }
         else if (routine == 3){
-
+            drivetrain.DrivetrainAutoMove(5, 0.75, 0, 90);
         }
         else if (routine == 4){ //This code will run if auto routine 4 is selected
-
+            drivetrain.DrivetrainAutoMove(0.75, 90);
         }
     }
 }
