@@ -38,7 +38,7 @@ public class  FTC_14133_2022 extends OpMode {
      Lift = new Lift(hardwareMap);
      Sensors = new Sensors(hardwareMap);
      Lights = new Lights(hardwareMap);
-     Alliance = AllianceSingleton.AllianceInstance().GetAlliance();
+     //Alliance = AllianceSingleton.AllianceInstance().GetAlliance();
  }
 
  public void init_loop() {

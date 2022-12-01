@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Generic Lift
 
-import com.qualcomm.hardware.rev.RevTouchSensor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -19,10 +19,10 @@ public class Lift {
     private DcMotorEx arm;
     boolean ElevatorHome = false;
     boolean ArmHome = false;
-    RevTouchSensor HomeSwitchElevatorUp;
-    RevTouchSensor HomeSwitchElevatorDown;
-    RevTouchSensor HomeSwitchArmFront;
-    RevTouchSensor HomeSwitchArmBack;
+    DigitalChannel HomeSwitchElevatorUp;
+    DigitalChannel HomeSwitchElevatorDown;
+    DigitalChannel HomeSwitchArmFront;
+    DigitalChannel HomeSwitchArmBack;
 
     public int position = 0; // Integer position of the arm
     int tolerance = 0; // Encoder tolerance
@@ -47,17 +47,19 @@ public class Lift {
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "Elevator");//Sets the names of the hardware on the hardware map
-        HomeSwitchElevatorUp = hardwareMap.get(RevTouchSensor.class, "HSElevatorUp");
-        HomeSwitchElevatorDown = hardwareMap.get(RevTouchSensor.class, "HSElevatorDown");
+        HomeSwitchElevatorUp = hardwareMap.get(DigitalChannel.class, "HSElevatorUp");
+        HomeSwitchElevatorDown = hardwareMap.get(DigitalChannel.class, "HSElevatorDown");
         arm = hardwareMap.get(DcMotorEx.class, "Arm");//Sets the names of the hardware on the hardware map
-        HomeSwitchArmFront = hardwareMap.get(RevTouchSensor.class, "HSArmFront");
-        HomeSwitchArmBack = hardwareMap.get(RevTouchSensor.class, "HSArmBack");
+        HomeSwitchArmFront = hardwareMap.get(DigitalChannel.class, "HSArmFront");
+        HomeSwitchArmBack = hardwareMap.get(DigitalChannel.class, "HSArmBack");
     // "DeviceName" must match the Config EXACTLY
 
         // Set motor direction based on which side of the robot the motors are on
         elevator.setDirection(DcMotorEx.Direction.REVERSE);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         position=3; //initial arm position
+        arm.setTargetPosition((int)(40 * ArmCountsPerDegree));
+        elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch));
     }
 
     public void Teleop(Gamepad gamepad2, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
@@ -110,14 +112,14 @@ public class Lift {
     }
 
     public void Limits(){
-        if (HomeSwitchArmFront.isPressed()){
+        if (!HomeSwitchArmFront.getState()){
             armPower = Math.min(armPower, 0);
-        }else if (HomeSwitchArmBack.isPressed()){
+        }else if (!HomeSwitchArmBack.getState()){
             armPower = Math.max(armPower, 0);
         }
-        if (HomeSwitchElevatorDown.isPressed()){
+        if (!HomeSwitchElevatorDown.getState()){
             liftPower = Math.min(liftPower, 0);
-        }else if (HomeSwitchElevatorUp.isPressed()){
+        }else if (!HomeSwitchElevatorUp.getState()){
             liftPower = Math.max(liftPower, 0);
         }
 
@@ -147,8 +149,8 @@ public class Lift {
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(140 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(4.776 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(40 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(180 * ArmCountsPerDegree +Ljoystick));
@@ -201,7 +203,7 @@ public class Lift {
     }
 
     public void HomeArm(){ //Method to home arm
-        if (!HomeSwitchElevatorUp.isPressed()){ //If the home switch is not pressed
+        if (!HomeSwitchElevatorUp.getState()){ //If the home switch is not pressed
             arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             arm.setPower(.5); //run the motor towards the switch
         }
@@ -214,7 +216,7 @@ public class Lift {
     }
 
     public void HomeElevator(){ //Method to home arm
-        if (!HomeSwitchElevatorDown.isPressed()){ //If the home switch is not pressed
+        if (!HomeSwitchElevatorDown.getState()){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setPower(-.5); //run the motor towards the switch
         }
