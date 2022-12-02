@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Generic Lift
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -55,6 +56,8 @@ public class Lift {
     // "DeviceName" must match the Config EXACTLY
 
         // Set motor direction based on which side of the robot the motors are on
+        arm.setDirection(DcMotorSimple.Direction.REVERSE);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevator.setDirection(DcMotorEx.Direction.REVERSE);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         position=3; //initial arm position
@@ -94,12 +97,7 @@ public class Lift {
                         position = -3; //cap it at -3
                     }
                 }
-            telemetry.addData("Home", ElevatorHome);
-            telemetry.addData("Arm Position", position);
-            telemetry.addData("Elev Target Position", elevator.getTargetPosition());
-            telemetry.addData("Elev Encoder Position", elevator.getCurrentPosition());
-            telemetry.addData("Arm Target Position", arm.getTargetPosition());
-            telemetry.addData("Arm Encoder Position", arm.getCurrentPosition());
+
             }
             else if (!gamepad2.dpad_up && !gamepad2.dpad_down) { //if neither button is being pressed
                 toggleLift = true; // Button has been released, so this allows a re-press to activate the code above.
@@ -107,7 +105,14 @@ public class Lift {
 
 
 
-            GotoPosition(position, joystick_int_left, joystick_int_right);
+        GotoPosition(position, joystick_int_left, joystick_int_right);
+
+        telemetry.addData("Home", ElevatorHome);
+        telemetry.addData("Arm Position", position);
+        telemetry.addData("Elev Target Position", elevator.getTargetPosition());
+        telemetry.addData("Elev Encoder Position", elevator.getCurrentPosition());
+        telemetry.addData("Arm Target Position", arm.getTargetPosition());
+        telemetry.addData("Arm Encoder Position", arm.getCurrentPosition());
 
     }
 
@@ -203,9 +208,9 @@ public class Lift {
     }
 
     public void HomeArm(){ //Method to home arm
-        if (!HomeSwitchElevatorUp.getState()){ //If the home switch is not pressed
+        if (HomeSwitchElevatorUp.getState()){ //If the home switch is not pressed
             arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            arm.setPower(.5); //run the motor towards the switch
+            arm.setPower(-.5); //run the motor towards the switch
         }
         else { //when the switch is pressed
             arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
@@ -216,7 +221,7 @@ public class Lift {
     }
 
     public void HomeElevator(){ //Method to home arm
-        if (!HomeSwitchElevatorDown.getState()){ //If the home switch is not pressed
+        if (HomeSwitchElevatorDown.getState()){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setPower(-.5); //run the motor towards the switch
         }
