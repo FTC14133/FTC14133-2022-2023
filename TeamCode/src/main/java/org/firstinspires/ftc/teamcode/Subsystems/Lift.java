@@ -38,7 +38,7 @@ public class Lift {
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
-    double liftPower =0.75;
+    double elevatorPower =0.75;
     double armPower=0.75;
     int joystick_int_left;
     int joystick_int_right;
@@ -123,22 +123,21 @@ public class Lift {
 
     public void Limits(){
         if (!HomeSwitchArmFront.getState()){
-            armPower = Math.min(armPower, 0);
+            arm.setPower(Math.min(armPower, 0));
         }else if (!HomeSwitchArmBack.getState()){
-            armPower = Math.max(armPower, 0);
+            arm.setPower(Math.max(armPower, 0));
         }
         if (!HomeSwitchElevatorDown.getState()){
-            liftPower = Math.min(liftPower, 0);
+            elevator.setPower(Math.min(elevatorPower, 0));
         }else if (!HomeSwitchElevatorUp.getState()){
-            liftPower = Math.max(liftPower, 0);
+            elevator.setPower(Math.max(elevatorPower, 0));
         }
-
-        elevator.setPower(liftPower);
-        arm.setPower(armPower);//Sets the power for the lift
     }
 
     public void GotoPosition(int position, int Ljoystick, int Rjoystick){
-        Limits();
+        arm.setPower(armPower);
+        elevator.setPower(elevatorPower);
+        //Limits();
         switch (position) {
             case 4: // Intake Front
                 arm.setTargetPosition((int)(0 * ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
