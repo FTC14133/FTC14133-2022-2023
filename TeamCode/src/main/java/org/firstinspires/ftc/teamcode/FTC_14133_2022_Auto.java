@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.AllianceSingleton;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
@@ -100,7 +101,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         Lift.SetArmHome(false);
         Lift.SetElevatorHome(false);
 
-        Lift.Home();
+        Lift.Home(telemetry);
 
         telemetry.addData("Object", "After Home");
         telemetry.update();

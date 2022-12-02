@@ -55,6 +55,11 @@ public class Lift {
         HomeSwitchArmBack = hardwareMap.get(DigitalChannel.class, "HSArmBack");
     // "DeviceName" must match the Config EXACTLY
 
+        HomeSwitchElevatorUp.setMode(DigitalChannel.Mode.INPUT);
+        HomeSwitchElevatorDown.setMode(DigitalChannel.Mode.INPUT);
+        HomeSwitchArmFront.setMode(DigitalChannel.Mode.INPUT);
+        HomeSwitchArmBack.setMode(DigitalChannel.Mode.INPUT);
+
         // Set motor direction based on which side of the robot the motors are on
         arm.setDirection(DcMotorSimple.Direction.REVERSE);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -71,7 +76,7 @@ public class Lift {
         joystick_int_left = (int)(gamepad2.right_stick_y*60);
 
         if ((!ElevatorHome) || (!ArmHome)){ //If arm is not homed
-            Home(); //Runs the homing sequence for the arm to reset it
+            Home(telemetry); //Runs the homing sequence for the arm to reset it
         }
         else if (gamepad2.back){ //If the arm is homed, but the back button is pressed
             SetArmHome(false); //Set home variable to false (not-homed)
@@ -197,39 +202,47 @@ public class Lift {
         return ElevatorHome;
     } //Gets whether the elevator is homed or not
 
-    public void Home(){
+    public void Home(Telemetry telemetry){
         while (!ElevatorHome){
-            HomeElevator();
+            HomeElevator(telemetry);
         }
         while (!ArmHome){
-            HomeArm();
+            HomeArm(telemetry);
         }
 
     }
 
-    public void HomeArm(){ //Method to home arm
-        if (HomeSwitchElevatorUp.getState()){ //If the home switch is not pressed
+    public void HomeArm(Telemetry telemetry){ //Method to home arm
+        if (HomeSwitchArmFront.getState()){ //If the home switch is not pressed
             arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             arm.setPower(-.5); //run the motor towards the switch
+            telemetry.addData("Homing Arm", "Homing");
+            telemetry.update();
         }
         else { //when the switch is pressed
             arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
             arm.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
             ArmHome =true; //Change value of Home to true
+            telemetry.addData("Homing Arm", "Homed");
+            telemetry.update();
         }
     }
 
-    public void HomeElevator(){ //Method to home arm
+    public void HomeElevator(Telemetry telemetry){ //Method to home arm
         if (HomeSwitchElevatorDown.getState()){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setPower(-.5); //run the motor towards the switch
+            telemetry.addData("Homing Elev", "Homing");
+            telemetry.update();
         }
         else { //when the switch is pressed
             elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
             elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
             elevator.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
             ElevatorHome =true; //Change value of Home to true
+            telemetry.addData("Homing Elev", "Homed");
+            telemetry.update();
         }
     }
 }
