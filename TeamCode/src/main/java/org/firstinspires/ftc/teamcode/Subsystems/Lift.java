@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -29,7 +30,7 @@ public class Lift {
     int tolerance = 0; // Encoder tolerance
 //<<<<<<< Updated upstream
     final double ArmCountsPerRev = 28; // Counts per rev of the motor
-    final double ArmGearRatio = (32/10) * (68/13) * (68/13); //Ratio of the entire Pivot Arm from the motor to the arm
+    final double ArmGearRatio = (32/10) * (76/21) * (68/13); //Ratio of the entire Pivot Arm from the motor to the arm
     final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360; //Converts counts per motor rev to counts per degree of arm rotation
 //=======
     final double ElevatorCountsPerRev = 28; //Counts per revolution of the motor
@@ -38,13 +39,27 @@ public class Lift {
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
-    double elevatorPower =0.75;
-    double armPower=0.75;
+    double elevatorPower =1;
+    double armPower=1;
     int joystick_int_left;
     int joystick_int_right;
 
     boolean toggleLift = true;
     boolean toggleFlip = true;
+
+
+
+    public static double armP = 14;
+    //original P = 10
+    public static double armI = 0.05;
+    //original I = 0.05
+    public static double armD = 0;
+    //original D = 0
+    public double armF = 0;
+    //original F = 0
+
+    PIDFCoefficients ArmPIDF = new PIDFCoefficients(armP, armI, armD, armF);
+
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "Elevator");//Sets the names of the hardware on the hardware map
@@ -59,6 +74,10 @@ public class Lift {
         HomeSwitchElevatorDown.setMode(DigitalChannel.Mode.INPUT);
         HomeSwitchArmFront.setMode(DigitalChannel.Mode.INPUT);
         HomeSwitchArmBack.setMode(DigitalChannel.Mode.INPUT);
+
+        //arm.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, ArmPIDF);
+        arm.setVelocityPIDFCoefficients(ArmPIDF.p, ArmPIDF.i, ArmPIDF.d, ArmPIDF.f);
+        arm.setPositionPIDFCoefficients(ArmPIDF.p);
 
         // Set motor direction based on which side of the robot the motors are on
         arm.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -89,17 +108,17 @@ public class Lift {
         else if (!gamepad2.x){
             toggleFlip = true;
         }
-        else if (toggleLift && (gamepad2.dpad_up || gamepad2.dpad_down)) {  // Only execute once per Button push
+        if (toggleLift && (gamepad2.dpad_up || gamepad2.dpad_down)) {  // Only execute once per Button push
                 toggleLift = false;  // Prevents this section of code from being called again until the Button is released and re-pressed
                 if (gamepad2.dpad_down) {  // If the d-pad up button is pressed
                     position = position + 1; //Increase Arm position
-                    if (position > 3) { //If arm position is above 3
-                        position = 3; //Cap it at 3
+                    if (position > 4) { //If arm position is above 3
+                        position = 4; //Cap it at 3
                     }
                 } else if (gamepad2.dpad_up) { // If d-pad down button is pressed
                     position = position - 1; //Decrease arm position
-                    if (position < -3) { //If arm position is below -3
-                        position = -3; //cap it at -3
+                    if (position < -4) { //If arm position is below -3
+                        position = -4; //cap it at -3
                     }
                 }
 
@@ -112,13 +131,14 @@ public class Lift {
 
         GotoPosition(position, joystick_int_left, joystick_int_right);
 
-        telemetry.addData("Home", ElevatorHome);
+        telemetry.addData("ElevatorHome", ElevatorHome);
+        telemetry.addData("ArmHome", ArmHome);
         telemetry.addData("Arm Position", position);
         telemetry.addData("Elev Target Position", elevator.getTargetPosition());
         telemetry.addData("Elev Encoder Position", elevator.getCurrentPosition());
         telemetry.addData("Arm Target Position", arm.getTargetPosition());
         telemetry.addData("Arm Encoder Position", arm.getCurrentPosition());
-        telemetry.update();
+        telemetry.addData("armPIDF", "P = %.4f, I = %.4f, D = %.4f, F = %.4f", arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).p, arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).i, arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).d, arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).f);
 
     }
 
@@ -145,38 +165,38 @@ public class Lift {
                 elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case 3: // Short Level Front
-                arm.setTargetPosition((int)(60 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(1.194 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(70 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(100 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(2.388 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(70 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(6 * ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 1: //Tall Level Front
-                arm.setTargetPosition((int)(100 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(3.582 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(70 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(10 * ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(40 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(150 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(1 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -1: //Tall Level Back
-                arm.setTargetPosition((int)(180 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(5.97 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(10 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(180 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(7.164 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(6 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -3: //Short Level Back
-                arm.setTargetPosition((int)(180 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(8.358 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -4: // Intake Back
-                arm.setTargetPosition((int)(280 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(10.75 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(300 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             default:
                 throw new IllegalStateException("Unexpected position value: " + position);

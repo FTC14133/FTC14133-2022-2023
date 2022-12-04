@@ -65,4 +65,16 @@ public class  FTC_14133_2022 extends OpMode {
      Intake.Possession_Check();
 
  }
+
+/*    public void stop() {
+        Lift.GotoPosition(4 , 0, 0);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.stop();
+    }*/
+
+
 }
