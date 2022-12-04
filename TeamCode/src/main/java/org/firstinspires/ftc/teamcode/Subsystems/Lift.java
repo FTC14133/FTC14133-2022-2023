@@ -85,8 +85,8 @@ public class Lift {
         elevator.setDirection(DcMotorEx.Direction.REVERSE);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         position=3; //initial arm position
-        arm.setTargetPosition((int)(40 * ArmCountsPerDegree));
-        elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch));
+        arm.setTargetPosition((int)(0 * ArmCountsPerDegree));
+        elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch));
     }
 
     public void Teleop(Gamepad gamepad2, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
