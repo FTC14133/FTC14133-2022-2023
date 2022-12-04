@@ -30,11 +30,11 @@ public class Lift {
     int tolerance = 0; // Encoder tolerance
 //<<<<<<< Updated upstream
     final double ArmCountsPerRev = 28; // Counts per rev of the motor
-    final double ArmGearRatio = (32/10) * (76/21) * (68/13); //Ratio of the entire Pivot Arm from the motor to the arm
+    final double ArmGearRatio = (32.0/10.0) * (76.0/21.0) * (68.0/13.0); //Ratio of the entire Pivot Arm from the motor to the arm
     final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360; //Converts counts per motor rev to counts per degree of arm rotation
 //=======
     final double ElevatorCountsPerRev = 28; //Counts per revolution of the motor
-    final double ElevatorGearRatio = (84/29)*(68/13); //Gear ratio of the motors
+    final double ElevatorGearRatio = (84.0/29.0)*(68.0/13.0); //Gear ratio of the motors
     final double ElevatorSpoolDiameter = 1; //The diameter of the wheels (We are converting mm to inch)
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
@@ -218,6 +218,7 @@ public class Lift {
     public void SetElevatorHome(boolean home){ //Sets whether the elevator is homed or not, used for homing during a match
         ElevatorHome = home;
     }
+
     public boolean GetElevatorHome(){
         return ElevatorHome;
     } //Gets whether the elevator is homed or not
