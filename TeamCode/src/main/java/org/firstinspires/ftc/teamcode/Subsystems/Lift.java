@@ -118,6 +118,7 @@ public class Lift {
         telemetry.addData("Elev Encoder Position", elevator.getCurrentPosition());
         telemetry.addData("Arm Target Position", arm.getTargetPosition());
         telemetry.addData("Arm Encoder Position", arm.getCurrentPosition());
+        telemetry.update();
 
     }
 
