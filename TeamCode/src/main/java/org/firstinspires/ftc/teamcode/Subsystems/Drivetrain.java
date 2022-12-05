@@ -21,10 +21,10 @@ public class Drivetrain  {
     private DcMotorEx rb; //Front right motor of drivetrain
     int tolerance = 4; // Encoder tolerance
     final double countsperrev = 28; // Counts per rev of the motor
-    final double wheelD =96/25.4; // Diameter of the wheel (in inches)
+    final double wheelD =96.0/25.4; // Diameter of the wheel (in inches)
     final double gearratio=(76.0/21.0)*(68.0/13.0); //Ratio of the entire drivetrain from the motor to the wheel
     final double countsperin=countsperrev*gearratio*(1/(Math.PI*wheelD));
-    final double wheelBaseR = 15.5/2; //Wheel base radius in inches
+    final double wheelBaseR = 15.5/2.0; //Wheel base radius in inches
     final double rotationK = 0.5; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
     final double maxSpeed = 6000 * countsperrev * (1.0/60.0); //Counts per S Todo: Determine the real max speed, likely through test
     final double inchesperdegrotation = 2 * Math.PI * wheelBaseR * (1.0/360.0);
@@ -118,10 +118,10 @@ public class Drivetrain  {
         telemetry.addData("Angle: ", angleD);
         telemetry.addData("Speed: ", speed);
 
-        double rfpower = (Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for leftfront
-        double lfpower = -(Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for rightfront
-        double lbpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);      //Power level for rightback
-        double rbpower = -(Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftback
+        double rfpower = (Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightfront
+        double lfpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftfront
+        double lbpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftback
+        double rbpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightback
 
 
         double max = Math.max(Math.max(Math.abs(lfpower), Math.abs(rfpower)), Math.max(Math.abs(rbpower), Math.abs(lbpower))); //Finds the greatest power of the moters
