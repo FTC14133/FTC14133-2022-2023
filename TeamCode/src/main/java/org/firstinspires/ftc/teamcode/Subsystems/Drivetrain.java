@@ -21,13 +21,13 @@ public class Drivetrain  {
     private DcMotorEx rb; //Front right motor of drivetrain
     int tolerance = 4; // Encoder tolerance
     final double countsperrev = 28; // Counts per rev of the motor
-    final double wheelD =96/25.4; // Diameter of the wheel (in inches)
-    final double gearratio=(76/21)*(68/13); //Ratio of the entire drivetrain from the motor to the wheel
+    final double wheelD =96.0/25.4; // Diameter of the wheel (in inches)
+    final double gearratio=(76.0/21.0)*(68.0/13.0); //Ratio of the entire drivetrain from the motor to the wheel
     final double countsperin=countsperrev*gearratio*(1/(Math.PI*wheelD));
-    final double wheelBaseR = 15.5/2; //Wheel base radius in inches
-    final double rotationK = 0.75; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
-    final double maxSpeed = 6000 * countsperrev * (1/60); //Counts per S Todo: Determine the real max speed, likely through test
-    final double inchesperdegrotation = 2 * Math.PI * wheelBaseR * (1/360);
+    final double wheelBaseR = 15.5/2.0; //Wheel base radius in inches
+    final double rotationK = 0.5; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
+    final double maxSpeed = 6000 * countsperrev * (1.0/60.0); //Counts per S Todo: Determine the real max speed, likely through test
+    final double inchesperdegrotation = 2 * Math.PI * wheelBaseR * (1.0/360.0);
 
     public Drivetrain(HardwareMap hardwareMap){                 // Motor Mapping
         lf = hardwareMap.get(DcMotorEx.class, "lf");      //Sets the names of the hardware on the hardware map
@@ -36,10 +36,10 @@ public class Drivetrain  {
         rb = hardwareMap.get(DcMotorEx.class, "rb");
 
         // Set motor direction based on which side of the robot the motors are on
-        rf.setDirection(DcMotorEx.Direction.FORWARD);
-        lf.setDirection(DcMotorEx.Direction.FORWARD);
         lb.setDirection(DcMotorEx.Direction.FORWARD);
         rb.setDirection(DcMotorEx.Direction.FORWARD);
+        lf.setDirection(DcMotorEx.Direction.FORWARD);
+        rf.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
 
@@ -67,10 +67,10 @@ public class Drivetrain  {
         double maxNormalize = Math.max(Math.max(Math.abs(lfspeed), Math.abs(rfspeed)), Math.max(Math.abs(rbspeed), Math.abs(lbspeed))); //Finds the greatest power of the motors
 
         if ((Math.abs(lfspeed) > maxSpeed) || (Math.abs(rfspeed) > maxSpeed) || (Math.abs(rbspeed) > maxSpeed) || (Math.abs(lbspeed) > maxSpeed)){ //Normalize so no motor speed can be set above 1
-            rfspeed = (rfspeed/maxNormalize) * maxSpeed;
-            lfspeed = (lfspeed/maxNormalize) * maxSpeed;
-            lbspeed = (lbspeed/maxNormalize) * maxSpeed;
-            rbspeed = (rbspeed/maxNormalize) * maxSpeed;
+            rfspeed = (lfspeed/maxNormalize) * maxSpeed;
+            lfspeed = (rfspeed/maxNormalize) * maxSpeed;
+            lbspeed = (rbspeed/maxNormalize) * maxSpeed;
+            rbspeed = (lbspeed/maxNormalize) * maxSpeed;
         }
 
         double rfD = ((Math.sin(angleR + (3 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);     //direction for leftfront
@@ -109,7 +109,8 @@ public class Drivetrain  {
         double leftPowerX = gamepad1.left_stick_x;      //find the value of x axis on the left joystick;
         double rightPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
 
-        double angleR = Math.atan2(leftPowerY, leftPowerX); //- (Math.PI/2); //Calculating angle of which the joystick is commanded to in radians
+
+        double angleR = Math.atan2(leftPowerY, leftPowerX)/*-(Math.PI/2)*/; //Calculating angle of which the joystick is commanded to in radians
         double angleD = Math.toDegrees(angleR); //Calculating angle of which the joystick is commanded to in degrees
         double speed = Math.sqrt((leftPowerY * leftPowerY) + (leftPowerX * leftPowerX)); //Calculating the magnitude of the joystick
 
@@ -117,25 +118,13 @@ public class Drivetrain  {
         telemetry.addData("Angle: ", angleD);
         telemetry.addData("Speed: ", speed);
 
-        double rfpower = (Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for leftfront
-        double lfpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);     //Power level for rightfront
-        double lbpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);      //Power level for rightback
-        double rbpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftback
+        double rfpower = (Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightfront
+        double lfpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftfront
+        double lbpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftback
+        double rbpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightback
 
-/*
-        if (leftPowerY > 0){
-            rfpower *= -1;
-            lfpower *= -1;
-            lbpower *= -1;
-            rbpower *= -1;
-        }
-*/
 
         double max = Math.max(Math.max(Math.abs(lfpower), Math.abs(rfpower)), Math.max(Math.abs(rbpower), Math.abs(lbpower))); //Finds the greatest power of the moters
-
-        if (leftPowerX == 0){
-            leftPowerX = 0.001;
-        }
 
         if ((Math.abs(lfpower) > 1) || (Math.abs(rfpower) > 1) || (Math.abs(rbpower) > 1) || (Math.abs(lbpower) > 1)){ //Normalize so no motor speed can be set above 1
             rfpower /= max;
@@ -151,15 +140,15 @@ public class Drivetrain  {
             rbpower *= 0.5;
         }
 
-        rf.setPower(lfpower);
-        lf.setPower(rfpower);
-        lb.setPower(lbpower);
-        rb.setPower(rbpower);
+        rf.setPower(lbpower);
+        lf.setPower(rbpower);
+        lb.setPower(lfpower);
+        rb.setPower(rfpower);
 
-        telemetry.addData("rf Power", lfpower);
-        telemetry.addData("lf Power", rbpower);
-        telemetry.addData("lb Power", lbpower);
-        telemetry.addData("rb Power", rbpower);
+        telemetry.addData("RF Power", rfpower);
+        telemetry.addData("LF Power", lfpower);
+        telemetry.addData("LB Power", lbpower);
+        telemetry.addData("RB Power", rbpower);
 
     }
 
@@ -168,10 +157,10 @@ public class Drivetrain  {
     }
 
     public void AutoStop(){
-        lf.setVelocity(0);
         rf.setVelocity(0);
-        rb.setVelocity(0);
+        lf.setVelocity(0);
         lb.setVelocity(0);
+        rb.setVelocity(0);
     }
 
 
