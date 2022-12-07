@@ -110,7 +110,7 @@ public class Drivetrain  {
         double rightPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
 
 
-        double angleR = Math.atan2(leftPowerY, leftPowerX)/*-(Math.PI/2)*/; //Calculating angle of which the joystick is commanded to in radians
+        double angleR = Math.atan2(leftPowerY, leftPowerX)+(Math.PI/2); //Calculating angle of which the joystick is commanded to in radians
         double angleD = Math.toDegrees(angleR); //Calculating angle of which the joystick is commanded to in degrees
         double speed = Math.sqrt((leftPowerY * leftPowerY) + (leftPowerX * leftPowerX)); //Calculating the magnitude of the joystick
 
@@ -118,10 +118,10 @@ public class Drivetrain  {
         telemetry.addData("Angle: ", angleD);
         telemetry.addData("Speed: ", speed);
 
-        double rfpower = (Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightfront
-        double lfpower = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftfront
-        double lbpower = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftback
-        double rbpower = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightback
+        double rfpower = -(Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightfront
+        double lfpower = -(Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftfront
+        double lbpower = -(Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for leftback
+        double rbpower = -(Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rightPowerX * rotationK);    //Power level for rightback
 
 
         double max = Math.max(Math.max(Math.abs(lfpower), Math.abs(rfpower)), Math.max(Math.abs(rbpower), Math.abs(lbpower))); //Finds the greatest power of the moters
