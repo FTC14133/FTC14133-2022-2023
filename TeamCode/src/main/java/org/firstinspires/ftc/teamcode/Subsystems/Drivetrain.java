@@ -44,7 +44,7 @@ public class Drivetrain  {
 
 
 
-    public void DrivetrainAutoMove(double distance, double speed, double direction, double rotation) {
+    public void DrivetrainAutoMove(double distance, double speed, double direction, double rotation, Telemetry telemetry) {
         /*
          * Commands the robot to move a certain direction for a certain distance
          * Distance in inches, Speed in in/s, Direction in degrees (Front of robot is 0 deg, CCW is positive), Rotation in degrees (CCW is pos)
@@ -59,10 +59,10 @@ public class Drivetrain  {
         rb.setTargetPositionTolerance(tolerance);
         double angleR = Math.toRadians(direction); //Calculating angle of which the joystick is commanded to in radiant
 
-        double rfspeed = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rotation * rotationK);     //Speed for leftfront
-        double lfspeed = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rotation * rotationK);     //Speed for rightfront
-        double lbspeed = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rotation * rotationK);      //Speed for rightback
-        double rbspeed = (Math.sin(angleR + (9 * Math.PI / 4)) * speed) + (rotation * rotationK);    //Speed for leftback
+        double rfspeed = (Math.sin(angleR + (7 * Math.PI / 4)) * speed) + (rotation * rotationK);     //Speed for leftfront
+        double lfspeed = (Math.sin(angleR + (1 * Math.PI / 4)) * speed) + (rotation * rotationK);     //Speed for rightfront
+        double lbspeed = (Math.sin(angleR + (5 * Math.PI / 4)) * speed) + (rotation * rotationK);      //Speed for rightback
+        double rbspeed = (Math.sin(angleR + (3 * Math.PI / 4)) * speed) + (rotation * rotationK);    //Speed for leftback
 
         double maxNormalize = Math.max(Math.max(Math.abs(lfspeed), Math.abs(rfspeed)), Math.max(Math.abs(rbspeed), Math.abs(lbspeed))); //Finds the greatest power of the motors
 
@@ -73,20 +73,20 @@ public class Drivetrain  {
             rbspeed = (lbspeed/maxNormalize) * maxSpeed;
         }
 
-        double rfD = ((Math.sin(angleR + (3 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);     //direction for leftfront
-        double lfD = ((Math.sin(angleR + (5 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);     //direction for rightfront
-        double lbD = ((Math.sin(angleR + (7 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);      //direction for rightback
-        double rbD = ((Math.sin(angleR + (9 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);    //direction for leftback
+        double rfD = ((Math.sin(angleR + (7 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);     //direction for leftfront
+        double lfD = ((Math.sin(angleR + (1 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);     //direction for rightfront
+        double lbD = ((Math.sin(angleR + (5 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);      //direction for rightback
+        double rbD = ((Math.sin(angleR + (3 * Math.PI / 4)) * direction) * distance) + (rotation * inchesperdegrotation);    //direction for leftback
 
         int rfencodercounts = (int)(lfD * countsperin);
         int lfencodercounts = (int)(rfD * countsperin);
         int lbencodercounts = (int)(rbD * countsperin);
         int rbencodercounts = (int)(lbD * countsperin);
 
-        rf.setVelocity(lfspeed);
-        lf.setVelocity(rfspeed);
-        lb.setVelocity(lbspeed);
-        rb.setVelocity(rbspeed);
+        rf.setPower(lfspeed);
+        lf.setPower(rfspeed);
+        lb.setPower(lbspeed);
+        rb.setPower(rbspeed);
         rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -94,14 +94,29 @@ public class Drivetrain  {
 
         while ((Math.abs(lf.getCurrentPosition()) < (Math.abs(lfencodercounts))) || (Math.abs(rf.getCurrentPosition()) < (Math.abs(rfencodercounts))) || (Math.abs(lb.getCurrentPosition()) < (Math.abs(lbencodercounts))) || (Math.abs(rb.getCurrentPosition()) < (Math.abs(rbencodercounts)))) {
             //run until motors arrive at position within tolerance
+            telemetry.addData("rf.getCurrentPosition()", rf.getCurrentPosition());
+            telemetry.addData("lf.getCurrentPosition()", lf.getCurrentPosition());
+            telemetry.addData("lb.getCurrentPosition()", lb.getCurrentPosition());
+            telemetry.addData("rb.getCurrentPosition()", rb.getCurrentPosition());
+
+            telemetry.addData("rfencodercounts", rfencodercounts);
+            telemetry.addData("lfencodercounts", lfencodercounts);
+            telemetry.addData("lbencodercounts", lbencodercounts);
+            telemetry.addData("rbencodercounts", rbencodercounts);
+            telemetry.update();
         }
+
+        rf.setPower(0);
+        lf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
     }
-    public void DrivetrainAutoMove(double distance, double speed, double direction){
-        DrivetrainAutoMove(distance, speed, direction, 0);
+    public void DrivetrainAutoMove(double distance, double speed, double direction, Telemetry telemetry){
+        DrivetrainAutoMove(distance, speed, direction, 0, telemetry);
     }
 
-    public void DrivetrainAutoMove(double speed, double rotation){
-        DrivetrainAutoMove(0, speed, 0, rotation);
+    public void DrivetrainAutoMove(double speed, double rotation, Telemetry telemetry){
+        DrivetrainAutoMove(0, speed, 0, rotation, telemetry);
     }
 
     public void Teleop(Gamepad gamepad1, Telemetry telemetry, int position){ //Code to be run in Teleop Mode void Loop at top level

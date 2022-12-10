@@ -37,7 +37,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
     int detected = -1;
 
 
-    public void waitForStart(Gamepad gamepad2) {
+    public void waitForStart() {
         telemetry.addData("Object Creation", "Start");
         telemetry.update();
         //switches = Sensors.Update_Switches(); // Here we will see from the switches on the robot. Below is what they represent
@@ -52,7 +52,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         telemetry.addData("Object Creation", "Done");
         telemetry.addLine("Input Alliance (X = blue, B = red)");
         telemetry.update();
-        while (!AllianceSelected){
+/*        while (!AllianceSelected){
             if (A){
                 AllianceString = "Blue";
             }else {
@@ -60,9 +60,9 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
             }
             telemetry.addData("Alliance: ", AllianceString);
             if (gamepad1.x){
-                AllianceSingleton.AllianceInstance().SetAlliance(true);
+                //AllianceSingleton.AllianceInstance().SetAlliance(true);
             }if (gamepad1.b){
-                AllianceSingleton.AllianceInstance().SetAlliance(false);
+                //AllianceSingleton.AllianceInstance().SetAlliance(false);
             }if (gamepad1.start){
                 AllianceSelected = true;
             }
@@ -86,11 +86,11 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
                 AutoSelected = true;
             }
             telemetry.update();
-        }
+        }*/
 
     }
 
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         //     if ((Pivot_Arm != null) && (drivetrain != null) && (Intake !=null) && (Sensors != null) && (Turn_Table != null))
         //     {
@@ -98,19 +98,30 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
 
-        Lift.SetArmHome(false);
+/*        Lift.SetArmHome(false);
         Lift.SetElevatorHome(false);
 
-        Lift.Home(telemetry);
+        Lift.Home(telemetry);*/
 
         telemetry.addData("Object", "After Home");
         telemetry.update();
 
-        detected = Detection.AprilTagDetection(telemetry);
+        //detected = Detection.AprilTagDetection(telemetry);
+
+       // drivetrain.DrivetrainAutoMove(5, 0.5, 90);
+
+        drivetrain.DrivetrainAutoMove(0.75, 90, telemetry);
+        telemetry.addData("Object", "After rotation");
+        telemetry.update();
+        drivetrain.DrivetrainAutoMove(2, 0.75, 90, telemetry);
+        telemetry.addData("Object", "After strafe");
+        telemetry.update();
+        drivetrain.DrivetrainAutoMove(2, 0.75, 0, 90, telemetry);
+        telemetry.addData("Object", "After forward rotate");
+        telemetry.update();
 
 
-
-        if (routine == 0) { //This code will run if auto routine 0 is selected
+/*        if (routine == 0) { //This code will run if auto routine 0 is selected
 
         }else if (routine == 1){ //
             drivetrain.DrivetrainAutoMove(5, 0.75, 0);
@@ -123,6 +134,6 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         }
         else if (routine == 4){ //This code will run if auto routine 4 is selected
             drivetrain.DrivetrainAutoMove(0.75, 90);
-        }
+        }*/
     }
 }

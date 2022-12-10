@@ -23,7 +23,7 @@ public class Encoder_Test extends LinearOpMode{
         telemetry.update();
 
         try {
-            wait(2000); //Will wait for 2 seconds (2000 milliseconds), QUESTION: I DO NOT KNOW WHY THIS HAS A ERROR, THANKS
+            wait(2000); //Will wait for 2 seconds (2000 milliseconds)
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
