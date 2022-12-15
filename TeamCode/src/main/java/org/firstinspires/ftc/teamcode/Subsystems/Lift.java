@@ -195,7 +195,7 @@ public class Lift {
                 elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -4: // Intake Back
-                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
+                arm.setTargetPosition((int)(202 * ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             default:

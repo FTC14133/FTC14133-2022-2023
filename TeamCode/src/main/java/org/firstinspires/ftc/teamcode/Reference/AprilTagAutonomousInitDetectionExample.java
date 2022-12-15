@@ -19,7 +19,9 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.Reference;
+
+import android.util.Log;
 
 import androidx.core.graphics.drawable.IconCompat;
 
@@ -104,10 +106,11 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
 
                 for(AprilTagDetection tag : currentDetections)
                 {
+                    count += count;
+                    Log.d("Count", String.valueOf(count));
                     if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
                     {
-                        telemetry.addData("Frames: ", count);
-                        telemetry.update();
+
                         tagOfInterest = tag;
                         tagFound = true;
                         break;

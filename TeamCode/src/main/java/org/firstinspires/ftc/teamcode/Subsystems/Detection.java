@@ -84,9 +84,17 @@ public class Detection {
 
     public int AprilTagDetection(Telemetry telemetry) {
 
-        while (framesRead <= 20) {
+        ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+        int count = 0;
+        while(currentDetections.size() == 0){
+            if(count > 30000){
+                return -3;
+            }
+        }
+
+        while (framesRead <= 1000) {
+
 
             if (currentDetections.size() != 0) {
                 boolean tagFound = false;
@@ -105,10 +113,11 @@ public class Detection {
                 }
             } else {
                 telemetry.addLine("Don't see tag of interest :(");
+                return -2;
             }
 
             telemetry.update();
-            framesRead += framesRead;
+            framesRead += 1;
         }
         return -1;
     }

@@ -98,10 +98,10 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
 
-        Lift.SetArmHome(false);
+/*        Lift.SetArmHome(false);
         Lift.SetElevatorHome(false);
 
-        Lift.Home(telemetry);
+        Lift.Home(telemetry);*/
 
         telemetry.addData("Object", "After Home");
         telemetry.update();
@@ -110,6 +110,8 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
 
         telemetry.addData("detected", detected);
         telemetry.update();
+
+        sleep(10000);
 
        // drivetrain.DrivetrainAutoMove(5, 0.5, 90);
 
@@ -126,7 +128,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
 
 
 
-        if (routine == 0) { //This code will run if auto routine 0 is selected
+/*        if (routine == 0) { //This code will run if auto routine 0 is selected
             //drivetrain.DrivetrainAutoMove(12, 0.75, 0, telemetry);
             drivetrain.DrivetrainAutoMove(72, 0.5, 180, telemetry);
 
@@ -184,6 +186,6 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             }else if (detected == 3){
                 drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
             }
-        }
+        }*/
     }
 }
