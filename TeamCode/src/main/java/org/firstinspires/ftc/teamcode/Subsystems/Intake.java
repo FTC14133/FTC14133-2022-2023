@@ -44,11 +44,19 @@ public class Intake {
         }
     }
 
+    public void Update_intake(double speed){
+        Update_intake(speed, false);
+    }
+
     public void Update_outtake(double speed, boolean outakeSlow){ //Standard outtake function
         if (outakeSlow) {
             speed *= .5;
         }
         intake.setPower(-speed);//Runs the intake
+    }
+
+    public void Update_outtake(double speed){
+        Update_outtake(speed, false);
     }
 
     public void Teleop(Gamepad gamepad2, int position, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level

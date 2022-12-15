@@ -2,6 +2,9 @@
 package org.firstinspires.ftc.teamcode;
 // https://first-tech-challenge.github.io/SkyStone/  This is the link to ALL metered of FTC
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -21,7 +24,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Detection;
 //I like to ride dirt bikes RS
 
 
-public class  FTC_14133_2022_Auto extends LinearOpMode {
+public class  FTC_14133_2022_Auto extends LinearOpMode{
     private Drivetrain drivetrain=null; // This activate the sub systems
     private Intake Intake=null;
     private Lift Lift =null;
@@ -33,16 +36,13 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
     boolean AllianceSelected = false;
     boolean AutoSelected = false;
     String AllianceString = "Not Selected";
-    int routine = 0;
+    int routine = 2;
     int detected = -1;
 
 
     public void waitForStart() {
         telemetry.addData("Object Creation", "Start");
         telemetry.update();
-        //switches = Sensors.Update_Switches(); // Here we will see from the switches on the robot. Below is what they represent
-        //WT = switches[0]; //This will decide if we are closer to the warehouse or turn table based on the switch on the robot
-        //A = switches[1]; //This will tell us that we are either on the red or blue alliance side
         A = false;
         drivetrain = new Drivetrain(hardwareMap);
         Intake = new Intake(hardwareMap);
@@ -90,7 +90,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
 
     }
 
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode(){
 
         //     if ((Pivot_Arm != null) && (drivetrain != null) && (Intake !=null) && (Sensors != null) && (Turn_Table != null))
         //     {
@@ -98,19 +98,23 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
 
-/*        Lift.SetArmHome(false);
+        Lift.SetArmHome(false);
         Lift.SetElevatorHome(false);
 
-        Lift.Home(telemetry);*/
+        Lift.Home(telemetry);
 
         telemetry.addData("Object", "After Home");
         telemetry.update();
 
-        //detected = Detection.AprilTagDetection(telemetry);
+        detected = Detection.AprilTagDetection(telemetry);
+
+        telemetry.addData("detected", detected);
+        telemetry.update();
 
        // drivetrain.DrivetrainAutoMove(5, 0.5, 90);
 
-        drivetrain.DrivetrainAutoMove(0.75, 90, telemetry);
+
+/*        drivetrain.DrivetrainAutoMove(0.75, 90, telemetry);
         telemetry.addData("Object", "After rotation");
         telemetry.update();
         drivetrain.DrivetrainAutoMove(2, 0.75, 90, telemetry);
@@ -118,22 +122,68 @@ public class  FTC_14133_2022_Auto extends LinearOpMode {
         telemetry.update();
         drivetrain.DrivetrainAutoMove(2, 0.75, 0, 90, telemetry);
         telemetry.addData("Object", "After forward rotate");
-        telemetry.update();
+        telemetry.update();*/
 
 
-/*        if (routine == 0) { //This code will run if auto routine 0 is selected
+
+        if (routine == 0) { //This code will run if auto routine 0 is selected
+            //drivetrain.DrivetrainAutoMove(12, 0.75, 0, telemetry);
+            drivetrain.DrivetrainAutoMove(72, 0.5, 180, telemetry);
 
         }else if (routine == 1){ //
-            drivetrain.DrivetrainAutoMove(5, 0.75, 0);
+            Lift.GotoPosition(2, 0, 0);
+            drivetrain.DrivetrainAutoMove(34, 0.75, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(0.75, 90, telemetry);
+            Intake.Update_outtake(0.75, false);
+            sleep(3000);
+            drivetrain.DrivetrainAutoMove(8, 0.75, 270, telemetry);
+            if (detected == 1){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 180, telemetry);
+            }else if (detected == 3){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
+            }
+
         }
         else if (routine == 2){
-            drivetrain.DrivetrainAutoMove(5, 0.75, 90);
+            telemetry.addData("Auto 2", "");
+            telemetry.update();
+            Lift.GotoPosition(2, 0, 0);
+            drivetrain.DrivetrainAutoMove(34, 0.75, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(0.75, -90, telemetry);
+            Intake.Update_outtake(0.75, false);
+            sleep(3000);
+            drivetrain.DrivetrainAutoMove(20, 0.75, 90, telemetry);
+            if (detected == 1){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
+            }else if (detected == 3){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 180, telemetry);
+            }
         }
         else if (routine == 3){
-            drivetrain.DrivetrainAutoMove(5, 0.75, 0, 90);
+            Lift.GotoPosition(2, 0, 0);
+            drivetrain.DrivetrainAutoMove(30, 0.75, 0, telemetry);
+            drivetrain.DrivetrainAutoMove(0.75, -90, telemetry);
+            Intake.Update_outtake(0.75, false);
+            sleep(3000);
+            drivetrain.DrivetrainAutoMove(13, 0.75, 270, telemetry);
+            if (detected == 1){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
+            }else if (detected == 3){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 180, telemetry);
+            }
         }
         else if (routine == 4){ //This code will run if auto routine 4 is selected
-            drivetrain.DrivetrainAutoMove(0.75, 90);
-        }*/
+            Lift.GotoPosition(1, 0, 0);
+            drivetrain.DrivetrainAutoMove(30, 0.75, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(0.75, 90, telemetry);
+            Intake.Update_outtake(0.75, false);
+            sleep(3000);
+            drivetrain.DrivetrainAutoMove(13, 0.75, 270, telemetry);
+            if (detected == 1){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 180, telemetry);
+            }else if (detected == 3){
+                drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
+            }
+        }
     }
 }

@@ -34,13 +34,13 @@ public class Lift {
     final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360; //Converts counts per motor rev to counts per degree of arm rotation
 //=======
     final double ElevatorCountsPerRev = 28; //Counts per revolution of the motor
-    final double ElevatorGearRatio = (84.0/29.0)*(68.0/13.0); //Gear ratio of the motors
+    final double ElevatorGearRatio = (68.0/13.0)*(68.0/13.0); //Gear ratio of the motors
     final double ElevatorSpoolDiameter = 1; //The diameter of the wheels (We are converting mm to inch)
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
     double elevatorPower =1;
-    double armPower=1;
+    double armPower=0.75;
     int joystick_int_left;
     int joystick_int_right;
 
@@ -161,41 +161,41 @@ public class Lift {
         //Limits();
         switch (position) {
             case 4: // Intake Front
-                arm.setTargetPosition((int)(0 * ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(15 * ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
                 elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case 3: // Short Level Front
-                arm.setTargetPosition((int)(70 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(50 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(70 * ArmCountsPerDegree +Ljoystick));
+                arm.setTargetPosition((int)(79 * ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(6 * ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 1: //Tall Level Front
-                arm.setTargetPosition((int)(70 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(10 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(84.9 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(12 * ElevatorCountsPerInch +Rjoystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(150 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(1 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(111.6 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(4.2 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -1: //Tall Level Back
-                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(10 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(133.7 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(12 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
+                arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(6 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -3: //Short Level Back
-                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(2 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(170.6 * ArmCountsPerDegree +Ljoystick));
+                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             case -4: // Intake Back
-                arm.setTargetPosition((int)(300 * ArmCountsPerDegree +Ljoystick));
+                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Ljoystick));
                 elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
                 break;
             default:
@@ -253,7 +253,7 @@ public class Lift {
     public void HomeElevator(Telemetry telemetry){ //Method to home arm
         if (HomeSwitchElevatorDown.getState()){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            elevator.setPower(-.5); //run the motor towards the switch
+            elevator.setPower(-1); //run the motor towards the switch
             telemetry.addData("Homing Elev", "Homing");
             telemetry.update();
         }

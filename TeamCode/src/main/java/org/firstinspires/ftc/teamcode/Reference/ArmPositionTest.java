@@ -15,18 +15,15 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 @TeleOp(name="ArmPositionTest", group="Iterative Opmode")
 
 public class ArmPositionTest extends OpMode  {
-
-    final double ArmCountsPerRev = 28; // Counts per rev of the motor
-    final double ArmGearRatio = (32.0/10.0) * (76.0/21.0) * (68.0/13.0); //Ratio of the entire Pivot Arm from the motor to the arm
-    final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360;
-
-
-    boolean toggleLift = true;
     private DcMotor arm = null;
-    public int pos = 0;
+    private DcMotor elevator = null;
 
     public void init() {
         arm = hardwareMap.get(DcMotor.class, "Arm");
+        elevator = hardwareMap.get(DcMotor.class, "Elevator");
+
+        elevator.setDirection(DcMotorEx.Direction.REVERSE);
+        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         arm.setDirection(DcMotorSimple.Direction.REVERSE);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -34,19 +31,9 @@ public class ArmPositionTest extends OpMode  {
 
     }
 
-    public void init_loop() {
-
-    }
-
-    public void start() {
-
-    }
-
     public void loop() {
-
-
-
-        telemetry.addData("Arm Target Position", arm.getTargetPosition());
+        telemetry.addData("Elev Target Position", elevator.getCurrentPosition());
+        telemetry.addData("Arm Target Position", arm.getCurrentPosition());
         telemetry.update();
 
     }
