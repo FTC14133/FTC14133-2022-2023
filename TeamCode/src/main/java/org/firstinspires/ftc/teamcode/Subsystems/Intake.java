@@ -31,6 +31,11 @@ public class Intake {
     }
 
  */
+
+    public void Stop_intake(){
+        intake.setPower(0);
+    }
+
     public void Update_intake(double speed, boolean intakeSlow){ //Standard intake function
         if (intakeSlow) {
             speed *= .5;

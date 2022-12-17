@@ -98,10 +98,10 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
 
-/*        Lift.SetArmHome(false);
+        Lift.SetArmHome(false);
         Lift.SetElevatorHome(false);
 
-        Lift.Home(telemetry);*/
+        Lift.Home(telemetry);
 
         telemetry.addData("Object", "After Home");
         telemetry.update();
@@ -111,7 +111,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("detected", detected);
         telemetry.update();
 
-        sleep(10000);
+        sleep(5000);
 
        // drivetrain.DrivetrainAutoMove(5, 0.5, 90);
 
@@ -126,9 +126,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("Object", "After forward rotate");
         telemetry.update();*/
 
-
-
-/*        if (routine == 0) { //This code will run if auto routine 0 is selected
+        if (routine == 0) { //This code will run if auto routine 0 is selected
             //drivetrain.DrivetrainAutoMove(12, 0.75, 0, telemetry);
             drivetrain.DrivetrainAutoMove(72, 0.5, 180, telemetry);
 
@@ -147,7 +145,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
 
         }
         else if (routine == 2){
-            telemetry.addData("Auto 2", "");
+            telemetry.addData("detected", detected);
             telemetry.update();
             Lift.GotoPosition(2, 0, 0);
             drivetrain.DrivetrainAutoMove(34, 0.75, 180, telemetry);
@@ -155,10 +153,13 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             Intake.Update_outtake(0.75, false);
             sleep(3000);
             drivetrain.DrivetrainAutoMove(20, 0.75, 90, telemetry);
+            Intake.Stop_intake();
+            telemetry.addData("Current Detected Value", detected);
+            telemetry.update();
             if (detected == 1){
-                drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
+                drivetrain.DrivetrainAutoMove(14, 0.75, 360, telemetry);
             }else if (detected == 3){
-                drivetrain.DrivetrainAutoMove(15, 0.75, 180, telemetry);
+                drivetrain.DrivetrainAutoMove(14, 0.75, 180, telemetry);
             }
         }
         else if (routine == 3){
@@ -186,6 +187,11 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             }else if (detected == 3){
                 drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
             }
+        }
+
+/*        if (detected == -1){
+            drivetrain.DrivetrainAutoMove(20, 0.75, 180, telemetry);
+
         }*/
     }
 }
