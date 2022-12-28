@@ -95,7 +95,11 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         //     if ((Pivot_Arm != null) && (drivetrain != null) && (Intake !=null) && (Sensors != null) && (Turn_Table != null))
         //     {
         HardwareStart();
-        waitForStart();
+        //waitForStart();
+
+        while (!opModeIsActive() && !isStopRequested()) {
+            detected = Detection.AprilTagDetection(telemetry);
+        }
 
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
@@ -107,12 +111,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
 
         telemetry.addData("Object", "After Home");
         telemetry.update();
-
-        detected = Detection.AprilTagDetection(telemetry);
-
-        telemetry.addData("detected", detected);
-        telemetry.update();
-
+        
         Intake.Update_intake(0.25);
 
         sleep(3000);
