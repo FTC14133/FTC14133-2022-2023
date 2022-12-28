@@ -92,7 +92,7 @@ public class Lift {
     public void Teleop(Gamepad gamepad2, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
 
         joystick_int_right = (int)(gamepad2.right_stick_y*60);
-        joystick_int_left = (int)(gamepad2.right_stick_y*60);
+        joystick_int_left = (int)(gamepad2.left_stick_y*60);
 
         if ((!ElevatorHome) || (!ArmHome)){ //If arm is not homed
             Home(telemetry); //Runs the homing sequence for the arm to reset it
@@ -161,42 +161,43 @@ public class Lift {
         //Limits();
         switch (position) {
             case 4: // Intake Front
-                arm.setTargetPosition((int)(15 * ArmCountsPerDegree +Ljoystick)); //Todo: Determine all positions for the arm/lift
-                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(15 * ArmCountsPerDegree +Rjoystick
+                )); //Todo: Determine all positions for the arm/lift
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 3: // Short Level Front
-                arm.setTargetPosition((int)(50 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(50 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(79 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(6 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(79 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
 
             case 1: //Tall Level Front
-                arm.setTargetPosition((int)(84.9 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(12 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((12 * ElevatorCountsPerInch) +Ljoystick));
                 break;
 
             case 0: //Straight Up
-                arm.setTargetPosition((int)(111.6 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(4.2 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(111.6 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((4.2 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -1: //Tall Level Back
-                arm.setTargetPosition((int)(133.7 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(12 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((12 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(6 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -3: //Short Level Back
-                arm.setTargetPosition((int)(170.6 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(170.6 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -4: // Intake Back
-                arm.setTargetPosition((int)(202 * ArmCountsPerDegree +Ljoystick));
-                elevator.setTargetPosition((int)(0 * ElevatorCountsPerInch +Rjoystick));
+                arm.setTargetPosition((int)(210 * ArmCountsPerDegree +Rjoystick));
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             default:
                 throw new IllegalStateException("Unexpected position value: " + position);

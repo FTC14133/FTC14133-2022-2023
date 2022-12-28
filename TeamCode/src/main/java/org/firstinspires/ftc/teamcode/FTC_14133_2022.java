@@ -55,11 +55,11 @@ public class  FTC_14133_2022 extends OpMode {
 
      Lift.Teleop(gamepad2, telemetry); //Run the regular arm function
 
-     drivetrain.Teleop(gamepad1, telemetry, Lift.GetPosition());
+     drivetrain.Teleop(gamepad1, telemetry, Lift.GetArmHome(), Lift.GetElevatorHome());
 
      Lights.Update_Lights(Intake.getPossession(), Alliance, gamepad1.left_stick_button || gamepad2.left_stick_button);
 
-     Intake.Teleop(gamepad2, Lift.GetPosition(), telemetry); //Passes position of the arm so intake direction can change.
+     Intake.Teleop(gamepad2, Lift.GetPosition(), telemetry, Lift.GetArmHome(), Lift.GetElevatorHome()); //Passes position of the arm so intake direction can change.
      Intake.beambreak_print(telemetry);
      telemetry.update();
      Intake.Possession_Check();

@@ -40,7 +40,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     int detected = -1;
 
 
-    public void waitForStart() {
+    public void HardwareStart() {
         telemetry.addData("Object Creation", "Start");
         telemetry.update();
         A = false;
@@ -94,7 +94,9 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
 
         //     if ((Pivot_Arm != null) && (drivetrain != null) && (Intake !=null) && (Sensors != null) && (Turn_Table != null))
         //     {
+        HardwareStart();
         waitForStart();
+
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
 
@@ -111,7 +113,11 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("detected", detected);
         telemetry.update();
 
-        sleep(5000);
+        Intake.Update_intake(0.25);
+
+        sleep(3000);
+
+        Intake.Stop_intake();
 
        // drivetrain.DrivetrainAutoMove(5, 0.5, 90);
 
@@ -140,7 +146,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             if (detected == 1){
                 drivetrain.DrivetrainAutoMove(15, 0.75, 180, telemetry);
             }else if (detected == 3){
-                drivetrain.DrivetrainAutoMove(15, 0.75, 0, telemetry);
+                drivetrain.DrivetrainAutoMove(15, 0.5, 0, telemetry);
             }
 
         }
@@ -148,18 +154,18 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             telemetry.addData("detected", detected);
             telemetry.update();
             Lift.GotoPosition(2, 0, 0);
-            drivetrain.DrivetrainAutoMove(34, 0.75, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(36, 0.75, 180, telemetry);
             drivetrain.DrivetrainAutoMove(0.75, -90, telemetry);
             Intake.Update_outtake(0.75, false);
             sleep(3000);
-            drivetrain.DrivetrainAutoMove(20, 0.75, 90, telemetry);
+            drivetrain.DrivetrainAutoMove(25, 0.75, 90, telemetry);
             Intake.Stop_intake();
             telemetry.addData("Current Detected Value", detected);
             telemetry.update();
             if (detected == 1){
-                drivetrain.DrivetrainAutoMove(14, 0.75, 360, telemetry);
+                drivetrain.DrivetrainAutoMove(12, 0.5, 360, telemetry);
             }else if (detected == 3){
-                drivetrain.DrivetrainAutoMove(14, 0.75, 180, telemetry);
+                drivetrain.DrivetrainAutoMove(26, 0.5, 180, telemetry);
             }
         }
         else if (routine == 3){

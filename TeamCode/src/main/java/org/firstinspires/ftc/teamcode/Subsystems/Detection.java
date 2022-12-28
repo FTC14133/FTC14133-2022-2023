@@ -84,7 +84,7 @@ public class Detection {
 
     public int AprilTagDetection(Telemetry telemetry) {
 
-        while (framesRead <= 2e10) {
+        while (framesRead <= 2e5) {
             ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if (currentDetections.size() != 0) {

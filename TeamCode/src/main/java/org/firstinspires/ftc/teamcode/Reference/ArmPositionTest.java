@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Reference;
 
 import android.util.Log;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name="ArmPositionTest", group="Iterative Opmode")
-
+@Disabled
 public class ArmPositionTest extends OpMode  {
     private DcMotor arm = null;
     private DcMotor elevator = null;

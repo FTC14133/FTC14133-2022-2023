@@ -42,8 +42,7 @@ public class Intake {
         }
         if(!IntakeTouch.getState()) {
             intake.setPower(0);//Stop intake
-        }
-        else{ // if beam break not broken
+        }else{ // if beam break not broken
             Possession = false; //we do not have possession
             intake.setPower(speed); // Run intake
         }
@@ -64,16 +63,19 @@ public class Intake {
         Update_outtake(speed, false);
     }
 
-    public void Teleop(Gamepad gamepad2, int position, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
-        if(gamepad2.right_trigger>0){ //if the left trigger is pulled
-            Update_intake(gamepad2.right_trigger, gamepad2.right_trigger > 0); //Run the intake program
-        }
-        else {
-            Update_outtake(gamepad2.left_trigger, gamepad2.left_trigger > 0); //Otherwise run the outtake program
+    public void Teleop(Gamepad gamepad2, int position, Telemetry telemetry, boolean ArmHome, boolean ElevatorHome){ //Code to be run in Op Mode void Loop at top level
+        if((!ArmHome) && (!ElevatorHome)){
+            Stop_intake();
+        }else {
+            if (gamepad2.right_trigger > 0) { //if the left trigger is pulled
+                Update_intake(gamepad2.right_trigger, gamepad2.right_trigger > 0); //Run the intake program
+            } else {
+                Update_outtake(gamepad2.left_trigger, gamepad2.left_trigger > 0); //Otherwise run the outtake program
 
+            }
         }
         telemetry.addData("Possession",Possession);
-    }
+        }
 
 
     public void beambreak_print(Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level

@@ -146,7 +146,7 @@ public class Drivetrain  {
         DrivetrainAutoMove(0, speed, 0, rotation, telemetry);
     }
 
-    public void Teleop(Gamepad gamepad1, Telemetry telemetry, int position){ //Code to be run in Teleop Mode void Loop at top level
+    public void Teleop(Gamepad gamepad1, Telemetry telemetry, boolean ArmHome, boolean ElevatorHome){ //Code to be run in Teleop Mode void Loop at top level
         double leftPowerY = -gamepad1.left_stick_y;      //find the value of y axis on the left joystick;
         double leftPowerX = gamepad1.left_stick_x;      //find the value of x axis on the left joystick;
         double rightPowerX = gamepad1.right_stick_x;     //find the value of x axis on the right joystick;
@@ -175,7 +175,12 @@ public class Drivetrain  {
             rbpower /= max;
         }
 
-
+        if((!ArmHome) && (!ElevatorHome)){
+            rfpower = 0;
+            lfpower = 0;
+            lbpower = 0;
+            rbpower = 0;
+        }
 
         rf.setPower(lbpower);
         lf.setPower(rbpower);
@@ -194,10 +199,10 @@ public class Drivetrain  {
     }
 
     public void AutoStop(){
-        rf.setVelocity(0);
-        lf.setVelocity(0);
-        lb.setVelocity(0);
-        rb.setVelocity(0);
+        rf.setPower(0);
+        lf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
     }
 
 
