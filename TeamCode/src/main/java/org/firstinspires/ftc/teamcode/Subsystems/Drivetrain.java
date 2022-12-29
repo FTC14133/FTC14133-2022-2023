@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,10 +16,10 @@ import java.lang.Math;
 
 public class Drivetrain  {
     // Instantiate the drivetrain motor variables
-    private DcMotorEx lf; //Back left motor of drivetrain
-    private DcMotorEx rf; //Back right motor of drivetrain
-    private DcMotorEx lb; //Front left motor of drivetrain
-    private DcMotorEx rb; //Front right motor of drivetrain
+    private static DcMotorEx lf; //Back left motor of drivetrain
+    private static DcMotorEx rf; //Back right motor of drivetrain
+    private static DcMotorEx lb; //Front left motor of drivetrain
+    private static DcMotorEx rb; //Front right motor of drivetrain
     int tolerance = 4; // Encoder tolerance
     final double countsperrev = 28; // Counts per rev of the motor
     final double wheelD =96.0/25.4; // Diameter of the wheel (in inches)
@@ -51,7 +52,12 @@ public class Drivetrain  {
         rf.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
-
+    public static void StopDrivetrain(){
+        lb.setPower(0);
+        rb.setPower(0);
+        lf.setPower(0);
+        rf.setPower(0);
+    }
 
     public void DrivetrainAutoMove(double distance, double speed, double direction, double rotation, Telemetry telemetry) {
         /*

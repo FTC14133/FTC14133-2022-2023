@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Generic Lift
 
+import com.acmerobotics.roadrunner.drive.Drive;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,6 +13,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain.*;
 
 //import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -225,6 +228,8 @@ public class Lift {
     } //Gets whether the elevator is homed or not
 
     public void Home(Telemetry telemetry){
+        Drivetrain.StopDrivetrain();
+
         while (!ElevatorHome){
             HomeElevator(telemetry);
         }
