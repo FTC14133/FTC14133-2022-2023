@@ -43,7 +43,6 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     public void HardwareStart() {
         telemetry.addData("Object Creation", "Start");
         telemetry.update();
-        A = false;
         drivetrain = new Drivetrain(hardwareMap);
         Intake = new Intake(hardwareMap);
         Lift = new Lift(hardwareMap);
@@ -73,7 +72,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addLine("Input Auto Routine (Up = V1, Right = V2, Down = V3, Left = V4)");
         telemetry.update();
         while (!AutoSelected){
-            telemetry.addData("Alliance: ", "V"+routine);
+            telemetry.addData("Alliance: ", "V"+(routine));
             if (gamepad1.dpad_up){
                 routine = 1;
             }else if (gamepad1.dpad_right){
@@ -112,7 +111,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
 
         telemetry.addData("detected", detected);
         telemetry.update();
-
+        
         Intake.Update_intake(0.25);
 
         sleep(3000);

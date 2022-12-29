@@ -23,14 +23,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lights;
 //COMMENT YOUR CODE (VIHAAN)! We're adding a lot of automation, which is nice, but it is going to be REALLY difficult to troubleshoot.
 
 public class  FTC_14133_2022 extends OpMode {
- private Drivetrain drivetrain=null;
- private Intake Intake=null;
- private Lift Lift=null;
- private Sensors Sensors=null;
- private Lights Lights=null;
- boolean [] switches;
- boolean Alliance;
- boolean Warehouse_TurnTable;
+    private Drivetrain drivetrain=null;
+    private Intake Intake=null;
+    private Lift Lift=null;
+    private Sensors Sensors=null;
+    private Lights Lights=null;
+    boolean [] switches;
+    boolean Alliance;
+    boolean Warehouse_TurnTable;
 
  public void init() {
      drivetrain = new Drivetrain(hardwareMap);
@@ -41,9 +41,6 @@ public class  FTC_14133_2022 extends OpMode {
      //Alliance = AllianceSingleton.AllianceInstance().GetAlliance();
  }
 
- public void init_loop() {
-
- }
  public void start() {
      telemetry.addData("Status", "Start");
      telemetry.update();
