@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Generic Lift
 
+import static org.firstinspires.ftc.teamcode.Subsystems.Intake.Stop_intake;
+
 import com.acmerobotics.roadrunner.drive.Drive;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -229,7 +231,7 @@ public class Lift {
 
     public void Home(Telemetry telemetry){
         Drivetrain.StopDrivetrain();
-
+        Stop_intake();
         while (!ElevatorHome){
             HomeElevator(telemetry);
         }

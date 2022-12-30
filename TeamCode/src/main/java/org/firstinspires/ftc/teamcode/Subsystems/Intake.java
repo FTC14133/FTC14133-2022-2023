@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Intake {
     // Instantiate the motor variables
-    CRServo intake;
+    static CRServo intake;
     //CRServo intake_b;
     boolean toggle = true;
     boolean Possession = true; //Variable telling whether we have possession of a game piece or not
@@ -32,7 +32,7 @@ public class Intake {
 
  */
 
-    public void Stop_intake(){
+    public static void Stop_intake(){
         intake.setPower(0);
     }
 
