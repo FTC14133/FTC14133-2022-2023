@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.Subsystems.Detections;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 public class Detection {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    ColorDetectionPipeline colorDetectionPipeline;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -65,7 +66,7 @@ public class Detection {
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
-        camera.setPipeline(aprilTagDetectionPipeline);
+
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -83,6 +84,7 @@ public class Detection {
     }
 
     public int AprilTagDetection(Telemetry telemetry){
+        camera.setPipeline(aprilTagDetectionPipeline);
         ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
         if (currentDetections.size() != 0) {
@@ -108,5 +110,10 @@ public class Detection {
         telemetry.update();
         framesRead += 1;
     return -1;
+    }
+
+    public String junctionPos(){
+        camera.setPipeline(colorDetectionPipeline);
+        return (colorDetectionPipeline.returnJunctionPos());
     }
 }

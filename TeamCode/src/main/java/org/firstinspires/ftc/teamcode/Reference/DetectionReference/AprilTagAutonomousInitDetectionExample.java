@@ -19,18 +19,15 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.Reference;
+package org.firstinspires.ftc.teamcode.Reference.DetectionReference;
 
 import android.util.Log;
 
-import androidx.core.graphics.drawable.IconCompat;
-
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Subsystems.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.Subsystems.Detections.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;

@@ -2,20 +2,14 @@
 package org.firstinspires.ftc.teamcode;
 // https://first-tech-challenge.github.io/SkyStone/  This is the link to ALL metered of FTC
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Subsystems.AllianceSingleton;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
-import org.firstinspires.ftc.teamcode.Subsystems.Detection;
+import org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection;
 
 @Autonomous(name="FTC_14133_2022_Auto", group="Auto")
 
@@ -29,7 +23,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     private Intake Intake=null;
     private Lift Lift =null;
     private Sensors Sensors=null;
-    private Detection Detection=null;
+    private org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection Detection=null;
     boolean[] switches;
     boolean A ; //This will tell us that we are either on the red or blue alliance side
     double total_speed = 0.5; //This is the speed of most of the motors.
