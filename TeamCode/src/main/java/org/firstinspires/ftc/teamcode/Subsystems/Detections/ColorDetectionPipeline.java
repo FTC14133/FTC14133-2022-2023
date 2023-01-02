@@ -1,3 +1,8 @@
+/***
+ * Link to Python Test Version of Junction Detection:
+ * https://github.com/VihaanChhabria/Python-Examples/tree/master/FTC_Junction_Detection
+ ***/
+
 package org.firstinspires.ftc.teamcode.Subsystems.Detections;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
