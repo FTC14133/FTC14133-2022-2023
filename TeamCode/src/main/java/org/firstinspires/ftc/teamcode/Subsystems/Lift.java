@@ -176,7 +176,7 @@ public class Lift {
 
             case 1: //Tall Level Front
                 arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
-                elevator.setTargetPosition((int)((12 * ElevatorCountsPerInch) +Ljoystick));
+                elevator.setTargetPosition((int)((10 * ElevatorCountsPerInch) +Ljoystick));
                 break;
 
             case 0: //Straight Up
@@ -185,7 +185,7 @@ public class Lift {
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
-                elevator.setTargetPosition((int)((12 * ElevatorCountsPerInch) +Ljoystick));
+                elevator.setTargetPosition((int)((10 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -2: //Mid Level Back
                 arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Rjoystick));
@@ -196,7 +196,7 @@ public class Lift {
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -4: // Intake Back
-                arm.setTargetPosition((int)(210 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(200 * ArmCountsPerDegree +Rjoystick));
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             default:

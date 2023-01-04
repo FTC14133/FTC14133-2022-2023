@@ -9,11 +9,11 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@Autonomous
 public class ColorDetectionPipeline extends OpenCvPipeline {
     Mat YCbCr = new Mat();
     Mat leftCrop;
@@ -74,7 +74,11 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         return (outPut);
     }
 
-    public String returnJunctionPos(){
+    public String returnJunctionPos(Telemetry telemetry){
+        telemetry.addData("Trying", "Print colorPos");
+        telemetry.update();
+        telemetry.addData("In returnJunctionPos", colorPos);
+        telemetry.update();
         return (colorPos);
 
     }

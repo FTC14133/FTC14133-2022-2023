@@ -108,7 +108,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         
         Intake.Update_intake(0.25);
 
-        sleep(3000);
+        sleep(1000);
 
         Intake.Stop_intake();
 

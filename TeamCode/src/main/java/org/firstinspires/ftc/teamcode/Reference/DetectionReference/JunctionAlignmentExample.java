@@ -12,9 +12,10 @@ public class JunctionAlignmentExample extends OpMode {
     public void init() {
         Detection = new Detection(hardwareMap);
         telemetry.addData("Object Creation", "Done");
+        Detection.setColorPipeline(telemetry);
     }
 
     public void loop() {
-        Detection.junctionPos();
+        Detection.junctionPos(telemetry);
     }
 }

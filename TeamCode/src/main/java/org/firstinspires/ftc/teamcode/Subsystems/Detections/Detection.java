@@ -21,6 +21,8 @@
 
 package org.firstinspires.ftc.teamcode.Subsystems.Detections;
 
+
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -112,8 +114,16 @@ public class Detection {
     return -1;
     }
 
-    public String junctionPos(){
+    public void setColorPipeline(Telemetry telemetry){
         camera.setPipeline(colorDetectionPipeline);
-        return (colorDetectionPipeline.returnJunctionPos());
+        telemetry.addData("Started", "setPipeline()");
+        telemetry.update();
+    }
+
+    public String junctionPos(Telemetry telemetry){
+        telemetry.addData("Started", "junctionPos()");
+        telemetry.update();
+
+        return (colorDetectionPipeline.returnJunctionPos(telemetry));
     }
 }
