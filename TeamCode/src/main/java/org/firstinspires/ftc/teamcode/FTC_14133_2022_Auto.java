@@ -36,7 +36,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     boolean AllianceSelected = false;
     boolean AutoSelected = false;
     String AllianceString = "Not Selected";
-    int routine = 2;
+    int routine = -1;
     int detected = -1;
 
 
@@ -130,7 +130,30 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         drivetrain.DrivetrainAutoMove(2, 0.75, 0, 90, telemetry);
         telemetry.addData("Object", "After forward rotate");
         telemetry.update();*/
-
+        if (routine == -1){
+            drivetrain.DrivetrainAutoMove(0.5, 45, telemetry);
+            Lift.GotoPosition(-3, 0, 0);
+            sleep(3000);
+            Intake.Update_outtake(1);
+            sleep(2000);
+            Intake.Stop_intake();
+            drivetrain.DrivetrainAutoMove(0.5, -45, telemetry);
+            drivetrain.DrivetrainAutoMove(0.5, 54, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(0.5, 90, telemetry);
+            drivetrain.DrivetrainAutoMove(0.5, 18, 360, telemetry);
+            Lift.GotoPosition(-3, 0, 60);
+            sleep(3000);
+            Intake.Update_intake(0.5);
+            sleep(2000);
+            Intake.Stop_intake();
+            drivetrain.DrivetrainAutoMove(20, 0.5, 180, telemetry);
+            Lift.GotoPosition(-2, 0, 0);
+            drivetrain.DrivetrainAutoMove(0.5, 45, telemetry);
+            sleep(2000);
+            Intake.Update_outtake(1);
+            sleep(3000);
+            Intake.Stop_intake();
+        }
         if (routine == 0) { //This code will run if auto routine 0 is selected
             //drivetrain.DrivetrainAutoMove(12, 0.75, 0, telemetry);
             drivetrain.DrivetrainAutoMove(72, 0.5, 180, telemetry);

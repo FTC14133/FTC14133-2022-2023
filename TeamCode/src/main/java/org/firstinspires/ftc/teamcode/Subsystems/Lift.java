@@ -52,6 +52,8 @@ public class Lift {
     boolean toggleLift = true;
     boolean toggleFlip = true;
 
+    int posNeg = 1;
+
 
 
     public static double armP = 14;
@@ -132,9 +134,23 @@ public class Lift {
                 toggleLift = true; // Button has been released, so this allows a re-press to activate the code above.
             }
 
+        if (gamepad2.left_bumper){
+            posNeg = -1;
+        }
 
+        if (gamepad2.b){
+            position = 4 * posNeg;
+        }else if (gamepad2.a){
+            position = 3 * posNeg;
+        }else if (gamepad2.x){
+            position = 2 * posNeg;
+        }else if (gamepad2.y){
+            position = 1 * posNeg;
+        }
 
         GotoPosition(position, joystick_int_left, joystick_int_right);
+
+        posNeg = 1;
 
         telemetry.addData("ElevatorHome", ElevatorHome);
         telemetry.addData("ArmHome", ArmHome);
@@ -171,7 +187,9 @@ public class Lift {
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 3: // Short Level Front
-                arm.setTargetPosition((int)(50 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(65 * ArmCountsPerDegree +Rjoystick));
+
+
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 2: // Mid Level Front
@@ -181,7 +199,11 @@ public class Lift {
 
             case 1: //Tall Level Front
                 arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
-                elevator.setTargetPosition((int)((12 * ElevatorCountsPerInch) +Ljoystick));
+                //elevator.setTargetPosition((int)((14 * ElevatorCountsPerInch) +Ljoystick));
+                while (HomeSwitchElevatorUp.getState()){
+                    elevator.setPower(0.5);
+                }
+                elevator.setPower(0);
                 break;
 
             case 0: //Straight Up
@@ -190,14 +212,18 @@ public class Lift {
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
-                elevator.setTargetPosition((int)((12 * ElevatorCountsPerInch) +Ljoystick));
+                //elevator.setTargetPosition((int)((14 * ElevatorCountsPerInch) +Ljoystick));
+                while (HomeSwitchElevatorUp.getState()){
+                    elevator.setPower(0.5);
+                }
+                elevator.setPower(0);
                 break;
             case -2: //Mid Level Back
                 arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Rjoystick));
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -3: //Short Level Back
-                arm.setTargetPosition((int)(170.6 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(185.6 * ArmCountsPerDegree +Rjoystick));
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -4: // Intake Back
@@ -244,7 +270,7 @@ public class Lift {
     public void HomeArm(Telemetry telemetry){ //Method to home arm
         if (HomeSwitchArmFront.getState()){ //If the home switch is not pressed
             arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            arm.setPower(-.5); //run the motor towards the switch
+            arm.setPower(-0.75); //run the motor towards the switch
             telemetry.addData("Homing Arm", "Homing");
             telemetry.update();
         }
