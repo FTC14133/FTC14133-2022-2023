@@ -25,6 +25,7 @@ public class Lift {
     private DcMotorEx elevator;
     private DcMotorEx arm;
     boolean ElevatorHome = false;
+    boolean ElevatorUpHome = false;
     boolean ArmHome = false;
     DigitalChannel HomeSwitchElevatorUp;
     DigitalChannel HomeSwitchElevatorDown;
@@ -54,7 +55,7 @@ public class Lift {
 
     int posNeg = 1;
 
-
+    int topElevatorCount = 0;
 
     public static double armP = 14;
     //original P = 10
@@ -199,11 +200,8 @@ public class Lift {
 
             case 1: //Tall Level Front
                 arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
-                //elevator.setTargetPosition((int)((14 * ElevatorCountsPerInch) +Ljoystick));
-                while (HomeSwitchElevatorUp.getState()){
-                    elevator.setPower(0.5);
-                }
-                elevator.setPower(0);
+                elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
+                //elevator.setTargetPosition((int)(topElevatorCount +Ljoystick));
                 break;
 
             case 0: //Straight Up
@@ -212,11 +210,8 @@ public class Lift {
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
-                //elevator.setTargetPosition((int)((14 * ElevatorCountsPerInch) +Ljoystick));
-                while (HomeSwitchElevatorUp.getState()){
-                    elevator.setPower(0.5);
-                }
-                elevator.setPower(0);
+                elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
+                //elevator.setTargetPosition((int)(topElevatorCount +Ljoystick));
                 break;
             case -2: //Mid Level Back
                 arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Rjoystick));
@@ -263,7 +258,9 @@ public class Lift {
         }
         while (!ArmHome){
             HomeArm(telemetry);
-        }
+        }/*while (!ElevatorUpHome){
+            HomeElevatorUp();
+        }*/
 
     }
 
@@ -283,11 +280,23 @@ public class Lift {
             telemetry.update();
         }
     }
-
+    public void HomeElevatorUp(){
+        if (HomeSwitchElevatorUp.getState()){
+            elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elevator.setPower(0.75); //run the motor towards the switch
+        }else{
+            elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Stop lift motor and set position to 0
+            elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Change the run mode
+            elevator.setTargetPositionTolerance(tolerance); //Set the arm encoder tolerance
+            ElevatorUpHome =true; //Change value of Home to true
+            topElevatorCount = elevator.getCurrentPosition();
+        }
+    }
     public void HomeElevator(Telemetry telemetry){ //Method to home arm
+
         if (HomeSwitchElevatorDown.getState()){ //If the home switch is not pressed
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            elevator.setPower(-1); //run the motor towards the switch
+            elevator.setPower(-0.5); //run the motor towards the switch
             telemetry.addData("Homing Elev", "Homing");
             telemetry.update();
         }

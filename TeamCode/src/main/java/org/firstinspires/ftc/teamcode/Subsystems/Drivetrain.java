@@ -27,7 +27,7 @@ public class Drivetrain  {
     final double countsperin=countsperrev*(gearratio)*(1/(Math.PI*wheelD));
     final double wheelBaseR = 15.5/2.0; //Wheel base radius in inches
     //final double wheelBaseR = wheelD/2.0; //Wheel base radius in inches
-    final double rotationK = 0.15; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
+    final double rotationK = 0.35; //Scaling factor for rotation (Teleop) Todo: Determine a good scaling factor for this. Should also calculate for real based on wheel diameter and location on robot.
     final double maxSpeed = 6000 * countsperrev * (1.0/60.0); //Counts per S Todo: Determine the real max speed, likely through test
     final double inchesperdegrotation = 2 * Math.PI * wheelBaseR * (1.0/360.0);
 
@@ -188,10 +188,10 @@ public class Drivetrain  {
             rbpower = 0;
         }
 
-        lbpower = lbpower/0.25;
-        rbpower = rbpower/0.25;
-        lfpower = lfpower/0.25;
-        rfpower = rfpower/0.25;
+/*        lbpower = lbpower/1;
+        rbpower = rbpower/1;
+        lfpower = lfpower/1;
+        rfpower = rfpower/1;*/
 
         rf.setPower(lbpower);
         lf.setPower(rbpower);
