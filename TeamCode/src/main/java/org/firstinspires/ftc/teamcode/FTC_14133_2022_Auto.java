@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
-import org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection;
+//import org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection;
 
 @Autonomous(name="FTC_14133_2022_Auto", group="Auto")
 
@@ -23,7 +23,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     private Intake Intake=null;
     private Lift Lift =null;
     private Sensors Sensors=null;
-    private org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection Detection=null;
+    //private org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection Detection=null;
     boolean[] switches;
     boolean A ; //This will tell us that we are either on the red or blue alliance side
     double total_speed = 0.5; //This is the speed of most of the motors.
@@ -42,7 +42,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         Intake = new Intake(hardwareMap);
         Lift = new Lift(hardwareMap);
         Sensors = new Sensors(hardwareMap);
-        Detection = new Detection(hardwareMap);
+        //Detection = new Detection(hardwareMap);
         telemetry.addData("Object Creation", "Done");
         telemetry.addLine("Input Alliance (X = blue, B = red)");
         telemetry.update();
@@ -92,7 +92,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         //waitForStart();
 
         while (!opModeIsActive() && !isStopRequested()) {
-            detected = Detection.AprilTagDetection(telemetry);
+            //detected = Detection.AprilTagDetection(telemetry);
         }
 
         telemetry.addData("Object", "Passed waitForStart");

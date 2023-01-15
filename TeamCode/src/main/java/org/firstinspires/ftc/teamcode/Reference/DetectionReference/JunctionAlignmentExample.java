@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.Detections.AprilTagDetectionPipeline;
-import org.firstinspires.ftc.teamcode.Subsystems.Detections.ColorDetectionPipeline;
+//import org.firstinspires.ftc.teamcode.Subsystems.Detections.ColorDetectionPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -15,11 +15,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @TeleOp(name="JunctionAlignmentExample", group="Auto")
 public class JunctionAlignmentExample extends LinearOpMode {
     OpenCvCamera camera;
-    ColorDetectionPipeline colorDetectionPipeline;
+    //ColorDetectionPipeline colorDetectionPipeline;
 
 
     public void runOpMode(){
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        /*    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
             camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
             camera.setPipeline(colorDetectionPipeline);
@@ -45,3 +45,4 @@ public class JunctionAlignmentExample extends LinearOpMode {
             }
         }
 }
+*/}}
