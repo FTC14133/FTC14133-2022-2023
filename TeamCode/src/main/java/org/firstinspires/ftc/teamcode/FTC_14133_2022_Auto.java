@@ -9,13 +9,11 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Sensors;
-//import org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection;
+import org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection;
+
+import java.util.Objects;
 
 @Autonomous(name="FTC_14133_2022_Auto", group="Auto")
-
-
-//My favorite shape is a nonagon
-//I like to ride dirt bikes RS
 
 
 public class  FTC_14133_2022_Auto extends LinearOpMode{
@@ -23,14 +21,14 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     private Intake Intake=null;
     private Lift Lift =null;
     private Sensors Sensors=null;
-    //private org.firstinspires.ftc.teamcode.Subsystems.Detections.Detection Detection=null;
+    private Detection Detection=null;
     boolean[] switches;
     boolean A ; //This will tell us that we are either on the red or blue alliance side
     double total_speed = 0.5; //This is the speed of most of the motors.
     boolean AllianceSelected = false;
     boolean AutoSelected = false;
     String AllianceString = "Not Selected";
-    int routine = 2;
+    int routine = -1;
     int detected = -1;
 
 
@@ -42,7 +40,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         Intake = new Intake(hardwareMap);
         Lift = new Lift(hardwareMap);
         Sensors = new Sensors(hardwareMap);
-        //Detection = new Detection(hardwareMap);
+        Detection = new Detection(hardwareMap);
         telemetry.addData("Object Creation", "Done");
         telemetry.addLine("Input Alliance (X = blue, B = red)");
         telemetry.update();
@@ -92,7 +90,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         //waitForStart();
 
         while (!opModeIsActive() && !isStopRequested()) {
-            //detected = Detection.AprilTagDetection(telemetry);
+            detected = Detection.AprilTagDetection(telemetry);
         }
 
         telemetry.addData("Object", "Passed waitForStart");
@@ -124,7 +122,19 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         drivetrain.DrivetrainAutoMove(2, 0.75, 0, 90, telemetry);
         telemetry.addData("Object", "After forward rotate");
         telemetry.update();*/
-
+        if (routine == -1){
+            while (!Objects.equals(Detection.junctionPos(), "Middle")){
+                telemetry.addData("Doing", "Detection");
+                telemetry.update();
+                drivetrain.DrivetrainAutoMove(0.25, 10, telemetry);
+            }
+            telemetry.addData("Done", "Detection");
+            telemetry.update();
+            sleep(2000);
+            telemetry.addData("Read", Detection.junctionPos());
+            telemetry.update();
+            sleep(2000);
+        }
         if (routine == 0) { //This code will run if auto routine 0 is selected
             //drivetrain.DrivetrainAutoMove(12, 0.75, 0, telemetry);
             drivetrain.DrivetrainAutoMove(72, 0.5, 180, telemetry);

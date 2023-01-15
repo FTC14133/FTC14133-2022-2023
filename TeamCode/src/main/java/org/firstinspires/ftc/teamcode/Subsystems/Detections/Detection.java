@@ -17,18 +17,21 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *//*
+ */
 
 
 package org.firstinspires.ftc.teamcode.Subsystems.Detections;
 
 
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.ColorDetectionPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -115,16 +118,9 @@ public class Detection {
     return -1;
     }
 
-    public void setColorPipeline(Telemetry telemetry){
-        camera.setPipeline(colorDetectionPipeline);
-        telemetry.addData("Started", "setPipeline()");
-        telemetry.update();
-    }
+    public String junctionPos(){
+        camera.setPipeline(new ColorDetectionPipeline.StageSwitchingPipeline());
 
-    public String junctionPos(Telemetry telemetry){
-        telemetry.addData("Started", "junctionPos()");
-        telemetry.update();
-
-        return (colorDetectionPipeline.returnJunctionPos(telemetry));
+        return (ColorDetectionPipeline.StageSwitchingPipeline.returnJunPos());
     }
-}*/
+}
