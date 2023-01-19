@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Generic Lift
 
-import static org.firstinspires.ftc.teamcode.Subsystems.Intake.Stop_intake;
+
 
 import com.acmerobotics.roadrunner.drive.Drive;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -40,7 +40,7 @@ public class Lift {
     final double ArmCountsPerDegree = ArmCountsPerRev * ArmGearRatio /360; //Converts counts per motor rev to counts per degree of arm rotation
 //=======
     final double ElevatorCountsPerRev = 28; //Counts per revolution of the motor
-    final double ElevatorGearRatio = (68.0/13.0)*(68.0/13.0); //Gear ratio of the motors
+    final double ElevatorGearRatio = (76.0/21.0)*(76.0/21.0)*(76.0/21.0); //Gear ratio of the motors
     final double ElevatorSpoolDiameter = 1; //The diameter of the wheels (We are converting mm to inch)
     final double ElevatorDTR = Math.PI* ElevatorSpoolDiameter / ElevatorGearRatio; //Distance traveled in one rotation
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
@@ -67,6 +67,17 @@ public class Lift {
     //original F = 0
 
     PIDFCoefficients ArmPIDF = new PIDFCoefficients(armP, armI, armD, armF);
+
+    public static double elevatorP = 14;
+    //original P = 10
+    public static double elevatorI = 0.05;
+    //original I = 0.05
+    public static double elevatorD = 0;
+    //original D = 0
+    public double elevatorF = 0;
+    //original F = 0
+
+    PIDFCoefficients elevatorPIDF = new PIDFCoefficients(elevatorP, elevatorI, elevatorD, elevatorF);
 
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
@@ -116,31 +127,32 @@ public class Lift {
         else if (!gamepad2.x){
             toggleFlip = true;
         }
-        if (toggleLift && (gamepad2.dpad_up || gamepad2.dpad_down)) {  // Only execute once per Button push
-                toggleLift = false;  // Prevents this section of code from being called again until the Button is released and re-pressed
-                if (gamepad2.dpad_down) {  // If the d-pad up button is pressed
-                    position = position + 1; //Increase Arm position
-                    if (position > 4) { //If arm position is above 3
-                        position = 4; //Cap it at 3
-                    }
-                } else if (gamepad2.dpad_up) { // If d-pad down button is pressed
-                    position = position - 1; //Decrease arm position
-                    if (position < -4) { //If arm position is below -3
-                        position = -4; //cap it at -3
-                    }
-                }
 
+        if (toggleLift && (gamepad2.dpad_up || gamepad2.dpad_down)) {  // Only execute once per Button push
+            toggleLift = false;  // Prevents this section of code from being called again until the Button is released and re-pressed
+            if (gamepad2.dpad_down) {  // If the d-pad up button is pressed
+                position = position + 1; //Increase Arm position
+                if (position > 8) { //If arm position is above 3
+                    position = 8; //Cap it at 3
+                }
+            } else if (gamepad2.dpad_up) { // If d-pad down button is pressed
+                position = position - 1; //Decrease arm position
+                if (position < -8) { //If arm position is below -3
+                    position = -8; //cap it at -3
+                }
             }
-            else if (!gamepad2.dpad_up && !gamepad2.dpad_down) { //if neither button is being pressed
-                toggleLift = true; // Button has been released, so this allows a re-press to activate the code above.
-            }
+
+        }
+        else if (!gamepad2.dpad_up && !gamepad2.dpad_down) { //if neither button is being pressed
+            toggleLift = true; // Button has been released, so this allows a re-press to activate the code above.
+        }
 
         if (gamepad2.left_bumper){
             posNeg = -1;
         }
 
         if (gamepad2.b){
-            position = 4 * posNeg;
+            position = 8 * posNeg;
         }else if (gamepad2.a){
             position = 3 * posNeg;
         }else if (gamepad2.x){
@@ -150,9 +162,9 @@ public class Lift {
         }
 
         if ((position == 1) && (HomeSwitchElevatorUp.getState())){
-            position = 1
+            position = 1;
         }else if ((position == -1) && (HomeSwitchElevatorUp.getState())){
-            position = -1
+            position = -1;
         }
 
         GotoPosition(position, joystick_int_left, joystick_int_right);
@@ -186,11 +198,31 @@ public class Lift {
     public void GotoPosition(int position, int Ljoystick, int Rjoystick){
         arm.setPower(armPower);
         elevator.setPower(elevatorPower);
-        
+
         //Limits();
         switch (position) {
-            case 4: // Intake Front
-                arm.setTargetPosition((int)(15 * ArmCountsPerDegree +Rjoystick)); //Todo: Determine all positions for the arm/lift
+            case 8: // Intake Front
+                arm.setTargetPosition((int)(2 * ArmCountsPerDegree +Rjoystick)); //Todo: Determine all positions for the arm/lift
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case 7:
+                arm.setTargetPosition((int)(35+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case 6:
+                arm.setTargetPosition((int)(58+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case 5:
+                arm.setTargetPosition((int)(84+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case 4:
+                arm.setTargetPosition((int)(103+Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -219,6 +251,8 @@ public class Lift {
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                elevator.setPower(elevatorPower);
                 //elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -2: //Mid Level Back
@@ -231,8 +265,28 @@ public class Lift {
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
-            case -4: // Intake Back
-                arm.setTargetPosition((int)(210 * ArmCountsPerDegree +Rjoystick));
+            case -4:
+                arm.setTargetPosition((int)(953+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case -5:
+                arm.setTargetPosition((int)(975+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case -6:
+                arm.setTargetPosition((int)(993+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case -7:
+                arm.setTargetPosition((int)(1021+Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
+                break;
+            case -8: // Intake Back
+                arm.setTargetPosition((int)(216 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -263,7 +317,6 @@ public class Lift {
 
     public void Home(Telemetry telemetry){
         Drivetrain.StopDrivetrain();
-        Stop_intake();
         while (!ElevatorHome){
             HomeElevator(telemetry);
         }
@@ -278,7 +331,7 @@ public class Lift {
     public void HomeArm(Telemetry telemetry){ //Method to home arm
         if (HomeSwitchArmFront.getState()){ //If the home switch is not pressed
             arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            arm.setPower(-0.75); //run the motor towards the switch
+            arm.setPower(-0.5); //run the motor towards the switch
             telemetry.addData("Homing Arm", "Homing");
             telemetry.update();
         }

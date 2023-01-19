@@ -56,7 +56,7 @@ public class  FTC_14133_2022 extends OpMode {
 
      Lights.Update_Lights(Intake.getPossession(), Alliance, gamepad1.left_stick_button || gamepad2.left_stick_button);
 
-     Intake.Teleop(gamepad2, Lift.GetPosition(), telemetry, Lift.GetArmHome(), Lift.GetElevatorHome()); //Passes position of the arm so intake direction can change.
+     Intake.Teleop(gamepad2, telemetry); //Passes position of the arm so intake direction can change.
      Intake.beambreak_print(telemetry);
      telemetry.update();
      Intake.Possession_Check();

@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name="ArmPositionTest", group="Iterative Opmode")
-@Disabled
+//@Disabled
 public class ArmPositionTest extends OpMode  {
     private DcMotor arm = null;
     private DcMotor elevator = null;
