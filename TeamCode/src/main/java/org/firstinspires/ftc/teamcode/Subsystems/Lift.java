@@ -153,11 +153,9 @@ public class Lift {
             position = 1
         }else if ((position == -1) && (HomeSwitchElevatorUp.getState())){
             position = -1
-        }else{
-            GotoPosition(position, joystick_int_left, joystick_int_right);
         }
 
-        //GotoPosition(position, joystick_int_left, joystick_int_right);
+        GotoPosition(position, joystick_int_left, joystick_int_right);
 
         posNeg = 1;
 
@@ -188,22 +186,22 @@ public class Lift {
     public void GotoPosition(int position, int Ljoystick, int Rjoystick){
         arm.setPower(armPower);
         elevator.setPower(elevatorPower);
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
         //Limits();
         switch (position) {
             case 4: // Intake Front
-                arm.setTargetPosition((int)(15 * ArmCountsPerDegree +Rjoystick
-                )); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(15 * ArmCountsPerDegree +Rjoystick)); //Todo: Determine all positions for the arm/lift
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 3: // Short Level Front
                 arm.setTargetPosition((int)(65 * ArmCountsPerDegree +Rjoystick));
-
-
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 2: // Mid Level Front
                 arm.setTargetPosition((int)(79 * ArmCountsPerDegree +Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
 
@@ -211,30 +209,31 @@ public class Lift {
                 arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 elevator.setPower(elevatorPower);
-                
                 //elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
-
                 break;
 
             case 0: //Straight Up
                 arm.setTargetPosition((int)(111.6 * ArmCountsPerDegree +Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((4.2 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
                 //elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
-                
                 break;
             case -2: //Mid Level Back
                 arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -3: //Short Level Back
                 arm.setTargetPosition((int)(185.6 * ArmCountsPerDegree +Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -4: // Intake Back
                 arm.setTargetPosition((int)(210 * ArmCountsPerDegree +Rjoystick));
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             default:
