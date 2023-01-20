@@ -129,17 +129,19 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.update();*/
         if (routine == -1){
             drivetrain.DrivetrainAutoMove(0.5, 40, telemetry);
-
+            drivetrain.DrivetrainAutoMove(2.5, 0.5, 180, telemetry);
 
             Lift.GotoPosition(-3, 0, 0);
             sleep(3000);
             drivetrain.DrivetrainAutoMove(0.5, -40, telemetry);
-            drivetrain.DrivetrainAutoMove(44, 0.5, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(42, 0.5, 180, telemetry);
             drivetrain.DrivetrainAutoMove(0.5, 90, telemetry);
-            drivetrain.DrivetrainAutoMove(14, 0.5, 360, telemetry);
+            drivetrain.DrivetrainAutoMove(9, 0.5, 360, telemetry);
+            Lift.GotoPosition(4, 0, 0);
+            drivetrain.DrivetrainAutoMove(2, 0.5, 360, telemetry);
             sleep(3000);
             Intake.Update_intake(1);
-            drivetrain.DrivetrainAutoMove(20, 0.5, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(30, 0.5, 180, telemetry);
             Lift.GotoPosition(-2, 0, 0);
             drivetrain.DrivetrainAutoMove(0.5, 45, telemetry);
         }

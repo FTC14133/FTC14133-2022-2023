@@ -150,7 +150,7 @@ public class Lift {
         if (gamepad2.left_bumper){
             posNeg = -1;
         }
-
+// aditya was here
         if (gamepad2.b){
             position = 8 * posNeg;
         }else if (gamepad2.a){
@@ -227,12 +227,12 @@ public class Lift {
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 3: // Short Level Front
-                arm.setTargetPosition((int)(65 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(75 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(79 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(69 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -256,12 +256,12 @@ public class Lift {
                 //elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -2: //Mid Level Back
-                arm.setTargetPosition((int)(135 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(145 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -3: //Short Level Back
-                arm.setTargetPosition((int)(185.6 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(175.6 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
