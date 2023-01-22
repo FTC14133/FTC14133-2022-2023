@@ -46,7 +46,7 @@ public class Lift {
     final double ElevatorCountsPerInch = ElevatorCountsPerRev / ElevatorDTR; //Counts Per Inch
 
     double elevatorPower =1;
-    double armPower=0.75;
+    double armPower=0.5;
     int joystick_int_left;
     int joystick_int_right;
 
@@ -202,7 +202,7 @@ public class Lift {
         //Limits();
         switch (position) {
             case 8: // Intake Front
-                arm.setTargetPosition((int)(2 * ArmCountsPerDegree +Rjoystick)); //Todo: Determine all positions for the arm/lift
+                arm.setTargetPosition((int)(6 * ArmCountsPerDegree +Rjoystick)); //Todo: Determine all positions for the arm/lift
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -239,9 +239,7 @@ public class Lift {
 
             case 1: //Tall Level Front
                 arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
-                elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                elevator.setPower(elevatorPower);
-                //elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
+                elevator.setTargetPosition((int)((10.5 * ElevatorCountsPerInch) +Ljoystick));
                 break;
 
             case 0: //Straight Up
@@ -251,9 +249,7 @@ public class Lift {
                 break;
             case -1: //Tall Level Back
                 arm.setTargetPosition((int)(123 * ArmCountsPerDegree +Rjoystick));
-                elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                elevator.setPower(elevatorPower);
-                //elevator.setTargetPosition((int)((13 * ElevatorCountsPerInch) +Ljoystick));
+                elevator.setTargetPosition((int)((10.5 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -2: //Mid Level Back
                 arm.setTargetPosition((int)(145 * ArmCountsPerDegree +Rjoystick));
@@ -286,7 +282,7 @@ public class Lift {
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -8: // Intake Back
-                arm.setTargetPosition((int)(216 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(214 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;

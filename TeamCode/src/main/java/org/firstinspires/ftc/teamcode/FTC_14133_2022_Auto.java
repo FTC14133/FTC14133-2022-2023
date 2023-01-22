@@ -177,8 +177,8 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             drivetrain.DrivetrainAutoMove(36, 0.75, 180, telemetry);
             drivetrain.DrivetrainAutoMove(0.75, -90, telemetry);
             Intake.Update_intake(1);
-            sleep(1000);
-            drivetrain.DrivetrainAutoMove(25, 0.75, 90, telemetry);
+            sleep(2000);
+            drivetrain.DrivetrainAutoMove(23, 0.75, 90, telemetry);
             telemetry.addData("Current Detected Value", detected);
             telemetry.update();
             if (detected == 1){

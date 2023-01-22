@@ -188,10 +188,10 @@ public class Drivetrain  {
             rbpower = 0;
         }
 
-/*        lbpower = lbpower/1;
-        rbpower = rbpower/1;
-        lfpower = lfpower/1;
-        rfpower = rfpower/1;*/
+        lbpower = lbpower/1.5;
+        rbpower = rbpower/1.5;
+        lfpower = lfpower/1.5;
+        rfpower = rfpower/1.5;
 
         rf.setPower(lbpower);
         lf.setPower(rbpower);
