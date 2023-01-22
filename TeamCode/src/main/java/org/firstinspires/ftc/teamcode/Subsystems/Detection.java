@@ -84,32 +84,31 @@ public class Detection {
 
     public int AprilTagDetection(Telemetry telemetry) {
 
-        while (framesRead <= 2e5) {
-            ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+        camera.setPipeline(aprilTagDetectionPipeline);
+        ArrayList<org.openftc.apriltag.AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            if (currentDetections.size() != 0) {
-                boolean tagFound = false;
+        if (currentDetections.size() != 0) {
+            boolean tagFound = false;
 
-                for (org.openftc.apriltag.AprilTagDetection tag : currentDetections) {
-                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
-                        tagOfInterestNum = tag.id;
-                        tagFound = true;
-                        break;
-                    }
+            for (org.openftc.apriltag.AprilTagDetection tag : currentDetections) {
+                if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                    tagOfInterestNum = tag.id;
+                    tagFound = true;
+                    break;
                 }
-
-                if (tagFound) {
-                    telemetry.addData(""+ framesRead + "\tID: ", tagOfInterestNum);
-                    telemetry.update();
-                    return tagOfInterestNum;
-                }
-            } else {
-                telemetry.addLine("" + framesRead + "Don't see tag of interest :(");
             }
 
-            telemetry.update();
-            framesRead += 1;
+            if (tagFound) {
+                telemetry.addData(""+ framesRead + "\tID: ", tagOfInterestNum);
+                telemetry.update();
+                return tagOfInterestNum;
+            }
+        } else {
+            telemetry.addLine("" + framesRead + "Don't see tag of interest :(");
         }
+
+        telemetry.update();
+        framesRead += 1;
         return -1;
     }
 }

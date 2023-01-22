@@ -232,7 +232,7 @@ public class Lift {
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 2: // Mid Level Front
-                arm.setTargetPosition((int)(69 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(74 * ArmCountsPerDegree +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;

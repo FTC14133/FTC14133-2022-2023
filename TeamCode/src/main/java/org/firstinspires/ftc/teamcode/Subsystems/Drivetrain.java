@@ -112,7 +112,7 @@ public class Drivetrain  {
         lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (lf.isBusy() || rf.isBusy() || lb.isBusy() || rb.isBusy()) {
+        while (lf.isBusy() || rf.isBusy()/* || lb.isBusy() || rb.isBusy()*/) {
             telemetry.addData("rf.getCurrentPosition()", rf.getCurrentPosition());
             telemetry.addData("lf.getCurrentPosition()", lf.getCurrentPosition());
             telemetry.addData("lb.getCurrentPosition()", lb.getCurrentPosition());

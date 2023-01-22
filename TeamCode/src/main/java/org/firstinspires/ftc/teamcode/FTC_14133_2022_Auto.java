@@ -36,7 +36,7 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
     boolean AllianceSelected = false;
     boolean AutoSelected = false;
     String AllianceString = "Not Selected";
-    int routine = -1;
+    int routine = 2;
     int detected = -1;
 
 
@@ -94,7 +94,11 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         //     if ((Pivot_Arm != null) && (drivetrain != null) && (Intake !=null) && (Sensors != null) && (Turn_Table != null))
         //     {
         HardwareStart();
-        waitForStart();
+        //waitForStart();
+
+        while (!opModeIsActive() && !isStopRequested()) {
+            detected = Detection.AprilTagDetection(telemetry);
+        }
 
         telemetry.addData("Object", "Passed waitForStart");
         telemetry.update();
@@ -107,12 +111,13 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("Object", "After Home");
         telemetry.update();
 
-        detected = Detection.AprilTagDetection(telemetry);
+        //detected = Detection.AprilTagDetection(telemetry);
 
         telemetry.addData("detected", detected);
         telemetry.update();
         
-        Intake.Update_intake(-1);
+        Intake.Update_intake(0);
+        sleep(1000);
 
 
        // drivetrain.DrivetrainAutoMove(5, 0.5, 90);
@@ -128,27 +133,31 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
         telemetry.addData("Object", "After forward rotate");
         telemetry.update();*/
         if (routine == -1){
-            drivetrain.DrivetrainAutoMove(0.5, 40, telemetry);
+            drivetrain.DrivetrainAutoMove(0.5, 50, telemetry);
             drivetrain.DrivetrainAutoMove(2.5, 0.5, 180, telemetry);
 
             Lift.GotoPosition(-3, 0, 0);
-            sleep(3000);
-            drivetrain.DrivetrainAutoMove(0.5, -40, telemetry);
-            drivetrain.DrivetrainAutoMove(42, 0.5, 180, telemetry);
-            drivetrain.DrivetrainAutoMove(0.5, 90, telemetry);
-            drivetrain.DrivetrainAutoMove(9, 0.5, 360, telemetry);
-            Lift.GotoPosition(4, 0, 0);
-            drivetrain.DrivetrainAutoMove(2, 0.5, 360, telemetry);
-            sleep(3000);
+            sleep(1500);
             Intake.Update_intake(1);
+            sleep(2000);
+            drivetrain.DrivetrainAutoMove(0.5, -50, telemetry);
+            drivetrain.DrivetrainAutoMove(44,  0.75, 180, telemetry);
+            drivetrain.DrivetrainAutoMove(0.25, 90, telemetry);
+            drivetrain.DrivetrainAutoMove(9, 0.5, 360, telemetry);
+            Lift.GotoPosition(4, 0, 25);
+            sleep(1000);
+            drivetrain.DrivetrainAutoMove(1.5, 0.5, 360, telemetry);
+            Intake.Update_intake(0);
+            sleep(1000);
+            Lift.GotoPosition(-2, 0, -70);
             drivetrain.DrivetrainAutoMove(30, 0.5, 180, telemetry);
-            Lift.GotoPosition(-2, 0, 0);
-            drivetrain.DrivetrainAutoMove(0.5, 45, telemetry);
+            drivetrain.DrivetrainAutoMove(0.5, 77, telemetry);
+            Intake.Update_intake(1);
         }
         if (routine == 0) { //This code will run if auto routine 0 is selected
             //drivetrain.DrivetrainAutoMove(12, 0.75, 0, telemetry);
             drivetrain.DrivetrainAutoMove(72, 0.5, 180, telemetry);
-
+//hi
         }else if (routine == 1){ //
             Lift.GotoPosition(2, 0, 0);
             drivetrain.DrivetrainAutoMove(34, 0.75, 180, telemetry);
@@ -167,6 +176,8 @@ public class  FTC_14133_2022_Auto extends LinearOpMode{
             Lift.GotoPosition(2, 0, 0);
             drivetrain.DrivetrainAutoMove(36, 0.75, 180, telemetry);
             drivetrain.DrivetrainAutoMove(0.75, -90, telemetry);
+            Intake.Update_intake(1);
+            sleep(1000);
             drivetrain.DrivetrainAutoMove(25, 0.75, 90, telemetry);
             telemetry.addData("Current Detected Value", detected);
             telemetry.update();
