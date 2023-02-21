@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 // Generic Lift
 
-
+import java.lang.Math;
 
 import com.acmerobotics.roadrunner.drive.Drive;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -33,6 +33,7 @@ public class Lift {
     DigitalChannel HomeSwitchArmBack;
 
     public int position = 0; // Integer position of the arm
+    public int beforePosition = 8;
     int tolerance = 0; // Encoder tolerance
 //<<<<<<< Updated upstream
     final double ArmCountsPerRev = 28; // Counts per rev of the motor
@@ -79,6 +80,10 @@ public class Lift {
 
     PIDFCoefficients elevatorPIDF = new PIDFCoefficients(elevatorP, elevatorI, elevatorD, elevatorF);
 
+    public int simpBeforePosition = 0;
+    public int simpPosition = 0;
+
+    public boolean closeIntake = false;
 
     public Lift(HardwareMap hardwareMap){                 // Motor Mapping
         elevator = hardwareMap.get(DcMotorEx.class, "Elevator");//Sets the names of the hardware on the hardware map
@@ -109,6 +114,8 @@ public class Lift {
     }
 
     public void Teleop(Gamepad gamepad2, Telemetry telemetry){ //Code to be run in Op Mode void Loop at top level
+
+
 
         joystick_int_right = (int)(gamepad2.right_stick_y*60);
         joystick_int_left = (int)(gamepad2.left_stick_y*60);
@@ -161,12 +168,6 @@ public class Lift {
             position = 1 * posNeg;
         }
 
-        if ((position == 1) && (HomeSwitchElevatorUp.getState())){
-            position = 1;
-        }else if ((position == -1) && (HomeSwitchElevatorUp.getState())){
-            position = -1;
-        }
-
         GotoPosition(position, joystick_int_left, joystick_int_right);
 
         posNeg = 1;
@@ -199,6 +200,15 @@ public class Lift {
         arm.setPower(armPower);
         elevator.setPower(elevatorPower);
 
+
+/*        simpBeforePosition = beforePosition/Math.abs(beforePosition);
+        simpPosition = position/Math.abs(position);
+
+        if (simpBeforePosition != simpPosition){
+            closeIntake = true;
+        }*/
+
+
         //Limits();
         switch (position) {
             case 8: // Intake Front
@@ -227,7 +237,7 @@ public class Lift {
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case 3: // Short Level Front
-                arm.setTargetPosition((int)(75 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(255  +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -238,6 +248,7 @@ public class Lift {
                 break;
 
             case 1: //Tall Level Front
+
                 arm.setTargetPosition((int)(95 * ArmCountsPerDegree +Rjoystick));
                 elevator.setTargetPosition((int)((10.5 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -257,7 +268,7 @@ public class Lift {
                 elevator.setTargetPosition((int)((7 * ElevatorCountsPerInch) +Ljoystick));
                 break;
             case -3: //Short Level Back
-                arm.setTargetPosition((int)(175.6 * ArmCountsPerDegree +Rjoystick));
+                arm.setTargetPosition((int)(785 +Rjoystick));
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setTargetPosition((int)((0 * ElevatorCountsPerInch) +Ljoystick));
                 break;
@@ -290,7 +301,11 @@ public class Lift {
                 throw new IllegalStateException("Unexpected position value: " + position);
         }
 
+        //beforePosition = position;
+
     }
+
+    //public boolean
 
     public int GetPosition(){ // Returns the current position value of the arm
         return position;

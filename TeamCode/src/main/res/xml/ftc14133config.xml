@@ -1,6 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-</PreferenceScreen>
-
-    <!-- Todo: Make Config on Android Studio -->
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Robot type="FirstInspires-FTC">
+    <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
+        <LynxModule name="Expansion Hub 2" port="2">
+            <RevRoboticsUltraplanetaryHDHexMotor name="Elevator" port="0" />
+            <RevRoboticsUltraplanetaryHDHexMotor name="Arm" port="1" />
+            <Servo name="intake" port="0" />
+            <RevBlinkinLedDriver name="LED" port="1" />
+            <DigitalDevice name="HSArmFront" port="1" />
+            <DigitalDevice name="HSArmBack" port="3" />
+            <RevColorSensorV3 name="color" port="0" bus="3" />
+        </LynxModule>
+        <LynxModule name="Control Hub" port="173">
+            <RevRoboticsUltraplanetaryHDHexMotor name="lf" port="0" />
+            <RevRoboticsUltraplanetaryHDHexMotor name="rf" port="1" />
+            <RevRoboticsUltraplanetaryHDHexMotor name="lb" port="2" />
+            <RevRoboticsUltraplanetaryHDHexMotor name="rb" port="3" />
+            <AnalogInput name="PNP" port="0" />
+            <DigitalDevice name="HSElevatorUp" port="1" />
+            <DigitalDevice name="HSElevatorDown" port="3" />
+            <DigitalDevice name="IntakeTouch" port="5" />
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+        </LynxModule>
+    </LynxUsbDevice>
+    <Webcam name="Webcam 1" serialNumber="58037F60" />
+</Robot>

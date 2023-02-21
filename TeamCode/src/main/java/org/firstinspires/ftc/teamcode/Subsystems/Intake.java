@@ -19,6 +19,9 @@ public class Intake {
     DigitalChannel IntakeTouch; //The "beambreak" sensor is a type of IR sensor that detects if it vision is broken
     int intakeOpen = 1;
     boolean toggleIntake = true;
+
+    public int beforeIntakeState = 0;
+
     public Intake(HardwareMap hardwareMap){                 // Motor Mapping
         intake = hardwareMap.get(Servo.class, "intake");      //Sets the names of the hardware on the hardware map
         //intake_b = hardwareMap.crservo.get("intake_b");
@@ -35,13 +38,14 @@ public class Intake {
  */
 
 
-    public void Update_intake(int intakeOpen){ //Standard intake function
-        if (intakeOpen == 1){
+    public void Update_intake(int intakeState){ //Standard intake function
+        //beforeIntakeState = intakeState;
+        if (intakeState == 1){
             intake.setPosition(1);
-            Possession = true;
+            Possession = false;
         }else{
             intake.setPosition(0);
-            Possession = false;
+            Possession = true;
         }
     }
 
@@ -65,7 +69,7 @@ public class Intake {
 
     }
     public boolean getPossession(){
-        return Possession; //returns the variable from thr beambreak that identifies if we have fright or not
+        return Possession; //returns the variable from thr beambreak that identifies if we have a cone or not
     }
 
     public void Possession_Check(){

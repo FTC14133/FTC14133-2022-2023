@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.Reference.ConfigTests;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import java.io.*;
 import java.util.Properties;
+
+@TeleOp(name="EditConfig", group="Iterative Opmode")
 
 public class EditConfig extends OpMode {
     String configFilePath = "ConfigTesting\\config.properties";

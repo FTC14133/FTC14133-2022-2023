@@ -25,7 +25,8 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+ *//*
+
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
@@ -38,6 +39,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
+*/
 /*
  *
  * This is an example LinearOpMode that shows how to use
@@ -50,7 +52,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- */
+ *//*
+
 @TeleOp(name = "Sensor: MR Color", group = "Sensor")
 @Disabled
 public class SensorMRColor extends LinearOpMode {
@@ -137,3 +140,4 @@ public class SensorMRColor extends LinearOpMode {
     });
   }
 }
+*/
