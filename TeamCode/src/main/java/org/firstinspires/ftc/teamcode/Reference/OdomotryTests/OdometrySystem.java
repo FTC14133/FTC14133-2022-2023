@@ -17,7 +17,7 @@ import java.util.*;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 
-public class OdometrySystem {
+public class OdometrySystem extends Thread{
 
     private Drivetrain drivetrain=null;
 
@@ -103,7 +103,7 @@ public class OdometrySystem {
         drivetrain.DrivetrainAutoMove(distance, speed, realDirection, telemetry);
     }
 
-    public void Odometry_Loop(){
+    public void run(){
         beforeAngle = currentAngle;
         currentAngle = Return_Angle();
 
