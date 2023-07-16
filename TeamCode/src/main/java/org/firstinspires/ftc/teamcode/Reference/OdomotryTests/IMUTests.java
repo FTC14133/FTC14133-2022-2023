@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-@TeleOp(name="ArmPositionTest", group="Iterative Opmode")
+@TeleOp(name="IMUTests", group="Iterative Opmode")
 //@Disabled
 public class IMUTests extends OpMode  {
     // The IMU sensor object
@@ -61,7 +61,19 @@ public class IMUTests extends OpMode  {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        telemetry.addData("Heading", angles.firstAngle);
+        float current_heading = angles.firstAngle;
+
+        float real_angle = current_heading;
+
+        if (current_heading < 0){ //Negative
+            real_angle = 180 + (180+current_heading);
+        }
+        telemetry.addData("360 Heading", real_angle);
+        telemetry.addData("Acceleration X", imu.getAcceleration().xAccel);
+        telemetry.addData("Acceleration Y", imu.getAcceleration().yAccel);
+        telemetry.addData("Acceleration Z", imu.getAcceleration().zAccel);
+
+        telemetry.addData("Heading", current_heading);
         telemetry.addData("Roll", angles.secondAngle);
         telemetry.addData("Pitch", angles.thirdAngle);
 

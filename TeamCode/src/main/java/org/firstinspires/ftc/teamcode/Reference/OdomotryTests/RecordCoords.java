@@ -25,7 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.lang.Math;
 
-@TeleOp(name="ArmPositionTest", group="Iterative Opmode")
+@TeleOp(name="RecordCoords", group="Iterative Opmode")
 //@Disabled
 public class RecordCoords extends OpMode  {
     private static DcMotorEx leftMotor;
@@ -82,8 +82,10 @@ public class RecordCoords extends OpMode  {
         telemetry.addData("Moving Forwards/Backwards:", (leftMotorMovingForward && rightMotorMovingForward));
         telemetry.addData("Robot Moved:", previousEncoderValueLeftMotor-currentEncoderValueLeftMotor);
 
+        float current_heading = angles.firstAngle;
+
         if (leftMotorMovingForward && rightMotorMovingForward){
-            float current_heading = angles.firstAngle;
+
             int total_distance = previousEncoderValueLeftMotor-currentEncoderValueLeftMotor;
 
             double moved_x = (Math.cos(current_heading)*total_distance);
@@ -95,6 +97,14 @@ public class RecordCoords extends OpMode  {
 
         telemetry.addData("X Coord", total_x);
         telemetry.addData("Y Coord", total_y);
+        telemetry.addData("Heading", angles.firstAngle);
+
+        float real_angle = current_heading;
+
+        if (current_heading < 0){ //Negative
+            real_angle = 180 + (180+current_heading);
+        }
+        telemetry.addData("360 Heading", real_angle);
 
         telemetry.update();
 
