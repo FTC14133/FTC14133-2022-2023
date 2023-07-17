@@ -33,10 +33,6 @@ public class LoopTest extends Thread{
 
     }
 
-    public void StopThreading(){
-        loop = false;
-    }
-
     public void run(){
 
         while (loop) {
