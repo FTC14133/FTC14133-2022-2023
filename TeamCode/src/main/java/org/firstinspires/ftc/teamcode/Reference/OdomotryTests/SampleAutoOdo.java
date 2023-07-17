@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Reference.OdomotryTests.OdometrySystem;
 
-@Autonomous(name="FTC_14133_2022_Auto", group="Auto")
+@Autonomous(name="SampleAutoOdo", group="Auto")
 
 public class SampleAutoOdo extends LinearOpMode{
 
