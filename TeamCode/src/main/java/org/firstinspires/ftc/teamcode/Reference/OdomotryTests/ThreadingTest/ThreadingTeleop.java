@@ -6,46 +6,35 @@ package org.firstinspires.ftc.teamcode.Reference.OdomotryTests.ThreadingTest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Reference.OdomotryTests.ThreadingTest.LoopTest;
+@TeleOp(name="ThreadingTeleop", group="Iterative Opmode")
 
-@Autonomous(name="theadingloop", group="Iterative Opmode")
-
-public class ThreadingTelop extends OpMode {
+public class ThreadingTeleop extends OpMode {
 
     public LoopTest thread;
+
+    private static DcMotorEx rf;
 
     public void init() {
 
         thread = new LoopTest(hardwareMap, telemetry);
         thread.start();
 
+        rf = hardwareMap.get(DcMotorEx.class, "rf");
+        rf.setDirection(DcMotorEx.Direction.FORWARD);
+
     }
 
     public void loop(){
 
+        rf.setPower(gamepad1.left_stick_x);
 
-        telemetry.addData("Status", "On");
-        telemetry.update();
-
-        try {
-            Thread.sleep(3500);
-        } catch (Exception e) {
-        }
-
-        telemetry.addData("Status", "Off");
-        telemetry.update();
-
-        try {
-            Thread.sleep(3500);
-        } catch (Exception e) {
-        }
     }
 
     @Override
     public void stop() {
         thread.interrupt();
-        super.stop();
     }
 }

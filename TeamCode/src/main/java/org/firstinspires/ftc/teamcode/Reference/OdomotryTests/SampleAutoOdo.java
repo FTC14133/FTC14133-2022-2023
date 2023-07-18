@@ -6,7 +6,7 @@ package org.firstinspires.ftc.teamcode.Reference.OdomotryTests;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Reference.OdomotryTests.OdometrySystem;
+import org.firstinspires.ftc.teamcode.Reference.OdomotryTests.FinalOdo.OdometrySystem;
 
 @Autonomous(name="SampleAutoOdo", group="Auto")
 
